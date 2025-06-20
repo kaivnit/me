@@ -5,67 +5,107 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Duc Pham - Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6;
-            color: #374151;
+            background-color: #1a202c; /* Darker background */
+            color: #e2e8f0; /* Lighter text for contrast */
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         .container {
-            max-width: 960px;
+            max-width: 1024px; /* Slightly wider container */
             margin: 0 auto;
-            padding: 2rem;
+            padding: 2.5rem; /* Increased padding */
         }
         .section-title {
-            font-size: 2.25rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.5rem; /* Larger title */
             font-weight: 700;
-            color: #1f2937;
-            margin-bottom: 1.5rem;
+            color: #63b3ed; /* Accent color for titles */
+            margin-bottom: 2rem;
             text-align: center;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: #63b3ed; /* Accent line */
+            border-radius: 9999px;
         }
         .card {
-            background-color: #ffffff;
-            border-radius: 0.75rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
+            background-color: #2d3748; /* Darker card background */
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1); /* Stronger shadow */
+            padding: 2rem; /* Increased padding */
+            margin-bottom: 2.5rem; /* Increased margin */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.15);
         }
         .experience-item {
-            border-bottom: 1px solid #e5e7eb;
-            padding-bottom: 1rem;
-            margin-bottom: 1rem;
+            border-bottom: 1px solid #4a5568; /* Lighter border for separation */
+            padding-bottom: 1.5rem;
+            margin-bottom: 1.5rem;
         }
         .experience-item:last-child {
             border-bottom: none;
             margin-bottom: 0;
             padding-bottom: 0;
         }
+        .skill-tag {
+            background-color: #4a5568; /* Darker skill tag background */
+            color: #a0aec0; /* Lighter text for skill tags */
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .skill-tag:hover {
+            background-color: #63b3ed; /* Accent color on hover */
+            color: #ffffff;
+        }
+        a {
+            color: #63b3ed; /* Accent color for links */
+            transition: color 0.2s ease-in-out;
+        }
+        a:hover {
+            color: #90cdf4; /* Lighter accent on hover */
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Header Section -->
-        <header class="text-center py-8">
-            <h1 class="text-5xl font-bold text-gray-900 rounded-lg p-2">Phạm Đức</h1>
-            <p class="text-xl text-gray-600 mt-2">Fullstack .NET Developer</p>
-            <p class="text-gray-500">Thành phố Hồ Chí Minh, Việt Nam</p>
-            <div class="mt-4 flex justify-center space-x-4">
-                <a href="https://www.linkedin.com/in/kaivnit" target="_blank" class="text-blue-600 hover:underline rounded-md p-1">LinkedIn</a>
-                <a href="mailto:kaivnit@gmail.com" class="text-blue-600 hover:underline rounded-md p-1">kaivnit@gmail.com</a>
-                <a href="tel:0827240993" class="text-blue-600 hover:underline rounded-md p-1">0827240993</a>
+        <header class="text-center py-10 bg-gradient-to-r from-blue-700 to-indigo-700 text-white rounded-b-3xl shadow-xl mb-10">
+            <h1 class="text-6xl font-extrabold mb-4 animate-pulse">Phạm Đức</h1>
+            <p class="text-2xl font-light opacity-90">Fullstack .NET Developer</p>
+            <p class="text-lg opacity-70 mt-1">Thành phố Hồ Chí Minh, Việt Nam</p>
+            <div class="mt-6 flex justify-center space-x-6 text-xl">
+                <a href="https://www.linkedin.com/in/kaivnit" target="_blank" class="hover:underline transition duration-300 transform hover:scale-105">LinkedIn</a>
+                <a href="mailto:kaivnit@gmail.com" class="hover:underline transition duration-300 transform hover:scale-105">kaivnit@gmail.com</a>
+                <a href="tel:0827240993" class="hover:underline transition duration-300 transform hover:scale-105">0827240993</a>
             </div>
         </header>
 
         <!-- Summary Section -->
         <section class="card">
             <h2 class="section-title">Tóm tắt</h2>
-            <p class="text-gray-700 leading-relaxed">
+            <p class="text-gray-300 leading-relaxed text-lg">
                 Lập trình viên Fullstack với 5 năm kinh nghiệm phát triển, kiểm thử và bảo trì các ứng dụng phần mềm.
                 Đã phát triển gần 7 ứng dụng tiên tiến bằng cách sử dụng nhiều công nghệ thịnh hành từ các trường hợp sử dụng và yêu cầu chức năng.
                 Nghiên cứu các công nghệ mới trong các dự án và trách nhiệm để đảm bảo chất lượng sản phẩm.
             </p>
-            <p class="text-gray-700 leading-relaxed mt-4">
+            <p class="text-gray-300 leading-relaxed mt-4 text-lg">
                 Tìm kiếm một môi trường làm việc chuyên nghiệp và thân thiện, nơi mọi người có thể làm việc như một thành viên trong nhóm và tất cả các thành viên trong nhóm có cùng mục tiêu.
                 Mang đến cơ hội để cải thiện năng lực.
             </p>
@@ -74,23 +114,23 @@
         <!-- Skills Section -->
         <section class="card">
             <h2 class="section-title">Kỹ năng hàng đầu</h2>
-            <div class="flex flex-wrap gap-2 justify-center">
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Redpanda</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Google Cloud Storage</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Microservices</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">.NET Core</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">ReactJS</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">SQL Server</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Redis</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">MongoDB</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Apache Kafka</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Docker</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">Agile Scrum</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">HTML5</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">CSS3</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">JavaScript</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">jQuery</span>
-                <span class="bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full">WordPress</span>
+            <div class="flex flex-wrap gap-3 justify-center">
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Redpanda</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Google Cloud Storage</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Microservices</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">.NET Core</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">ReactJS</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">SQL Server</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Redis</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">MongoDB</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Apache Kafka</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Docker</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">Agile Scrum</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">HTML5</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">CSS3</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">JavaScript</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">jQuery</span>
+                <span class="skill-tag px-4 py-2 rounded-full text-base">WordPress</span>
             </div>
         </section>
 
@@ -99,10 +139,10 @@
             <h2 class="section-title">Kinh nghiệm</h2>
 
             <div class="experience-item">
-                <h3 class="text-xl font-semibold text-gray-800">Fullstack .NET Developer - Freelance</h3>
-                <p class="text-gray-600">Thành phố Hồ Chí Minh, Việt Nam | Tháng 4/2024 - Hiện tại (1 năm 3 tháng)</p>
-                <p class="font-medium mt-2">Dự án: Hệ sinh thái Mikiny</p>
-                <ul class="list-disc list-inside text-gray-700 ml-4">
+                <h3 class="text-2xl font-semibold text-gray-100">Fullstack .NET Developer - Freelance</h3>
+                <p class="text-gray-400">Thành phố Hồ Chí Minh, Việt Nam | Tháng 4/2024 - Hiện tại (1 năm 3 tháng)</p>
+                <p class="font-medium mt-3 text-gray-200">Dự án: Hệ sinh thái Mikiny</p>
+                <ul class="list-disc list-inside text-gray-300 ml-4 mt-2">
                     <li>Xây dựng và duy trì một nền tảng đa hệ thống phân tán phục vụ các lĩnh vực khác nhau bao gồm quản lý danh tính, quản lý người thuê, đăng ký và quản lý API.</li>
                     <li>Kiến trúc và triển khai 5 hệ thống cốt lõi: Hệ thống quản lý người dùng, Hệ thống quản lý người thuê, Hệ thống quản lý đăng ký, Hệ thống quản lý nội dung, và Hệ thống quản lý API.</li>
                     <li>Nghiên cứu và áp dụng ngôn ngữ R cho các mô-đun tính toán thống kê và tích hợp với GCS để duy trì dữ liệu.</li>
@@ -110,10 +150,10 @@
             </div>
 
             <div class="experience-item">
-                <h3 class="text-xl font-semibold text-gray-800">Software Developer - Titan Technology Corporation</h3>
-                <p class="text-gray-600">Thành phố Hồ Chí Minh, Việt Nam | Tháng 9/2022 - Tháng 3/2024 (1 năm 7 tháng)</p>
-                <p class="font-medium mt-2">Dự án: Auvenir</p>
-                <ul class="list-disc list-inside text-gray-700 ml-4">
+                <h3 class="text-2xl font-semibold text-gray-100">Software Developer - Titan Technology Corporation</h3>
+                <p class="text-gray-400">Thành phố Hồ Chí Minh, Việt Nam | Tháng 9/2022 - Tháng 3/2024 (1 năm 7 tháng)</p>
+                <p class="font-medium mt-3 text-gray-200">Dự án: Auvenir</p>
+                <ul class="list-disc list-inside text-gray-300 ml-4 mt-2">
                     <li>Đóng góp vào việc xây dựng hệ thống dựa trên đám mây được thiết kế cho các chuyên gia kế toán và kiểm toán.</li>
                     <li>Phát triển các tính năng mới dựa trên yêu cầu của khách hàng.</li>
                     <li>Nghiên cứu và tích hợp Azure Synapse Analytics vào hệ thống để tăng cường khả năng dữ liệu.</li>
@@ -121,10 +161,10 @@
             </div>
 
             <div class="experience-item">
-                <h3 class="text-xl font-semibold text-gray-800">Software Specialist - Haravan</h3>
-                <p class="text-gray-600">Việt Nam | Tháng 3/2020 - Tháng 6/2021 (1 năm 4 tháng)</p>
-                <p class="font-medium mt-2">Dự án: Nền tảng tích hợp đối tác thương mại điện tử</p>
-                <ul class="list-disc list-inside text-gray-700 ml-4">
+                <h3 class="text-2xl font-semibold text-gray-100">Software Specialist - Haravan</h3>
+                <p class="text-gray-400">Việt Nam | Tháng 3/2020 - Tháng 6/2021 (1 năm 4 tháng)</p>
+                <p class="font-medium mt-3 text-gray-200">Dự án: Nền tảng tích hợp đối tác thương mại điện tử</p>
+                <ul class="list-disc list-inside text-gray-300 ml-4 mt-2">
                     <li>Xây dựng và duy trì hệ thống tích hợp kết nối Haravan với các nền tảng thương mại điện tử lớn như Shopee, Lazada, Tiki, Sendo và ZaloShop.</li>
                     <li>Xử lý các vấn đề sản xuất khẩn cấp, triển khai hotfix và giám sát tình trạng hệ thống.</li>
                     <li>Làm việc với các đối tác bên ngoài (Google, Shopee, Lazada, v.v.) để tích hợp các tính năng của nền tảng và đảm bảo hoạt động liền mạch.</li>
@@ -132,11 +172,11 @@
             </div>
 
             <div class="experience-item">
-                <h3 class="text-xl font-semibold text-gray-800">.NET Developer - Octa JSC</h3>
-                <p class="text-gray-600">Bùi Đình Túy, Quận Bình Thạnh | Tháng 10/2018 - Tháng 3/2020 (1 năm 6 tháng)</p>
-                <ul class="list-disc list-inside text-gray-700 ml-4">
+                <h3 class="text-2xl font-semibold text-gray-100">.NET Developer - Octa JSC</h3>
+                <p class="text-gray-400">Bùi Đình Túy, Quận Bình Thạnh | Tháng 10/2018 - Tháng 3/2020 (1 năm 6 tháng)</p>
+                <ul class="list-disc list-inside text-gray-300 ml-4 mt-2">
                     <li>Dự án: Hệ thống Octa (đang diễn ra): Nền tảng bán thẻ trả trước và nạp tiền điện thoại di động.</li>
-                    <li>Dự án: Trang chủ Octa.vn: Xây dựng giao diện trang web công ty dựa trên thông số kỹ thuật thiết kế. <a href="https://octa.vn" target="_blank" class="text-blue-600 hover:underline">octa.vn</a></li>
+                    <li>Dự án: Trang chủ Octa.vn: Xây dựng giao diện trang web công ty dựa trên thông số kỹ thuật thiết kế. <a href="https://octa.vn" target="_blank">octa.vn</a></li>
                     <li>Dự án: Thẻ lịch sử: Theo dõi vòng đời thẻ trả trước.</li>
                     <li>Dự án: Fastcard: Hệ thống thanh toán thẻ nhanh cho đối tác.</li>
                     <li>Dự án: Dịch vụ quy tắc nạp tiền: Quản lý nạp tiền dựa trên quy tắc.</li>
@@ -145,9 +185,9 @@
             </div>
 
             <div class="experience-item">
-                <h3 class="text-xl font-semibold text-gray-800">Frontend Web Developer - Comma Creative</h3>
-                <p class="text-gray-600">Thành phố Hồ Chí Minh, Việt Nam | Tháng 11/2016 - Tháng 1/2018 (1 năm 3 tháng)</p>
-                <ul class="list-disc list-inside text-gray-700 ml-4">
+                <h3 class="text-2xl font-semibold text-gray-100">Frontend Web Developer - Comma Creative</h3>
+                <p class="text-gray-400">Thành phố Hồ Chí Minh, Việt Nam | Tháng 11/2016 - Tháng 1/2018 (1 năm 3 tháng)</p>
+                <ul class="list-disc list-inside text-gray-300 ml-4 mt-2">
                     <li>Chuyển đổi thiết kế thành trang web chức năng: Đã nhận các tệp PSD và AI từ các nhà thiết kế và chuyển đổi chúng thành các trang web hoàn toàn phản hồi bằng HTML, CSS, JavaScript, jQuery và tích hợp chúng vào WordPress.</li>
                     <li>Đảm bảo khả năng tương thích đa trình duyệt và thiết kế đáp ứng trên tất cả các thiết bị.</li>
                     <li>Quản lý nội dung và bảo trì trang web cho khách hàng.</li>
@@ -160,13 +200,13 @@
         <section class="card">
             <h2 class="section-title">Học vấn</h2>
             <div class="experience-item">
-                <h3 class="text-xl font-semibold text-gray-800">Đại học Công nghệ Thông tin</h3>
-                <p class="text-gray-600">Cử nhân Hệ thống Thông tin (2011-2016)</p>
+                <h3 class="text-2xl font-semibold text-gray-100">Đại học Công nghệ Thông tin</h3>
+                <p class="text-gray-400">Cử nhân Hệ thống Thông tin (2011-2016)</p>
             </div>
         </section>
 
         <!-- Footer Section -->
-        <footer class="text-center py-6 text-gray-500 text-sm">
+        <footer class="text-center py-8 text-gray-500 text-sm">
             &copy; 2025 Phạm Đức. Tất cả quyền được bảo lưu.
         </footer>
     </div>
