@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Tạo Custom GPT Viết Truyện Tiên Hiệp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Infographic Plan: The infographic follows a narrative path: 1. Understanding the Xianxia genre's fundamentals. 2. A step-by-step guide to building the Custom GPT. 3. Visualizing the key components needed for the GPT's knowledge base. 4. Strategies for using the created GPT effectively. -->
+    <!-- Visualization Choices: 
+        - Xianxia Subgenres: Donut Chart (Chart.js) to show composition. Goal: Compare.
+        - Creation Process: HTML/CSS Flowchart to show sequence. Goal: Organize. (NO SVG/Mermaid)
+        - Cultivation Realms: Custom HTML/CSS Pyramid Diagram to show hierarchy. Goal: Organize/Rank. (NO SVG)
+        - Key Elements: Bar Chart (Chart.js) to compare importance. Goal: Compare.
+        - Character Archetypes: Radar Chart (Chart.js) to compare multiple facets. Goal: Compare.
+        - Writing Strategy: Donut Chart (Chart.js) to inform on handling tropes. Goal: Inform.
+    -->
+    <!-- Color Palette: Energetic & Playful (#FF6B6B, #FFD166, #06D6A0, #118AB2, #073B4C) -->
+    <!-- Confirmation: NEITHER Mermaid JS NOR SVG were used in this output. All charts use Chart.js with Canvas rendering. All diagrams are built with structured HTML and styled with Tailwind CSS. -->
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #073B4C;
+            color: #F7F7F7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .pyramid-level {
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+        }
+        .flowchart-arrow {
+            content: '▼';
+            font-size: 2rem;
+            color: #FFD166;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-white uppercase tracking-wider">Rèn Luyện <span class="text-[#FFD166]">Tiên Hiệp GPT</span></h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">Hướng dẫn trực quan để tạo và sử dụng AI chuyên gia viết truyện Tiên Hiệp</p>
+        </header>
+
+        <main class="space-y-16">
+            
+            <!-- Section 1: Genre Fundamentals -->
+            <section id="genre-fundamentals" class="text-center">
+                <h2 class="text-3xl font-bold text-white mb-2">Phần 1: Lam Đồ Vũ Trụ Tiên Hiệp</h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Để AI của bạn có thể sáng tác, trước tiên nó phải "ngộ đạo" – thấu hiểu bản chất của thế giới Tiên Hiệp. Đây là những khái niệm cốt lõi nhất.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-6">
+                        <h3 class="text-2xl font-bold text-[#FFD166] mb-4">Các Thể Loại Phụ</h3>
+                        <p class="text-gray-300 mb-4">Tiên hiệp không đơn thuần là một thể loại, mà là một vũ trụ đa dạng. Việc xác định rõ thể loại nhỏ sẽ giúp AI định hình phong cách và cốt truyện chính xác hơn.</p>
+                        <div class="chart-container h-[300px] md:h-[350px]">
+                            <canvas id="subgenreChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-6">
+                        <h3 class="text-2xl font-bold text-[#FFD166] mb-4">Tiên Hiệp vs. Võ Hiệp</h3>
+                        <p class="text-gray-300 mb-4">Sự khác biệt cơ bản nằm ở quy mô và giới hạn sức mạnh. Hiểu rõ điều này giúp AI không nhầm lẫn giữa hai thể loại.</p>
+                        <div class="flex flex-col space-y-4 text-left p-4">
+                            <div class="border-l-4 border-[#06D6A0] pl-4">
+                                <h4 class="text-xl font-semibold">🗡️ Võ Hiệp (Wuxia)</h4>
+                                <p class="text-gray-300">Tập trung vào võ công, ân oán giang hồ trong thế giới凡 nhân. Sức mạnh bị giới hạn bởi quy luật vật lý.</p>
+                            </div>
+                            <div class="border-l-4 border-[#FF6B6B] pl-4">
+                                <h4 class="text-xl font-semibold">🔮 Tiên Hiệp (Xianxia)</h4>
+                                <p class="text-gray-300">Mở rộng ra đa vũ trụ, thần-ma, yêu-quái. Nhân vật tu luyện để phi thăng, sở hữu sức mạnh siêu nhiên.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: Building the GPT -->
+            <section id="building-gpt" class="text-center">
+                <h2 class="text-3xl font-bold text-white mb-2">Phần 2: Con Đường Tu Luyện - Tạo GPT</h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Đây là quy trình từng bước để "rèn luyện" nên một Custom GPT mạnh mẽ, từ một ý tưởng sơ khai đến một "thần khí" sẵn sàng sáng tạo.</p>
+                <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-8">
+                    <div class="flex flex-col items-center space-y-2">
+                        <!-- Step 1 -->
+                        <div class="bg-[#073B4C] rounded-lg p-4 w-full max-w-md text-center shadow-lg">
+                            <span class="text-sm font-bold text-[#FFD166]">BƯỚC 1</span>
+                            <h4 class="text-lg font-semibold text-white">Khởi Tạo & Đặt Tên</h4>
+                            <p class="text-sm text-gray-300">Truy cập GPT Builder và đưa ra chỉ dẫn ban đầu, ví dụ: "Tạo một GPT chuyên viết truyện tiên hiệp."</p>
+                        </div>
+                        <div class="flowchart-arrow"></div>
+                        <!-- Step 2 -->
+                        <div class="bg-[#073B4C] rounded-lg p-4 w-full max-w-md text-center shadow-lg">
+                             <span class="text-sm font-bold text-[#FFD166]">BƯỚC 2</span>
+                            <h4 class="text-lg font-semibold text-white">Chỉ Dẫn Chi Tiết (Instructions)</h4>
+                            <p class="text-sm text-gray-300">Trong tab "Configure", cung cấp vai trò, mục tiêu, quy trình và định dạng chi tiết cho GPT.</p>
+                        </div>
+                        <div class="flowchart-arrow"></div>
+                        <!-- Step 3 -->
+                        <div class="bg-[#073B4C] rounded-lg p-4 w-full max-w-md text-center shadow-lg">
+                            <span class="text-sm font-bold text-[#FFD166]">BƯỚC 3</span>
+                            <h4 class="text-lg font-semibold text-white">Nạp Tri Thức (Knowledge)</h4>
+                            <p class="text-sm text-gray-300">Tải lên các tệp (PDF, TXT) chứa dữ liệu về cảnh giới, thuật ngữ, bản đồ... để AI tham khảo.</p>
+                        </div>
+                        <div class="flowchart-arrow"></div>
+                         <!-- Step 4 -->
+                        <div class="bg-[#073B4C] rounded-lg p-4 w-full max-w-md text-center shadow-lg">
+                            <span class="text-sm font-bold text-[#FFD166]">BƯỚC 4</span>
+                             <h4 class="text-lg font-semibold text-white">Thiết Lập Năng Lực (Capabilities)</h4>
+                            <p class="text-sm text-gray-300">Bật các tính năng như "Web Browse", "DALL·E Image Generation" để mở rộng khả năng.</p>
+                        </div>
+                        <div class="flowchart-arrow"></div>
+                        <!-- Step 5 -->
+                        <div class="bg-[#073B4C] rounded-lg p-4 w-full max-w-md text-center shadow-lg">
+                            <span class="text-sm font-bold text-[#FFD166]">BƯỚC 5</span>
+                            <h4 class="text-lg font-semibold text-white">Thử Nghiệm & Tinh Chỉnh (Preview)</h4>
+                            <p class="text-sm text-gray-300">Sử dụng bảng Preview để kiểm tra và lặp lại quá trình chỉnh sửa cho đến khi ưng ý.</p>
+                        </div>
+                        <div class="flowchart-arrow"></div>
+                        <!-- Step 6 -->
+                        <div class="bg-[#06D6A0] rounded-lg p-4 w-full max-w-md text-center shadow-lg">
+                            <span class="text-sm font-bold text-[#073B4C]">HOÀN TẤT</span>
+                            <h4 class="text-lg font-semibold text-white">Lưu & Chia Sẻ</h4>
+                            <p class="text-sm text-gray-200">Lưu lại GPT và chia sẻ để sử dụng hoặc cho người khác cùng trải nghiệm.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Anatomy of the World -->
+            <section id="world-anatomy">
+                 <h2 class="text-3xl font-bold text-white mb-2 text-center">Phần 3: Giải Phẫu Thế Giới Tiên Hiệp</h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto text-center">Đây là những dữ liệu quan trọng cần nạp vào "Tệp Tri Thức" (Knowledge Files) của GPT để đảm bảo tính nhất quán và chiều sâu cho thế giới truyện.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Cultivation Realms -->
+                    <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-6 md:col-span-2">
+                        <h3 class="text-2xl font-bold text-[#FFD166] text-center mb-4">Hệ Thống Cảnh Giới Tu Luyện</h3>
+                        <p class="text-gray-300 mb-6 text-center">Hệ thống cấp bậc là xương sống của truyện. GPT phải hiểu rõ trật tự và sức mạnh của từng cảnh giới để xây dựng sự phát triển nhân vật một cách logic.</p>
+                        <div class="flex flex-col items-center space-y-1 w-full max-w-md mx-auto">
+                            <div class="pyramid-level bg-[#FF6B6B] w-full h-10 flex items-center justify-center font-bold text-white shadow-md">Độ Kiếp</div>
+                            <div class="pyramid-level bg-[#FF6B6B] bg-opacity-90 w-[90%] h-10 flex items-center justify-center font-bold text-white shadow-md">Đại Thừa</div>
+                            <div class="pyramid-level bg-[#FF6B6B] bg-opacity-80 w-[80%] h-10 flex items-center justify-center font-bold text-white shadow-md">Hợp Thể</div>
+                            <div class="pyramid-level bg-[#FF6B6B] bg-opacity-70 w-[70%] h-10 flex items-center justify-center font-bold text-white shadow-md">Luyện Hư</div>
+                            <div class="pyramid-level bg-[#FFD166] bg-opacity-90 w-[60%] h-10 flex items-center justify-center font-bold text-[#073B4C] shadow-md">Hóa Thần</div>
+                            <div class="pyramid-level bg-[#FFD166] bg-opacity-80 w-[50%] h-10 flex items-center justify-center font-bold text-[#073B4C] shadow-md">Nguyên Anh</div>
+                            <div class="pyramid-level bg-[#FFD166] bg-opacity-70 w-[40%] h-10 flex items-center justify-center font-bold text-[#073B4C] shadow-md">Kim Đan</div>
+                            <div class="pyramid-level bg-[#06D6A0] bg-opacity-80 w-[30%] h-10 flex items-center justify-center font-bold text-[#073B4C] shadow-md">Trúc Cơ</div>
+                            <div class="pyramid-level bg-[#06D6A0] w-[20%] h-10 flex items-center justify-center font-bold text-[#073B4C] shadow-md">Luyện Khí</div>
+                        </div>
+                    </div>
+
+                    <!-- Key Elements -->
+                    <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-6">
+                        <h3 class="text-2xl font-bold text-[#FFD166] mb-4">Các Yếu Tố Đặc Trưng</h3>
+                         <p class="text-gray-300 mb-4">Các yếu tố này là công cụ và động lực thúc đẩy cốt truyện. GPT cần biết tầm quan trọng tương đối của chúng để tạo ra các tình tiết hợp lý.</p>
+                        <div class="chart-container">
+                            <canvas id="elementsChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Character Archetypes -->
+                    <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-6">
+                        <h3 class="text-2xl font-bold text-[#FFD166] mb-4">Các Mẫu Nhân Vật Điển Hình</h3>
+                        <p class="text-gray-300 mb-4">Nhân vật là linh hồn của câu chuyện. Biểu đồ này phân tích các vai trò chính dựa trên các thuộc tính của họ, giúp GPT tạo ra các nhân vật đa chiều.</p>
+                        <div class="chart-container">
+                            <canvas id="archetypeChart"></canvas>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+            
+            <!-- Section 4: Wielding the Artifact -->
+            <section id="wielding-artifact" class="text-center">
+                <h2 class="text-3xl font-bold text-white mb-2">Phần 4: Vận Dụng Thần Khí - Sáng Tác</h2>
+                <p class="text-gray-300 mb-8 max-w-2xl mx-auto">Sở hữu GPT mạnh mẽ là chưa đủ. Chiến lược sử dụng thông minh sẽ quyết định chất lượng tác phẩm của bạn.</p>
+                 <div class="bg-[#118AB2] bg-opacity-30 rounded-lg shadow-2xl p-6">
+                    <h3 class="text-2xl font-bold text-[#FFD166] mb-4">Xử Lý Trope & Cliché</h3>
+                    <p class="text-gray-300 mb-4">Tiên hiệp có nhiều motif quen thuộc. Thay vì né tránh, hãy sử dụng chúng một cách sáng tạo. GPT có thể giúp bạn làm mới các yếu tố cũ.</p>
+                    <div class="chart-container h-[300px] md:h-[350px]">
+                        <canvas id="tropeChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-gray-700">
+            <p class="text-gray-400">Infographic được tạo bởi Canvas Infographics. &copy; 2025.</p>
+            <p class="text-xs text-gray-500 mt-2">Dữ liệu được tổng hợp từ tài liệu hướng dẫn tạo GPT viết truyện Tiên Hiệp.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const wrapLabel = (str, maxWidth) => {
+                if (str.length <= maxWidth) {
+                    return str;
+                }
+                const words = str.split(' ');
+                const lines = [];
+                let currentLine = words[0];
+
+                for (let i = 1; i < words.length; i++) {
+                    if (currentLine.length + words[i].length + 1 < maxWidth) {
+                        currentLine += ' ' + words[i];
+                    } else {
+                        lines.push(currentLine);
+                        currentLine = words[i];
+                    }
+                }
+                lines.push(currentLine);
+                return lines;
+            };
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const sharedChartOptions = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#F7F7F7',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(247, 247, 247, 0.2)' },
+                        grid: { color: 'rgba(247, 247, 247, 0.2)' },
+                        pointLabels: { color: '#F7F7F7', font: { size: 14 } },
+                        ticks: {
+                            color: '#F7F7F7',
+                            backdropColor: 'rgba(0,0,0,0.5)',
+                            font: {
+                                size: 10
+                            }
+                        }
+                    },
+                    x: {
+                         grid: { color: 'rgba(247, 247, 247, 0.1)' },
+                         ticks: { color: '#F7F7F7' },
+                    },
+                    y: {
+                        grid: { color: 'rgba(247, 247, 247, 0.1)' },
+                        ticks: { color: '#F7F7F7' },
+                        beginAtZero: true
+                    }
+                }
+            };
+            
+            const palette = {
+                red: '#FF6B6B',
+                yellow: '#FFD166',
+                green: '#06D6A0',
+                blue: '#118AB2',
+                darkBlue: '#073B4C'
+            };
+
+            // Chart 1: Subgenre Chart
+            const subgenreCtx = document.getElementById('subgenreChart');
+            if(subgenreCtx) {
+                new Chart(subgenreCtx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Tu Chân Tiên Hiệp', 'Huyễn Huyễn Tiên Hiệp', 'Cổ Điển Tiên Hiệp'],
+                        datasets: [{
+                            label: 'Phân bố thể loại',
+                            data: [55, 30, 15],
+                            backgroundColor: [palette.green, palette.yellow, palette.blue],
+                            borderColor: palette.darkBlue,
+                            borderWidth: 3,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        ...sharedChartOptions,
+                        plugins: {
+                             ...sharedChartOptions.plugins,
+                             title: { display: false }
+                        },
+                        scales: {}
+                    }
+                });
+            }
+            
+            // Chart 2: Elements Chart
+            const elementsCtx = document.getElementById('elementsChart');
+            if(elementsCtx) {
+                new Chart(elementsCtx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Pháp Bảo', 'Đan Dược', 'Kỳ Ngộ', 'Linh Thú', 'Trận Pháp'],
+                        datasets: [{
+                            label: 'Tầm quan trọng trong Cốt truyện',
+                            data: [90, 85, 95, 75, 70],
+                            backgroundColor: [palette.red, palette.green, palette.yellow, palette.blue, '#ef476f'],
+                            borderColor: palette.darkBlue,
+                            borderWidth: 2
+                        }]
+                    },
+                     options: {
+                        ...sharedChartOptions,
+                        indexAxis: 'y',
+                         plugins: {
+                             ...sharedChartOptions.plugins,
+                             legend: { display: false }
+                        },
+                        scales: { y: { ticks: { color: '#F7F7F7' } }, x: { ticks: { color: '#F7F7F7' } } }
+                    }
+                });
+            }
+
+            // Chart 3: Archetype Chart
+            const archetypeCtx = document.getElementById('archetypeChart');
+            if(archetypeCtx) {
+                 new Chart(archetypeCtx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Sức Mạnh', 'Tâm Cơ', 'Ảnh Hưởng', wrapLabel('Tài Nguyên', 16), 'Tiềm Năng'],
+                        datasets: [{
+                            label: 'Nhân Vật Chính (Underdog)',
+                            data: [3, 6, 4, 2, 10],
+                            backgroundColor: 'rgba(6, 214, 160, 0.4)',
+                            borderColor: palette.green,
+                            pointBackgroundColor: palette.green
+                        }, {
+                            label: 'Nhân Vật Phản Diện (Thiếu Gia)',
+                            data: [7, 8, 8, 9, 5],
+                            backgroundColor: 'rgba(255, 107, 107, 0.4)',
+                            borderColor: palette.red,
+                             pointBackgroundColor: palette.red
+                        }]
+                    },
+                    options: sharedChartOptions
+                });
+            }
+            
+            // Chart 4: Trope Chart
+            const tropeCtx = document.getElementById('tropeChart');
+            if(tropeCtx) {
+                 new Chart(tropeCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: [wrapLabel('Làm Mới Trope (Subvert)', 16), wrapLabel('Tận Dụng Trope (Embrace)', 16), wrapLabel('Tránh Cliché (Avoid)', 16)],
+                        datasets: [{
+                            label: 'Chiến lược xử lý',
+                            data: [50, 35, 15],
+                            backgroundColor: [palette.yellow, palette.blue, palette.red],
+                            borderColor: palette.darkBlue,
+                            borderWidth: 3,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        ...sharedChartOptions,
+                        plugins: {
+                             ...sharedChartOptions.plugins,
+                             title: { display: false }
+                        },
+                        scales: {}
+                    }
+                });
+            }
+
+        });
+    </script>
+</body>
+</html>
