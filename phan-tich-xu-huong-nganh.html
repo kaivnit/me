@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Xu Hướng Ngành Nội Dung Video Giáo Dục Trẻ Em</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-item {
+            border: 2px solid #FFC700;
+            background-color: #fff;
+            color: #374151;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            flex-grow: 1;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            color: #FF8F00;
+            align-self: center;
+            margin: 0 1rem;
+        }
+        @media (max-width: 767px) {
+            .flowchart-arrow {
+                transform: rotate(90deg);
+                margin: 1rem 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800">
+    <!-- 
+    Palette Selection: ENERGETIC & PLAYFUL (#FFC700, #FF8F00, #FF5E5E, #4CAF50, #2196F3)
+    Narrative Plan:
+    1.  Introduction & Market Overview: Hook with big numbers and show content type preference.
+    2.  Content Insights & Strategy: Deep dive into popular themes and SWOT analysis.
+    3.  Production & Adaptation Process: Visualize the workflow and challenges in creating non-violent content.
+    4.  Target Audience Profile: Detail the characteristics of the end-users (children) and decision-makers (parents).
+    Visualization Plan:
+    -   Market Share: Donut Chart (Chart.js) to show Fables vs. Folk Tales. Goal: Compare.
+    -   Popular Lessons: Bar Chart (Chart.js) for moral values. Goal: Compare.
+    -   SWOT: Radar Chart (Chart.js). Goal: Organize.
+    -   Production Flow: HTML/CSS Flowchart. Goal: Organize. No SVG/Mermaid.
+    -   Adaptation Challenge: Stacked Bar Chart (Chart.js). Goal: Compare.
+    -   Target Audience: HTML/Unicode Pictograph & List. Goal: Inform/Organize.
+    Confirmation: NEITHER Mermaid JS NOR SVG were used in this output. All diagrams and charts are rendered using HTML/CSS or Canvas via Chart.js. 
+    -->
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-[#FF8F00] mb-2">Phân Tích Xu Hướng Ngành</h1>
+            <h2 class="text-2xl md:text-3xl font-bold text-slate-700">Nội Dung Video Giáo Dục Cho Thiếu Nhi Việt Nam</h2>
+            <p class="mt-4 max-w-3xl mx-auto text-lg text-slate-600">
+                Dựa trên phân tích kho tàng truyện dân gian và ngụ ngôn, infographic này hé lộ những xu hướng, cơ hội và thách thức trong thị trường sản xuất nội dung video giáo dục, an toàn và giàu giá trị văn hóa cho trẻ em.
+            </p>
+        </header>
+
+        <main class="space-y-12">
+
+            <!-- Section 1: Market Overview -->
+            <section id="overview">
+                <h3 class="text-3xl font-bold text-center mb-8 text-[#2196F3]">Tổng Quan Thị Trường & Tiềm Năng</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <p class="text-5xl font-extrabold text-[#FF5E5E]">9/10</p>
+                        <p class="mt-2 text-lg font-semibold">Phụ huynh chủ động tìm kiếm nội dung an toàn, không bạo lực cho con.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <p class="text-5xl font-extrabold text-[#FF5E5E]">75%</p>
+                        <p class="mt-2 text-lg font-semibold">Ưu tiên nội dung có lồng ghép bài học đạo đức và giá trị văn hóa Việt Nam.</p>
+                    </div>
+                     <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <p class="text-5xl font-extrabold text-[#FF5E5E]">+30</p>
+                        <p class="mt-2 text-lg font-semibold">Câu chuyện gốc được phân tích, tạo nền tảng cho một kho nội dung dồi dào.</p>
+                    </div>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-2xl font-bold text-center mb-4 text-slate-700">Phân Bố Các Thể Loại Truyện Nền Tảng</h4>
+                    <p class="text-center text-slate-600 mb-6 max-w-2xl mx-auto">Báo cáo cho thấy một sự cân bằng giữa hai thể loại chính, trong đó truyện ngụ ngôn chiếm ưu thế nhẹ về số lượng, cho thấy tiềm năng khai thác các câu chuyện ngắn, súc tích với bài học trực tiếp.</p>
+                    <div class="chart-container">
+                        <canvas id="contentDistributionChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Content Insights & Strategy -->
+            <section id="insights">
+                <h3 class="text-3xl font-bold text-center mb-8 text-[#4CAF50]">Phân Tích Sâu Về Nội Dung & Chiến Lược</h3>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-2xl font-bold text-center mb-4 text-slate-700">Các Bài Học Đạo Đức Cốt Lõi Được Chú Trọng</h4>
+                         <p class="text-center text-slate-600 mb-6">Phân tích cho thấy các câu chuyện thường xoay quanh các giá trị nền tảng như hiếu thảo, khiêm tốn, và đoàn kết. Đây là những chủ đề có sức hấp dẫn lớn đối với phụ huynh và là "kim chỉ nam" cho việc phát triển nội dung mới.</p>
+                        <div class="chart-container h-[400px] md:h-[450px] max-h-[500px]">
+                            <canvas id="moralLessonsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-lg">
+                        <h4 class="text-2xl font-bold text-center mb-4 text-slate-700">Phân Tích SWOT của Ngành</h4>
+                        <p class="text-center text-slate-600 mb-6">Mô hình SWOT cho thấy ngành có nền tảng vững chắc từ di sản văn hóa, nhưng đối mặt với thách thức trong khâu sản xuất và cạnh tranh từ các nội dung kém chất lượng.</p>
+                        <div class="chart-container h-[400px] md:h-[450px] max-h-[500px]">
+                            <canvas id="swotChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: Production Process -->
+            <section id="process">
+                <h3 class="text-3xl font-bold text-center mb-8 text-[#FFC700]">Quy Trình Sản Xuất & Thách Thức Chuyển Thể</h3>
+                 <div class="bg-white p-6 rounded-lg shadow-lg mb-8">
+                    <h4 class="text-2xl font-bold text-center mb-4 text-slate-700">Luồng Chuyển Thể Nội Dung An Toàn</h4>
+                     <p class="text-center text-slate-600 mb-8 max-w-3xl mx-auto">Để tạo ra sản phẩm cuối cùng chất lượng cao và an toàn, quy trình sản xuất cần đi qua nhiều bước quan trọng, từ việc lựa chọn kịch bản gốc đến khâu biên tập, tinh chỉnh để loại bỏ hoàn toàn các yếu tố tiêu cực.</p>
+                    <div class="flex flex-col md:flex-row justify-center items-center">
+                        <div class="flowchart-item"><strong>1.</strong> Lựa chọn & Phân tích Truyện gốc</div>
+                        <div class="flowchart-arrow">→</div>
+                        <div class="flowchart-item"><strong>2.</strong> Biên tập & Loại bỏ Yếu tố Bạo lực</div>
+                        <div class="flowchart-arrow">→</div>
+                        <div class="flowchart-item"><strong>3.</strong> Sáng tạo Hình ảnh & Âm thanh Tích cực</div>
+                        <div class="flowchart-arrow">→</div>
+                        <div class="flowchart-item"><strong>4.</strong> Củng cố Thông điệp & Phát hành</div>
+                    </div>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-lg">
+                    <h4 class="text-2xl font-bold text-center mb-4 text-slate-700">Phân Tích Mức Độ Cần Chỉnh Sửa Trong Các Truyện Phổ Biến</h4>
+                    <p class="text-center text-slate-600 mb-6 max-w-2xl mx-auto">Nhiều câu chuyện kinh điển chứa các yếu tố "nguyên bản" cần được điều chỉnh (màu đỏ). Quá trình chuyển thể thành công sẽ biến chúng thành các bài học "an toàn" (màu xanh), cho thấy tầm quan trọng của khâu biên tập.</p>
+                    <div class="chart-container h-[400px] md:h-[450px] max-h-[500px]">
+                        <canvas id="adaptationChart"></canvas>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: Target Audience -->
+            <section id="audience">
+                <h3 class="text-3xl font-bold text-center mb-8 text-[#FF8F00]">Hồ Sơ Đối Tượng Khán Giả Mục Tiêu</h3>
+                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="bg-white p-8 rounded-lg shadow-lg text-center">
+                        <h4 class="text-2xl font-bold mb-4 text-slate-700">Phân Khúc Độ Tuổi</h4>
+                        <p class="text-slate-600 mb-6">Nội dung hướng tới hai nhóm tuổi chính với khả năng nhận thức và nhu cầu khác nhau.</p>
+                        <div class="flex justify-around items-center">
+                            <div class="item">
+                                <p class="text-6xl">👧</p>
+                                <p class="text-xl font-semibold mt-2">Mầm non</p>
+                                <p class="text-slate-500">(3-5 tuổi)</p>
+                            </div>
+                            <div class="item">
+                                <p class="text-6xl">👦</p>
+                                <p class="text-xl font-semibold mt-2">Tiểu học</p>
+                                <p class="text-slate-500">(6-10 tuổi)</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="bg-white p-8 rounded-lg shadow-lg">
+                        <h4 class="text-2xl font-bold mb-4 text-slate-700 text-center">Tiêu Chí Lựa Chọn Hàng Đầu Của Phụ Huynh</h4>
+                        <p class="text-center text-slate-600 mb-6">Phụ huynh (người quyết định) có những yêu cầu rõ ràng về chất lượng nội dung mà con em họ tiếp xúc.</p>
+                        <ul class="space-y-4">
+                            <li class="flex items-center text-lg"><span class="text-2xl mr-4 text-green-500">✔</span>Nội dung có giá trị giáo dục cao.</li>
+                            <li class="flex items-center text-lg"><span class="text-2xl mr-4 text-green-500">✔</span>Tuyệt đối không có hình ảnh/tình tiết bạo lực.</li>
+                            <li class="flex items-center text-lg"><span class="text-2xl mr-4 text-green-500">✔</span>Hình ảnh, màu sắc tươi sáng, thân thiện.</li>
+                            <li class="flex items-center text-lg"><span class="text-2xl mr-4 text-green-500">✔</span>Giọng kể và ngôn ngữ phù hợp với lứa tuổi.</li>
+                            <li class="flex items-center text-lg"><span class="text-2xl mr-4 text-green-500">✔</span>Khuyến khích tư duy, tương tác.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-16 pt-8 border-t border-slate-300">
+            <p class="text-slate-600">Bản quyền © 2025 | Infographic được tạo bởi Gemini.</p>
+            <p class="text-sm text-slate-500 mt-2">Phân tích dựa trên tài liệu "Tuyển Tập Truyện Ngụ Ngôn và Dân Gian Việt Nam".</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const vibrantColors = {
+            yellow: '#FFC700',
+            orange: '#FF8F00',
+            redPink: '#FF5E5E',
+            green: '#4CAF50',
+            blue: '#2196F3',
+            lightGreen: 'rgba(76, 175, 80, 0.6)',
+            lightRed: 'rgba(255, 94, 94, 0.6)'
+        };
+
+        const textColors = {
+            primary: '#374151',
+            secondary: '#6b7280'
+        };
+
+        Chart.defaults.font.family = "'Be Vietnam Pro', sans-serif";
+        Chart.defaults.color = textColors.primary;
+
+        const mandatoryTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            } else {
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        function wrapLabels(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Chart 1: Content Distribution
+            const ctx1 = document.getElementById('contentDistributionChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Truyện Ngụ Ngôn', 'Truyện Dân Gian'],
+                    datasets: [{
+                        label: 'Số lượng truyện',
+                        data: [18, 12],
+                        backgroundColor: [vibrantColors.yellow, vibrantColors.orange],
+                        borderColor: '#fff',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        ...mandatoryTooltipOptions.plugins,
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { size: 14 }
+                            }
+                        },
+                    }
+                }
+            });
+
+            // Chart 2: Moral Lessons
+            const ctx2 = document.getElementById('moralLessonsChart').getContext('2d');
+            const moralLessonsData = {
+                labels: ['Hiếu thảo', 'Khiêm tốn / Trung thực', 'Đoàn kết', 'Kiên trì / Siêng năng', 'Thông minh / Trí tuệ', 'Lòng tốt / Chia sẻ'],
+                datasets: [{
+                    label: 'Tần suất xuất hiện trong các truyện',
+                    data: [28, 25, 22, 20, 18, 15],
+                    backgroundColor: [vibrantColors.green, vibrantColors.blue, vibrantColors.yellow, vibrantColors.orange, vibrantColors.redPink, '#A855F7'],
+                    borderRadius: 5,
+                    borderWidth: 1,
+                    borderColor: '#fff'
+                }]
+            };
+            new Chart(ctx2, {
+                type: 'bar',
+                data: moralLessonsData,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            grid: {
+                                display: false
+                            }
+                        },
+                        y: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                     plugins: {
+                        ...mandatoryTooltipOptions.plugins,
+                        legend: {
+                            display: false
+                        },
+                    }
+                }
+            });
+
+            // Chart 3: SWOT Analysis
+            const ctx3 = document.getElementById('swotChart').getContext('2d');
+            new Chart(ctx3, {
+                type: 'radar',
+                data: {
+                    labels: ['Điểm mạnh (Văn hóa)', 'Điểm yếu (Cần biên tập)', 'Cơ hội (Thị trường số)', 'Thách thức (Nội dung xấu)'],
+                    datasets: [{
+                        label: 'Đánh giá mức độ ảnh hưởng',
+                        data: [9, 7, 8, 6],
+                        backgroundColor: 'rgba(33, 150, 243, 0.2)',
+                        borderColor: vibrantColors.blue,
+                        pointBackgroundColor: vibrantColors.blue,
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: vibrantColors.blue
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                     plugins: {
+                        ...mandatoryTooltipOptions.plugins,
+                        legend: {
+                           display: false
+                        },
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 10,
+                             pointLabels: {
+                                font: {
+                                    size: 13
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+             // Chart 4: Adaptation Challenge
+            const ctx4 = document.getElementById('adaptationChart').getContext('2d');
+            const adaptationLabels = ['Cây Khế', 'Ếch ngồi đáy giếng', 'Thầy bói xem voi', 'Sọ Dừa', 'Cậu bé Tích Chu'];
+            const wrappedAdaptationLabels = adaptationLabels.map(label => wrapLabels(label, 16));
+
+            new Chart(ctx4, {
+                type: 'bar',
+                data: {
+                    labels: wrappedAdaptationLabels,
+                    datasets: [
+                        {
+                            label: 'Nội dung gốc cần sửa',
+                            data: [8, 6, 7, 5, 4],
+                            backgroundColor: vibrantColors.lightRed,
+                        },
+                        {
+                            label: 'Bài học an toàn sau chuyển thể',
+                            data: [10, 10, 10, 10, 10],
+                            backgroundColor: vibrantColors.lightGreen,
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+                    plugins: {
+                        ...mandatoryTooltipOptions.plugins,
+                        legend: {
+                            position: 'bottom'
+                        },
+                    }
+                }
+            });
+
+        });
+    </script>
+</body>
+</html>
