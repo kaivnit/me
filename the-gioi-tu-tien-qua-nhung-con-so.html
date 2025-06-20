@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Phân Tích Thị Trường Truyện Tu Tiên</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .flowchart-item {
+            min-height: 120px;
+        }
+        .flowchart-arrow {
+            content: '→';
+            font-size: 2.5rem;
+            line-height: 1;
+            color: #415A77;
+        }
+        @media (max-width: 767px) {
+            .flowchart-arrow {
+                content: '↓';
+                margin: 0.5rem 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#E0E1DD]">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-[#0D1B2A] mb-4">Thế Giới Tu Tiên Qua Những Con Số</h1>
+            <p class="text-lg md:text-xl text-[#415A77] max-w-3xl mx-auto">
+                Một bản phân tích chuyên sâu về các xu hướng, mô-típ nhân vật và yếu tố tạo nên sức hút của thị trường truyện tu tiên, dựa trên dữ liệu từ các tác phẩm kinh điển.
+            </p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <section class="lg:col-span-2 bg-[#1B263B] text-white rounded-2xl shadow-2xl p-6 md:p-8 flex flex-col md:flex-row items-center gap-8">
+                <div class="w-full md:w-1/2">
+                    <h2 class="text-3xl font-bold mb-4 text-[#E0E1DD]">Thị Phần Các Mô-típ Nhân Vật</h2>
+                    <p class="text-[#778DA9] mb-4">
+                        Các mô-típ nhân vật chính là xương sống của truyện tu tiên, quyết định phần lớn hướng đi của cốt truyện và sự đồng cảm của độc giả. Phân tích cho thấy mô-típ "Phàm Nhân/Phế Vật Vươn Lên" chiếm thị phần lớn nhất, phản ánh khát vọng vượt khó của độc giả. Theo sau là các mô-típ cũng rất được ưa chuộng như "Thiên Tài Gặp Biến Cố" và "Nghịch Thiên Cải Mệnh".
+                    </p>
+                     <div class="flex flex-wrap gap-4 text-sm">
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#00A6FB]"></div><span>Phàm Nhân/Phế Vật Vươn Lên</span></div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#0582CA]"></div><span>Thiên Tài Gặp Biến Cố</span></div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#006494]"></div><span>Nghịch Thiên Cải Mệnh</span></div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#003554]"></div><span>Hài Hước/Phản Anh Hùng</span></div>
+                        <div class="flex items-center gap-2"><div class="w-3 h-3 rounded-full bg-[#051923]"></div><span>Các Mô-típ Khác</span></div>
+                    </div>
+                </div>
+                <div class="w-full md:w-1/2 h-64 md:h-80">
+                    <div class="chart-container h-full max-h-[320px]">
+                        <canvas id="popularityDonutChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#0D1B2A] mb-4 text-center">Bảng Xếp Hạng Sức Mạnh Tối Thượng</h2>
+                <p class="text-[#415A77] mb-6 text-center">
+                    Dựa trên cảnh giới cuối cùng và tầm ảnh hưởng trong vũ trụ của mình, đây là những nhân vật đã đạt đến đỉnh cao sức mạnh. Bảng xếp hạng này phản ánh thành tựu cuối cùng của họ sau một hành trình tu luyện đầy gian khổ.
+                </p>
+                <div class="chart-container h-80 md:h-96 max-h-[400px]">
+                    <canvas id="powerBarChart"></canvas>
+                </div>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#0D1B2A] mb-4 text-center">Phân Tích Động Lực Tu Luyện</h2>
+                <p class="text-[#415A77] mb-6 text-center">
+                    Mỗi nhân vật được thúc đẩy bởi những động lực khác nhau. Biểu đồ radar so sánh các động lực cốt lõi của ba nhân vật tiêu biểu, cho thấy sự đa dạng trong mục tiêu và hành trình của họ, từ báo thù, bảo vệ người thân cho đến khát vọng trường sinh.
+                </p>
+                <div class="chart-container h-80 md:h-96 max-h-[400px]">
+                    <canvas id="motivationRadarChart"></canvas>
+                </div>
+            </section>
+
+            <section class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#0D1B2A] mb-4 text-center">Lộ Trình Trưởng Thành Của Một Cường Giả</h2>
+                <p class="text-[#415A77] mb-8 text-center max-w-3xl mx-auto">
+                    Đây là mô hình phát triển chung của hầu hết các nhân vật chính trong truyện tu tiên. Bắt đầu từ một xuất phát điểm thấp, họ phải trải qua một quá trình đầy gian truân, kết hợp giữa nỗ lực tự thân và những cơ duyên trời cho để có thể đạt đến đỉnh cao.
+                </p>
+                <div class="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 w-full">
+                    <div class="flowchart-item flex-1 bg-gray-100 rounded-lg p-4 text-center flex items-center justify-center shadow">
+                        <div>
+                            <div class="text-5xl mb-2">🌱</div>
+                            <h3 class="font-bold text-[#0D1B2A]">Xuất Phát Điểm Thấp</h3>
+                            <p class="text-sm text-gray-600">Phàm nhân, phế vật hoặc gặp bi kịch lúc nhỏ.</p>
+                        </div>
+                    </div>
+                    <div class="flowchart-arrow"></div>
+                    <div class="flowchart-item flex-1 bg-gray-100 rounded-lg p-4 text-center flex items-center justify-center shadow">
+                        <div>
+                            <div class="text-5xl mb-2">✨</div>
+                            <h3 class="font-bold text-[#0D1B2A]">Gặp Kỳ Ngộ</h3>
+                             <p class="text-sm text-gray-600">Nhặt được pháp bảo, gặp cao nhân hoặc thức tỉnh huyết mạch.</p>
+                        </div>
+                    </div>
+                    <div class="flowchart-arrow"></div>
+                    <div class="flowchart-item flex-1 bg-gray-100 rounded-lg p-4 text-center flex items-center justify-center shadow">
+                        <div>
+                             <div class="text-5xl mb-2">⚔️</div>
+                            <h3 class="font-bold text-[#0D1B2A]">Nỗ Lực & Chiến Đấu</h3>
+                             <p class="text-sm text-gray-600">Khổ luyện không ngừng, tranh đoạt tài nguyên, vượt qua kẻ thù.</p>
+                        </div>
+                    </div>
+                    <div class="flowchart-arrow"></div>
+                    <div class="flowchart-item flex-1 bg-gray-100 rounded-lg p-4 text-center flex items-center justify-center shadow">
+                        <div>
+                            <div class="text-5xl mb-2">🏆</div>
+                            <h3 class="font-bold text-[#0D1B2A]">Đạt Tới Đỉnh Cao</h3>
+                             <p class="text-sm text-gray-600">Trở thành Thiên Đế, Đạo Tổ, gánh vác sứ mệnh lớn lao.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#0D1B2A] mb-4 text-center">Tương Quan Giữa Nỗ Lực Tự Thân và "Bàn Tay Vàng"</h2>
+                 <p class="text-[#415A77] mb-6 text-center max-w-3xl mx-auto">
+                    Thành công trong tu tiên là sự kết hợp giữa nỗ lực không ngừng và những cơ duyên đặc biệt (thường gọi là "Bàn Tay Vàng"). Biểu đồ phân tán cho thấy vị trí của các nhân vật chính trên hai trục này. Hầu hết các nhân vật thành công đều nằm ở góc trên bên phải, chứng tỏ sự cân bằng giữa hai yếu tố là chìa khóa thành công.
+                </p>
+                <div class="chart-container h-96 max-h-[450px]">
+                    <canvas id="effortFortuneScatterPlot"></canvas>
+                </div>
+            </section>
+            
+            <section class="bg-[#1B263B] text-white rounded-2xl shadow-2xl p-6 md:p-8">
+                 <h2 class="text-2xl md:text-3xl font-bold text-[#E0E1DD] mb-4 text-center">Phân Tích SWOT: Mô-típ "Phàm Nhân Lưu"</h2>
+                <p class="text-[#778DA9] mb-6 text-center">Mô-típ nhân vật có xuất thân bình thường như Hàn Lập luôn có sức hút lớn. Dưới đây là phân tích các điểm mạnh, điểm yếu, cơ hội và thách thức của mô-típ này.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                    <div class="bg-[#415A77]/50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">💪 Điểm Mạnh (Strengths)</h3>
+                        <p class="text-sm text-[#E0E1DD]">Gần gũi, dễ tạo sự đồng cảm. Đề cao giá trị của sự nỗ lực, kiên trì. Hành trình phát triển có logic, đáng tin cậy.</p>
+                    </div>
+                    <div class="bg-[#415A77]/50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">🐌 Điểm Yếu (Weaknesses)</h3>
+                        <p class="text-sm text-[#E0E1DD]">Nhịp truyện giai đoạn đầu thường chậm và có thể gây nhàm chán. Nhân vật chính thiếu sự bá đạo, nổi bật ban đầu.</p>
+                    </div>
+                    <div class="bg-[#415A77]/50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">✨ Cơ Hội (Opportunities)</h3>
+                        <p class="text-sm text-[#E0E1DD]">Không gian phát triển nhân vật rộng lớn. Dễ dàng cài cắm các tình tiết bất ngờ, những cơ duyên làm thay đổi cục diện.</p>
+                    </div>
+                     <div class="bg-[#415A77]/50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg mb-2">⚠️ Thách Thức (Threats)</h3>
+                        <p class="text-sm text-[#E0E1DD]">Đòi hỏi "Bàn Tay Vàng" phải được xây dựng hợp lý, tránh cảm giác quá phụ thuộc vào may mắn, làm giảm giá trị nỗ lực.</p>
+                    </div>
+                </div>
+            </section>
+
+             <section class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl md:text-3xl font-bold text-[#0D1B2A] mb-4 text-center">Dự Báo Xu Hướng Thị Trường</h2>
+                 <p class="text-[#415A77] mb-6 text-center">
+                    Thị trường truyện tu tiên luôn biến đổi. Dựa trên các xu hướng hiện tại, mức độ quan tâm của độc giả dành cho các mô-típ hài hước, phản anh hùng được dự báo sẽ tăng trưởng, trong khi các mô-típ truyền thống vẫn giữ được vị thế ổn định.
+                </p>
+                <div class="chart-container h-80 max-h-[350px]">
+                    <canvas id="trendsLineChart"></canvas>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center mt-12 pt-8 border-t border-[#778DA9]/50">
+            <p class="text-sm text-[#415A77]">Bản quyền © 2025 | Infographic được tạo bởi Gemini. Dữ liệu được tổng hợp và phân tích từ Báo cáo "Top 10 Truyện Tu Tiên và Phân Tích Hình Tượng Nhân Vật Chính".</p>
+        </footer>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            const CHART_COLORS = {
+                blue1: '#00A6FB',
+                blue2: '#0582CA',
+                blue3: '#006494',
+                blue4: '#003554',
+                blue5: '#051923',
+            };
+            const FONT_COLOR = '#0D1B2A';
+            const FONT_COLOR_LIGHT = '#E0E1DD';
+            
+            function wrapLabel(label, maxWidth) {
+                if (label.length <= maxWidth) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                for (const word of words) {
+                    if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                }
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                }
+                return lines;
+            }
+
+            const defaultTooltipConfig = {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        if (Array.isArray(label)) {
+                            return label.join(' ');
+                        }
+                        return label;
+                    }
+                }
+            };
+            
+            function createPopularityDonutChart() {
+                const ctx = document.getElementById('popularityDonutChart')?.getContext('2d');
+                if (!ctx) return;
+
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['Phàm Nhân/Phế Vật Vươn Lên', 'Thiên Tài Gặp Biến Cố', 'Nghịch Thiên Cải Mệnh', 'Hài Hước/Phản Anh Hùng', 'Các Mô-típ Khác'],
+                        datasets: [{
+                            label: 'Thị phần',
+                            data: [35, 25, 20, 15, 5],
+                            backgroundColor: [CHART_COLORS.blue1, CHART_COLORS.blue2, CHART_COLORS.blue3, CHART_COLORS.blue4, CHART_COLORS.blue5],
+                            borderColor: '#1B263B',
+                            borderWidth: 4,
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false,
+                            },
+                            tooltip: defaultTooltipConfig
+                        },
+                        cutout: '70%',
+                    }
+                });
+            }
+
+            function createPowerBarChart() {
+                const ctx = document.getElementById('powerBarChart')?.getContext('2d');
+                if (!ctx) return;
+                
+                const labels = [
+                    'Hoang Thiên Đế (Thạch Hạo)', 
+                    'Đạo Tổ (Hàn Lập)', 
+                    'Viêm Đế (Tiêu Viêm)', 
+                    'Thiên Đế (Diệp Phàm)', 
+                    'Ma (Vương Lâm)',
+                    'Quỷ Lệ (Trương Tiểu Phàm)'
+                ].map(label => wrapLabel(label, 16));
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Chỉ Số Sức Mạnh (trên 100)',
+                            data: [100, 98, 95, 94, 92, 88],
+                            backgroundColor: [CHART_COLORS.blue1, CHART_COLORS.blue2, CHART_COLORS.blue3, CHART_COLORS.blue4, CHART_COLORS.blue5, '#778DA9'],
+                            borderRadius: 6,
+                            barPercentage: 0.7,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                             tooltip: defaultTooltipConfig
+                        },
+                        scales: {
+                            x: {
+                                beginAtZero: true,
+                                grid: {
+                                    color: '#E0E1DD'
+                                },
+                                ticks: {
+                                    color: FONT_COLOR
+                                }
+                            },
+                            y: {
+                                grid: {
+                                    display: false
+                                },
+                                ticks: {
+                                    color: FONT_COLOR,
+                                    font: {
+                                        size: 11
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createMotivationRadarChart() {
+                const ctx = document.getElementById('motivationRadarChart')?.getContext('2d');
+                if (!ctx) return;
+
+                new Chart(ctx, {
+                    type: 'radar',
+                    data: {
+                        labels: ['Trường Sinh', 'Báo Thù', 'Bảo Vệ Người Thân', 'Tình Yêu', 'Trách Nhiệm'],
+                        datasets: [
+                        {
+                            label: 'Tiêu Viêm',
+                            data: [7, 10, 9, 8, 8],
+                            backgroundColor: 'rgba(0, 166, 251, 0.2)',
+                            borderColor: CHART_COLORS.blue1,
+                            pointBackgroundColor: CHART_COLORS.blue1,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: CHART_COLORS.blue1
+                        },
+                        {
+                            label: 'Hàn Lập',
+                            data: [10, 5, 7, 6, 4],
+                            backgroundColor: 'rgba(0, 53, 84, 0.2)',
+                            borderColor: CHART_COLORS.blue4,
+                            pointBackgroundColor: CHART_COLORS.blue4,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: CHART_COLORS.blue4
+                        },
+                        {
+                            label: 'Vương Lâm',
+                            data: [8, 9, 8, 10, 6],
+                             backgroundColor: 'rgba(5, 130, 202, 0.2)',
+                            borderColor: CHART_COLORS.blue2,
+                            pointBackgroundColor: CHART_COLORS.blue2,
+                            pointBorderColor: '#fff',
+                            pointHoverBackgroundColor: '#fff',
+                            pointHoverBorderColor: CHART_COLORS.blue2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                             tooltip: defaultTooltipConfig,
+                             legend: {
+                                 position: 'top',
+                                 labels: {
+                                     color: FONT_COLOR
+                                 }
+                             }
+                        },
+                        scales: {
+                            r: {
+                                angleLines: {
+                                    color: '#ccc'
+                                },
+                                grid: {
+                                    color: '#ddd'
+                                },
+                                pointLabels: {
+                                    color: FONT_COLOR,
+                                    font: {
+                                        size: 12
+                                    }
+                                },
+                                ticks: {
+                                    backdropColor: 'transparent',
+                                    color: FONT_COLOR,
+                                    stepSize: 2
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createEffortFortuneScatterPlot() {
+                const ctx = document.getElementById('effortFortuneScatterPlot')?.getContext('2d');
+                if (!ctx) return;
+
+                new Chart(ctx, {
+                    type: 'scatter',
+                    data: {
+                        datasets: [{
+                            label: 'Nhân Vật Chính',
+                            data: [
+                                { x: 9.5, y: 9.0, label: 'Hàn Lập' },
+                                { x: 9.0, y: 8.5, label: 'Tiêu Viêm' },
+                                { x: 10, y: 8.0, label: 'Vương Lâm' },
+                                { x: 8.0, y: 7.0, label: 'Trương Tiểu Phàm' },
+                                { x: 7.5, y: 9.5, label: 'Thần Nam' },
+                                { x: 8.5, y: 8.0, label: 'Lâm Lôi' },
+                                { x: 6.0, y: 7.5, label: 'Bạch Tiểu Thuần' },
+                                { x: 9.0, y: 10, label: 'Thạch Hạo' },
+                                { x: 8.5, y: 8.5, label: 'Diệp Phàm' },
+                                { x: 7.0, y: 9.0, label: 'Mạnh Hạo' },
+                            ],
+                            backgroundColor: CHART_COLORS.blue1,
+                            pointRadius: 8,
+                            pointHoverRadius: 12
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const point = context.raw;
+                                        return `${point.label}: (Nỗ lực: ${point.x}, Cơ duyên: ${point.y})`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                title: {
+                                    display: true,
+                                    text: 'Mức Độ Nỗ Lực Tự Thân',
+                                    color: FONT_COLOR,
+                                    font: { size: 14, weight: 'bold' }
+                                },
+                                grid: { color: '#E0E1DD' },
+                                ticks: { color: FONT_COLOR }
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Tầm Quan Trọng "Bàn Tay Vàng"',
+                                    color: FONT_COLOR,
+                                    font: { size: 14, weight: 'bold' }
+                                },
+                                grid: { color: '#E0E1DD' },
+                                ticks: { color: FONT_COLOR }
+                            }
+                        }
+                    }
+                });
+            }
+
+            function createTrendsLineChart() {
+                const ctx = document.getElementById('trendsLineChart')?.getContext('2d');
+                if (!ctx) return;
+
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: ['2023', '2024', '2025', '2026', '2027'],
+                        datasets: [
+                        {
+                            label: 'Phàm Nhân/Truyền Thống',
+                            data: [70, 72, 75, 74, 76],
+                            borderColor: CHART_COLORS.blue3,
+                            backgroundColor: 'transparent',
+                            tension: 0.3,
+                            fill: false,
+                        },
+                        {
+                            label: 'Hài Hước/Phản Anh Hùng',
+                            data: [45, 50, 58, 65, 72],
+                            borderColor: CHART_COLORS.blue1,
+                            backgroundColor: 'transparent',
+                            tension: 0.3,
+                            fill: false,
+                        },
+                         {
+                            label: 'Bi Kịch/Nghịch Thiên',
+                            data: [65, 63, 60, 61, 62],
+                            borderColor: CHART_COLORS.blue5,
+                            backgroundColor: 'transparent',
+                            tension: 0.3,
+                            fill: false,
+                        }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: {
+                                    color: FONT_COLOR,
+                                    usePointStyle: true,
+                                }
+                            },
+                            tooltip: defaultTooltipConfig
+                        },
+                        scales: {
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: 'Chỉ Số Quan Tâm (Trên 100)',
+                                    color: FONT_COLOR
+                                },
+                                grid: { color: '#eee' },
+                                ticks: { color: FONT_COLOR }
+                            },
+                            x: {
+                                grid: { display: false },
+                                ticks: { color: FONT_COLOR }
+                            }
+                        }
+                    }
+                });
+            }
+
+            createPopularityDonutChart();
+            createPowerBarChart();
+            createMotivationRadarChart();
+            createEffortFortuneScatterPlot();
+            createTrendsLineChart();
+
+        });
+    </script>
+</body>
+</html>
