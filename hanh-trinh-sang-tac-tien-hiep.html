@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Hành Trình Sáng Tác Truyện Tiên Hiệp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 
+    Narrative Plan:
+    1.  Header: Introduce the journey of writing "Tiên Hiệp".
+    2.  Section 1: Define "Tiên Hiệp" and compare it with related genres (Võ Hiệp, Huyền Huyễn) using a table.
+    3.  Section 2: Visualize world-building elements. Use an HTML/CSS flowchart for cultivation realms, cards for cultivation schools, and a pyramid diagram for treasure hierarchy.
+    4.  Section 3: Explore character creation. Use Chart.js charts to show the popularity of character archetypes and motivations.
+    5.  Section 4: Detail plot structures. Use an HTML/CSS process flow to illustrate classic plot devices.
+    6.  Section 5: Guide on publishing. Use a Chart.js chart to visualize fictional reader traffic on different platforms.
+    7.  Footer: Concluding remarks.
+
+    Visualization Choices (NO SVG, NO MERMAID JS CONFIRMED):
+    -   Genre Comparison: Goal: Organize. Method: HTML Table with Tailwind. Justification: Clear, structured comparison.
+    -   Cultivation Realms: Goal: Organize/Process. Method: HTML/CSS Vertical Flowchart. Justification: Visually represents progression without complex graphics.
+    -   Cultivation Schools: Goal: Compare/Inform. Method: HTML/CSS Grid of Cards with Unicode Icons. Justification: Easy to scan and visually appealing.
+    -   Treasure Hierarchy: Goal: Organize. Method: HTML/CSS Pyramid Diagram. Justification: Clearly shows hierarchical levels.
+    -   Archetype Popularity: Goal: Compare. Method: Chart.js Bar Chart (Canvas). Justification: Effectively compares fictional popularity data.
+    -   Character Motivation: Goal: Compare/Inform. Method: Chart.js Doughnut Chart (Canvas). Justification: Shows parts of a whole in an engaging way.
+    -   Plot Device Flow: Goal: Organize/Process. Method: HTML/CSS Process Flow. Justification: Shows connection and sequence of events.
+    -   Platform Traffic: Goal: Compare. Method: Chart.js Bar Chart (Canvas). Justification: Good for comparing fictional metrics across platforms.
+
+    Color Palette Chosen: "Cosmic Dao" - A vibrant, mystical theme with blues, purples, and deep space black. (#0B0033, #160057, #6200EE, #BB86FC, #FFFFFF)
+    -->
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #0B0033;
+            color: #E0E0E0;
+        }
+        .card {
+            background-color: #160057;
+            border: 1px solid #6200EE;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .text-glow {
+            text-shadow: 0 0 8px #BB86FC, 0 0 10px #BB86FC;
+        }
+        .flowchart-node {
+            border: 2px solid #6200EE;
+            background-color: #160057;
+            box-shadow: 0 4px 15px rgba(187, 134, 252, 0.2);
+        }
+        .flowchart-connector {
+            width: 2px;
+            background-color: #6200EE;
+            margin: 0 auto;
+            height: 3rem;
+        }
+        .pyramid-level {
+            margin: 0 auto;
+            background: linear-gradient(45deg, #6200EE, #3700B3);
+            clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 0.5rem 1rem;
+            margin-bottom: -1px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-bold text-white text-glow mb-4">Hành Trình Sáng Tác Tiên Hiệp</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-300">Một bản đồ trực quan, dẫn lối các đạo hữu từ bước khởi đầu đến khi kiến tạo nên một thế giới tu chân hoàn chỉnh.</p>
+        </header>
+
+        <main>
+            <!-- Section 1: Understanding the Genre -->
+            <section id="section-1" class="my-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-white">Phần I: Luận Bàn Đạo Lớn</h2>
+                <p class="text-xl text-center text-gray-300 mb-12">Hiểu Rõ Nền Tảng Trước Khi Khai Bút</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="card rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-bold text-glow mb-4">Tiên Hiệp Là Gì?</h3>
+                        <p class="text-gray-300">Tiên hiệp là thể loại kỳ ảo phương Đông, nơi nhân vật không chỉ luyện võ mà còn hấp thụ linh khí đất trời, bước trên con đường tu luyện để đạt tới cảnh giới trường sinh bất tử. Hành trình này đầy rẫy kỳ ngộ, hiểm nguy, và những trận pháp đấu kinh thiên động địa giữa các thế lực Tiên - Ma - Yêu - Quỷ.</p>
+                        <div class="mt-6">
+                            <p class="font-semibold text-white">Mục tiêu tối thượng:</p>
+                            <span class="inline-block bg-purple-600/50 text-white rounded-full px-4 py-1 text-sm font-semibold mr-2 mt-2">✨ Trường Sinh Bất Tử</span>
+                            <span class="inline-block bg-purple-600/50 text-white rounded-full px-4 py-1 text-sm font-semibold mr-2 mt-2">⚡ Sức Mạnh Vô Song</span>
+                            <span class="inline-block bg-purple-600/50 text-white rounded-full px-4 py-1 text-sm font-semibold mt-2">🧘 Đạt Tới Đại Đạo</span>
+                        </div>
+                    </div>
+                    <div class="card rounded-xl p-6 shadow-lg">
+                         <h3 class="text-2xl font-bold text-glow mb-4">Phân Biệt Các Thể Loại</h3>
+                         <p class="text-gray-400 mb-4">Ranh giới giữa các thể loại đôi khi khá mờ nhạt, nhưng việc nắm rõ đặc trưng cốt lõi sẽ giúp định hình tác phẩm của bạn.</p>
+                         <div class="overflow-x-auto">
+                            <table class="w-full text-sm text-left">
+                                <thead class="text-xs text-gray-200 uppercase bg-gray-700/30">
+                                    <tr>
+                                        <th scope="col" class="px-4 py-3">Đặc Điểm</th>
+                                        <th scope="col" class="px-4 py-3">Võ Hiệp</th>
+                                        <th scope="col" class="px-4 py-3">Tiên Hiệp</th>
+                                        <th scope="col" class="px-4 py-3">Huyền Huyễn</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="px-4 py-3 font-medium">Sức Mạnh</td>
+                                        <td class="px-4 py-3">Nội lực</td>
+                                        <td class="px-4 py-3">Linh khí</td>
+                                        <td class="px-4 py-3">Đa dạng</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="px-4 py-3 font-medium">Mục Tiêu</td>
+                                        <td class="px-4 py-3">Tranh bá</td>
+                                        <td class="px-4 py-3">Trường sinh</td>
+                                        <td class="px-4 py-3">Khám phá</td>
+                                    </tr>
+                                    <tr class="border-b border-gray-700">
+                                        <td class="px-4 py-3 font-medium">Siêu Nhiên</td>
+                                        <td class="px-4 py-3">Thấp</td>
+                                        <td class="px-4 py-3">Cao</td>
+                                        <td class="px-4 py-3">Rất cao</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: World Building -->
+            <section id="section-2" class="my-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-white">Phần II: Dựng Xây Thế Giới</h2>
+                <p class="text-xl text-center text-gray-300 mb-12">Càn Khôn Nằm Trong Tay Bạn</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="card rounded-xl p-6 shadow-lg">
+                        <h3 class="text-2xl font-bold text-glow text-center mb-6">Con Đường Tu Luyện</h3>
+                        <p class="text-center text-gray-400 mb-8">Hệ thống cảnh giới là xương sống của truyện, thể hiện sự phát triển sức mạnh của nhân vật. Mỗi bước đột phá không chỉ tăng tiến tu vi mà còn mang lại những năng lực và nhận thức hoàn toàn mới.</p>
+                        <div class="flex flex-col items-center">
+                            <div class="flowchart-node w-4/5 md:w-3/5 p-4 rounded-lg text-center">
+                                <p class="font-bold text-lg text-white">Luyện Khí</p>
+                                <p class="text-sm text-gray-300">Hấp thụ linh khí, tẩy luyện cơ thể.</p>
+                            </div>
+                            <div class="flowchart-connector"></div>
+                            <div class="flowchart-node w-4/5 md:w-3/5 p-4 rounded-lg text-center">
+                                <p class="font-bold text-lg text-white">Trúc Cơ</p>
+                                <p class="text-sm text-gray-300">Xây dựng đạo cơ, sử dụng pháp khí.</p>
+                            </div>
+                            <div class="flowchart-connector"></div>
+                            <div class="flowchart-node w-4/5 md:w-3/5 p-4 rounded-lg text-center">
+                                <p class="font-bold text-lg text-white">Kim Đan</p>
+                                <p class="text-sm text-gray-300">Ngưng tụ linh lực, tuổi thọ tăng vọt.</p>
+                            </div>
+                            <div class="flowchart-connector"></div>
+                            <div class="flowchart-node w-4/5 md:w-3/5 p-4 rounded-lg text-center">
+                                <p class="font-bold text-lg text-white">Nguyên Anh</p>
+                                <p class="text-sm text-gray-300">Phá đan thành anh, linh hồn thứ hai.</p>
+                            </div>
+                             <div class="flowchart-connector"></div>
+                            <div class="text-center text-2xl font-bold text-gray-500">...</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-8">
+                        <div class="card rounded-xl p-6 shadow-lg">
+                            <h3 class="text-2xl font-bold text-glow mb-4">Trăm Hoa Đua Nở: Các Trường Phái</h3>
+                             <p class="text-gray-400 mb-6">Mỗi trường phái có một triết lý và phương pháp tu luyện riêng, tạo nên sự đa dạng cho thế giới.</p>
+                            <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 text-center">
+                                <div class="p-4 bg-purple-900/50 rounded-lg"><span class="text-3xl">⚔️</span><p class="mt-2 font-semibold">Kiếm Tu</p></div>
+                                <div class="p-4 bg-purple-900/50 rounded-lg"><span class="text-3xl">💊</span><p class="mt-2 font-semibold">Đan Sư</p></div>
+                                <div class="p-4 bg-purple-900/50 rounded-lg"><span class="text-3xl">🛡️</span><p class="mt-2 font-semibold">Trận Pháp Sư</p></div>
+                                <div class="p-4 bg-purple-900/50 rounded-lg"><span class="text-3xl">💪</span><p class="mt-2 font-semibold">Thể Tu</p></div>
+                                <div class="p-4 bg-purple-900/50 rounded-lg"><span class="text-3xl">📜</span><p class="mt-2 font-semibold">Phù Tu</p></div>
+                                <div class="p-4 bg-purple-900/50 rounded-lg"><span class="text-3xl">🐾</span><p class="mt-2 font-semibold">Thuần Thú Sư</p></div>
+                            </div>
+                        </div>
+                        <div class="card rounded-xl p-6 shadow-lg">
+                            <h3 class="text-2xl font-bold text-glow mb-4">Cấp Bậc Pháp Bảo</h3>
+                            <p class="text-gray-400 mb-6">Từ phàm khí đến thần khí, mỗi cấp bậc pháp bảo đại diện cho một tầm cao sức mạnh và sự khan hiếm.</p>
+                            <div class="w-full max-w-sm mx-auto flex flex-col-reverse">
+                                <div class="pyramid-level" style="width: 100%;">Phàm Khí</div>
+                                <div class="pyramid-level" style="width: 85%;">Linh Khí</div>
+                                <div class="pyramid-level" style="width: 70%;">Pháp Bảo</div>
+                                <div class="pyramid-level" style="width: 55%;">Linh Bảo</div>
+                                <div class="pyramid-level" style="width: 40%;">Tiên Khí</div>
+                                <div class="pyramid-level" style="width: 25%;">Thần Khí</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Character Creation -->
+            <section id="section-3" class="my-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-white">Phần III: Điểm Hóa Nhân Vật</h2>
+                <p class="text-xl text-center text-gray-300 mb-12">Hồn Của Câu Chuyện</p>
+                
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="card rounded-xl p-6 shadow-lg flex flex-col">
+                        <h3 class="text-2xl font-bold text-glow mb-4">Mô-típ Nhân Vật Chính Phổ Biến</h3>
+                        <p class="text-gray-400 mb-6">Các mô-típ kinh điển luôn có sức hấp dẫn riêng. Biểu đồ dưới đây thể hiện mức độ phổ biến (giả định) của chúng trong các tác phẩm tiên hiệp hiện nay. Sáng tạo dựa trên nền tảng quen thuộc là chìa khóa để tạo ra nhân vật độc đáo.</p>
+                        <div class="chart-container flex-grow">
+                            <canvas id="archetypeChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="card rounded-xl p-6 shadow-lg flex flex-col">
+                        <h3 class="text-2xl font-bold text-glow mb-4">Động Lực Thúc Đẩy Nhân Vật</h3>
+                        <p class="text-gray-400 mb-6">Tại sao nhân vật lại tu luyện? Động lực sâu sắc sẽ khiến hành trình của họ trở nên ý nghĩa và thuyết phục hơn. Biểu đồ thể hiện các nguồn động lực phổ biến nhất.</p>
+                         <div class="chart-container flex-grow">
+                            <canvas id="motivationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: Plot -->
+            <section id="section-4" class="my-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-white">Phần IV: Dệt Nên Kỳ Duyên</h2>
+                <p class="text-xl text-center text-gray-300 mb-12">Kiến Tạo Cốt Truyện Hấp Dẫn</p>
+
+                <div class="card rounded-xl p-8 shadow-lg">
+                    <h3 class="text-2xl font-bold text-glow mb-4 text-center">Vòng Lặp Tăng Trưởng Của Nhân Vật</h3>
+                    <p class="text-gray-400 mb-10 text-center max-w-3xl mx-auto">Các tình tiết kinh điển không chỉ là công thức mà là những công cụ hiệu quả để thúc đẩy nhân vật phát triển, mở rộng thế giới và tạo ra những xung đột mới. Chúng thường tạo thành một vòng lặp giúp nhân vật liên tục mạnh lên.</p>
+                    <div class="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-0">
+                        <div class="text-center p-4">
+                            <div class="w-24 h-24 rounded-full bg-purple-900/70 flex items-center justify-center text-3xl border-2 border-purple-500 mx-auto">🌟</div>
+                            <p class="font-bold mt-2">Kỳ Ngộ</p>
+                            <p class="text-sm text-gray-400">Nhặt được bí kíp</p>
+                        </div>
+                        <div class="hidden md:block text-4xl text-purple-400 mx-4">→</div>
+                        <div class="h-8 w-1 bg-purple-500 md:hidden"></div>
+                         <div class="text-center p-4">
+                            <div class="w-24 h-24 rounded-full bg-purple-900/70 flex items-center justify-center text-3xl border-2 border-purple-500 mx-auto">💥</div>
+                            <p class="font-bold mt-2">Xung Đột</p>
+                            <p class="text-sm text-gray-400">Gây thù chuốc oán</p>
+                        </div>
+                        <div class="hidden md:block text-4xl text-purple-400 mx-4">→</div>
+                        <div class="h-8 w-1 bg-purple-500 md:hidden"></div>
+                        <div class="text-center p-4">
+                            <div class="w-24 h-24 rounded-full bg-purple-900/70 flex items-center justify-center text-3xl border-2 border-purple-500 mx-auto">💎</div>
+                            <p class="font-bold mt-2">Bí Cảnh / Đấu Giá</p>
+                            <p class="text-sm text-gray-400">Tìm kiếm tài nguyên</p>
+                        </div>
+                        <div class="hidden md:block text-4xl text-purple-400 mx-4">→</div>
+                        <div class="h-8 w-1 bg-purple-500 md:hidden"></div>
+                         <div class="text-center p-4">
+                            <div class="w-24 h-24 rounded-full bg-purple-900/70 flex items-center justify-center text-3xl border-2 border-purple-500 mx-auto">📈</div>
+                            <p class="font-bold mt-2">Đột Phá</p>
+                            <p class="text-sm text-gray-400">Tăng tiến tu vi</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 5: Publishing -->
+            <section id="section-5" class="my-16">
+                 <h2 class="text-3xl font-bold text-center mb-2 text-white">Phần V: Khai Bút Vô Hối</h2>
+                <p class="text-xl text-center text-gray-300 mb-12">Chia Sẻ Tác Phẩm Cùng Độc Giả</p>
+                <div class="card rounded-xl p-6 shadow-lg">
+                    <h3 class="text-2xl font-bold text-glow mb-4">Các Nền Tảng Đăng Truyện Phổ Biến tại Việt Nam</h3>
+                    <p class="text-gray-400 mb-6">Việc lựa chọn nền tảng phù hợp sẽ giúp tác phẩm của bạn tiếp cận đúng đối tượng độc giả. Dưới đây là biểu đồ minh họa lượng truy cập (giả định) của một số nền tảng quen thuộc với cộng đồng yêu truyện.</p>
+                    <div class="chart-container">
+                        <canvas id="platformChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center mt-16 py-8 border-t border-gray-800">
+            <p class="text-gray-400">Chúc các đạo hữu bút lực dồi dào, sớm ngày viết nên tuyệt tác của riêng mình.</p>
+            <p class="text-sm text-gray-600 mt-2">Infographic được tạo bởi AI chuyên gia trực quan hóa dữ liệu.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const wrapLabel = (label, maxLength) => {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const multiLineTooltipTitle = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const chartDefaultOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#E0E0E0',
+                        font: { size: 14 }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: multiLineTooltipTitle
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#E0E0E0' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                },
+                x: {
+                    ticks: { color: '#E0E0E0' },
+                    grid: { color: 'rgba(255, 255, 255, 0.1)' }
+                }
+            }
+        };
+
+        // Archetype Chart (Bar)
+        const archetypeCtx = document.getElementById('archetypeChart').getContext('2d');
+        const archetypeLabels = [
+            'Phế Vật Nghịch Tập',
+            'Trùng Sinh Trở Về / Xuyên Không',
+            'Phàm Nhân Bình Thường',
+            'Thiên Tài Bị Hãm Hại'
+        ].map(label => wrapLabel(label, 16));
+        new Chart(archetypeCtx, {
+            type: 'bar',
+            data: {
+                labels: archetypeLabels,
+                datasets: [{
+                    label: 'Mức Độ Phổ Biến (giả định)',
+                    data: [85, 90, 65, 75],
+                    backgroundColor: [
+                        'rgba(187, 134, 252, 0.7)',
+                        'rgba(98, 0, 238, 0.7)',
+                        'rgba(55, 0, 179, 0.7)',
+                        'rgba(126, 87, 194, 0.7)'
+                    ],
+                    borderColor: [
+                        '#BB86FC',
+                        '#6200EE',
+                        '#3700B3',
+                        '#7E57C2'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: chartDefaultOptions
+        });
+
+        // Motivation Chart (Doughnut)
+        const motivationCtx = document.getElementById('motivationChart').getContext('2d');
+        new Chart(motivationCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Bảo Vệ Người Thân', 'Báo Thù', 'Trường Sinh', 'Tìm Kiếm Chân Lý', 'Tò Mò/Phiêu Lưu'],
+                datasets: [{
+                    label: 'Động Lực',
+                    data: [40, 25, 15, 15, 5],
+                    backgroundColor: [
+                        'rgba(187, 134, 252, 0.8)',
+                        'rgba(239, 83, 80, 0.8)',
+                        'rgba(98, 0, 238, 0.8)',
+                        'rgba(3, 218, 198, 0.8)',
+                        'rgba(55, 0, 179, 0.8)'
+                    ],
+                    borderColor: '#160057',
+                    borderWidth: 2,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#E0E0E0',
+                            font: { size: 12 },
+                            padding: 15
+                        }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: multiLineTooltipTitle
+                        }
+                    }
+                }
+            }
+        });
+        
+        // Platform Chart (Bar)
+        const platformCtx = document.getElementById('platformChart').getContext('2d');
+        const platformLabels = [
+            'TruyenYY',
+            'Wattpad',
+            'Truyenfull.vn',
+            'Mangatoon',
+            'Webtruyen'
+        ].map(label => wrapLabel(label, 16));
+        new Chart(platformCtx, {
+            type: 'bar',
+            data: {
+                labels: platformLabels,
+                datasets: [{
+                    label: 'Lượng truy cập hàng tháng (giả định)',
+                    data: [80, 95, 88, 60, 70],
+                     backgroundColor: [
+                        'rgba(187, 134, 252, 0.7)',
+                        'rgba(98, 0, 238, 0.7)',
+                        'rgba(55, 0, 179, 0.7)',
+                        'rgba(126, 87, 194, 0.7)',
+                         'rgba(3, 218, 198, 0.7)'
+                    ],
+                    borderColor: [
+                        '#BB86FC',
+                        '#6200EE',
+                        '#3700B3',
+                        '#7E57C2',
+                        '#03DAC6'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                ...chartDefaultOptions,
+                indexAxis: 'y',
+            }
+        });
+    </script>
+</body>
+</html>
