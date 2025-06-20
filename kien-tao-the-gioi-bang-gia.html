@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Kiến Tạo Thế Giới Băng Giá</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .flowchart-step {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .flowchart-step:not(:last-child)::before {
+            content: '';
+            position: absolute;
+            left: 0.6rem;
+            top: 1.5rem;
+            width: 2px;
+            height: calc(100% - 0.5rem);
+            background-color: #F56416;
+        }
+        .flowchart-step::after {
+            content: '➤';
+            position: absolute;
+            left: 0;
+            top: 0.25rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            font-weight: bold;
+            color: #F56416;
+            background-color: white;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#00A6FB] to-[#F56416]">Kiến Tạo Thế Giới Băng Giá</h1>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">Một hướng dẫn trực quan để sáng tác câu chuyện tận thế băng hà, lấy cảm hứng từ "Toàn Cầu Băng Phong".</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-xl shadow-lg p-6 flex flex-col md:flex-row items-center gap-6">
+                <div class="text-center md:text-left">
+                    <h2 class="text-2xl font-bold text-[#363636] mb-2">Sức Hút Của Cái Lạnh Chết Chóc</h2>
+                    <p class="text-gray-600">Bối cảnh băng giá không chỉ là thử thách sinh tồn. Nó là tấm gương phản chiếu xã hội, đạo đức và bản chất con người khi mọi thứ sụp đổ. Đây là nơi các quy chuẩn cũ bị xóa nhòa và những câu chuyện về sự kiên cường trỗi dậy.</p>
+                </div>
+                <div class="flex-shrink-0 text-center">
+                    <p class="text-6xl md:text-7xl font-black text-[#00A6FB]">95%</p>
+                    <p class="text-lg font-bold text-gray-700">Nhân loại biến mất</p>
+                    <p class="text-sm text-gray-500">Mở ra một thế giới mới</p>
+                </div>
+                <div class="w-full md:w-1/3">
+                    <div class="chart-container h-48 md:h-64">
+                        <canvas id="themesChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#363636] mb-4 text-center">Lựa Chọn Thảm Họa Của Bạn</h2>
+                <p class="text-gray-600 mb-6 text-center">Nguồn gốc của Kỷ Băng Hà sẽ định hình toàn bộ thế giới của bạn, từ công nghệ còn sót lại đến những mối nguy hiểm đặc thù.</p>
+                <div class="chart-container h-80 md:h-96">
+                    <canvas id="cataclysmChart"></canvas>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#363636] mb-4 text-center">Hệ Sinh Thái Mới</h2>
+                <p class="text-gray-600 mb-6 text-center">Băng giá không có nghĩa là chết chóc. Sự sống luôn tìm cách thích nghi, tiến hóa hoặc hồi sinh từ quá khứ bị chôn vùi.</p>
+                <ul class="space-y-4">
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-4 text-[#00A6FB]">🐾</span>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Sự Sống Thích Nghi</h3>
+                            <p class="text-sm text-gray-600">Động vật Trái Đất tiến hóa để chống chọi với giá lạnh, hoặc vi khuẩn ưa cực phát triển mạnh mẽ.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-4 text-[#F56416]">🐉</span>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Sinh Vật Kỳ Ảo</h3>
+                            <p class="text-sm text-gray-600">Những quái vật trong thần thoại trở thành hiện thực, hoặc các loài mới kỳ lạ xuất hiện do tiến hóa đột biến.</p>
+                        </div>
+                    </li>
+                    <li class="flex items-start">
+                        <span class="text-2xl mr-4 text-[#FCEE21]">🦠</span>
+                        <div>
+                            <h3 class="font-bold text-gray-800">Hồi Sinh Cổ Đại</h3>
+                            <p class="text-sm text-gray-600">Băng tan giải phóng virus, vi khuẩn hoặc các sinh vật thời tiền sử đang ngủ đông.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#363636] mb-4 text-center">Các Hình Thái Xã Hội</h2>
+                <p class="text-gray-600 mb-6 text-center">Trong tuyệt vọng, con người tập hợp lại theo những cách khác nhau, từ những pháo đài khoa học đến các giáo phái cuồng tín.</p>
+                 <div class="chart-container h-80 md:h-96">
+                    <canvas id="societyChart"></canvas>
+                </div>
+            </div>
+
+            <div class="lg:col-span-2 bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#363636] mb-4 text-center">Bản Chất Của Xung Đột</h2>
+                <p class="text-gray-600 mb-6 text-center">Cuộc chiến không chỉ diễn ra với thiên nhiên. Nó còn là cuộc chiến giành tài nguyên, tư tưởng và với chính bản thân mỗi người.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div class="text-center p-4 border-2 border-[#00A6FB] rounded-lg">
+                        <h3 class="text-xl font-bold text-[#00A6FB]">Con Người vs. Thiên Nhiên</h3>
+                        <p class="text-sm mt-1">Bão tuyết, khan hiếm tài nguyên, động vật hoang dã nguy hiểm.</p>
+                    </div>
+                    <div class="text-center p-4 border-2 border-[#F56416] rounded-lg">
+                        <h3 class="text-xl font-bold text-[#F56416]">Con Người vs. Con Người</h3>
+                        <p class="text-sm mt-1">Chiến tranh phe phái, xung đột ý thức hệ, tranh giành quyền lực.</p>
+                    </div>
+                    <div class="text-center p-4 border-2 border-[#FCEE21] rounded-lg">
+                        <h3 class="text-xl font-bold text-[#FCEE21]">Con Người vs. Bản Thân</h3>
+                        <p class="text-sm mt-1">Đấu tranh đạo đức, căng thẳng tâm lý, duy trì hy vọng.</p>
+                    </div>
+                    <div class="text-center p-4 border-2 border-gray-400 rounded-lg">
+                        <h3 class="text-xl font-bold text-gray-500">Con Người vs. Điều Chưa Biết</h3>
+                        <p class="text-sm mt-1">Đối mặt với các hiện tượng lạ, sinh vật cổ đại hoặc các thế lực siêu nhiên.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="lg:col-span-3 bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#363636] mb-4 text-center">Hành Trình Của Nhân Vật Chính</h2>
+                <p class="text-gray-600 mb-6 text-center">Điều gì thúc đẩy người hùng của bạn vượt qua băng giá? Động lực của họ sẽ quyết định hướng đi của câu chuyện.</p>
+                 <div class="chart-container h-80 md:h-96">
+                    <canvas id="motivationChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2 lg:col-span-3 bg-white rounded-xl shadow-lg p-6">
+                <h2 class="text-2xl font-bold text-[#363636] mb-6 text-center">Làm Thế Nào Để Câu Chuyện Của Bạn Nổi Bật?</h2>
+                <div class="max-w-md mx-auto">
+                    <div class="flowchart-step">
+                        <h3 class="font-bold text-lg text-gray-800">Nguồn Gốc Thảm Họa Sáng Tạo</h3>
+                        <p class="text-sm text-gray-600">Chọn một nguyên nhân độc đáo thay vì các kịch bản quen thuộc. Một thí nghiệm thất bại hay một hiện tượng vũ trụ lạ?</p>
+                    </div>
+                    <div class="flowchart-step mt-4">
+                        <h3 class="font-bold text-lg text-gray-800">Hệ Thống Sức Mạnh Mới Lạ</h3>
+                        <p class="text-sm text-gray-600">Nếu có siêu năng lực, hãy gắn nó với bối cảnh. Sức mạnh đến từ vi khuẩn cổ đại hay khả năng thao túng tâm lý do cô lập?</p>
+                    </div>
+                    <div class="flowchart-step mt-4">
+                        <h3 class="font-bold text-lg text-gray-800">Xã Hội Phi Truyền Thống</h3>
+                        <p class="text-sm text-gray-600">Khám phá các cộng đồng có triết lý sống kỳ lạ. Một xã hội tôn thờ cái lạnh hay một cộng đồng cộng sinh với sinh vật mới?</p>
+                    </div>
+                    <div class="flowchart-step mt-4">
+                        <h3 class="font-bold text-lg text-gray-800">Đảo Ngược Mô-típ Quen Thuộc</h3>
+                        <p class="text-sm text-gray-600">Thay vì nhân vật chính tích trữ, hãy để họ là người phân phối tài nguyên, xây dựng một hệ thống công bằng và đối mặt với sự ích kỷ.</p>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+        
+        <footer class="text-center mt-12 py-6 border-t border-gray-300">
+            <p class="text-gray-500">Infographic được tạo ra để truyền cảm hứng cho những câu chuyện tận thế băng giá độc đáo.</p>
+        </footer>
+    </div>
+
+<script>
+    const wrapLabel = (label, maxWidth) => {
+        if (typeof label !== 'string' || label.length <= maxWidth) {
+            return label;
+        }
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).length > maxWidth) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine += ' ' + word;
+            }
+        });
+        lines.push(currentLine.trim());
+        return lines;
+    };
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+            return label.join(' ');
+        }
+        return label;
+    };
+
+    const sharedTooltipOptions = {
+        plugins: {
+            tooltip: {
+                callbacks: {
+                    title: tooltipTitleCallback
+                }
+            }
+        }
+    };
+    
+    const palette = {
+        blue: '#00A6FB',
+        orange: '#F56416',
+        yellow: '#FCEE21',
+        darkGrey: '#363636',
+        lightGrey: '#BDBDBD'
+    };
+
+    const themesChartCtx = document.getElementById('themesChart').getContext('2d');
+    new Chart(themesChartCtx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Sinh tồn', 'Đạo đức', 'Xã hội'],
+            datasets: [{
+                label: 'Chủ Đề Khám Phá',
+                data: [45, 30, 25],
+                backgroundColor: [palette.blue, palette.orange, palette.lightGrey],
+                borderColor: '#fff',
+                borderWidth: 4,
+                hoverOffset: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: palette.darkGrey,
+                        font: { size: 12 }
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Các Chủ Đề Chính Để Khai Thác',
+                    color: palette.darkGrey,
+                    font: { size: 14, weight: 'bold' }
+                },
+                tooltip: sharedTooltipOptions.plugins.tooltip
+            }
+        }
+    });
+
+    const cataclysmChartCtx = document.getElementById('cataclysmChart').getContext('2d');
+    new Chart(cataclysmChartCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Siêu núi lửa', 'Va chạm tiểu hành tinh', 'Mùa đông hạt nhân', 'Thất bại địa kỹ thuật'],
+            datasets: [{
+                label: 'Mức độ Tàn Phá Ban Đầu',
+                data: [8, 9, 10, 6],
+                backgroundColor: palette.orange,
+                borderColor: palette.orange,
+                borderWidth: 1
+            }, {
+                label: 'Mối Nguy Hiểm Kéo Dài',
+                data: [7, 6, 9, 8],
+                backgroundColor: palette.blue,
+                borderColor: palette.blue,
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.05)' },
+                    ticks: { color: palette.darkGrey }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: palette.darkGrey }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: palette.darkGrey }
+                },
+                tooltip: sharedTooltipOptions.plugins.tooltip
+            }
+        }
+    });
+    
+    const societyChartCtx = document.getElementById('societyChart').getContext('2d');
+    new Chart(societyChartCtx, {
+        type: 'radar',
+        data: {
+            labels: ['Tự Cung Tự Cấp', 'Công Nghệ', 'An Ninh', 'Linh Hoạt', 'Cô Lập'],
+            datasets: [{
+                label: 'Thành Phố Ngầm',
+                data: [9, 7, 9, 2, 8],
+                fill: true,
+                backgroundColor: 'rgba(0, 166, 251, 0.2)',
+                borderColor: palette.blue,
+                pointBackgroundColor: palette.blue
+            }, {
+                label: 'Cộng Đồng Di Động',
+                data: [4, 3, 5, 9, 2],
+                fill: true,
+                backgroundColor: 'rgba(245, 100, 22, 0.2)',
+                borderColor: palette.orange,
+                pointBackgroundColor: palette.orange
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                r: {
+                    angleLines: { color: 'rgba(0,0,0,0.1)' },
+                    grid: { color: 'rgba(0,0,0,0.1)' },
+                    pointLabels: { font: { size: 12 } },
+                    ticks: {
+                        backdropColor: 'rgba(255,255,255,0.7)',
+                        color: palette.darkGrey
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: { color: palette.darkGrey }
+                },
+                tooltip: sharedTooltipOptions.plugins.tooltip
+            }
+        }
+    });
+
+    const motivationChartCtx = document.getElementById('motivationChart').getContext('2d');
+    const motivationLabels = [
+        'Xây Dựng Lại Xã Hội',
+        'Bảo Vệ Người Thân Yêu',
+        'Trả Thù Quá Khứ',
+        'Khám Phá Bí Ẩn',
+        'Chuộc Lại Lỗi Lầm'
+    ].map(label => wrapLabel(label, 16));
+
+    new Chart(motivationChartCtx, {
+        type: 'bar',
+        data: {
+            labels: motivationLabels,
+            datasets: [{
+                label: 'Động lực',
+                data: [85, 95, 70, 60, 50],
+                backgroundColor: [
+                    palette.blue,
+                    palette.orange,
+                    '#FF4136',
+                    palette.yellow,
+                    palette.lightGrey
+                ],
+                borderColor: '#fff',
+                borderWidth: 2,
+            }]
+        },
+        options: {
+            indexAxis: 'y',
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: { color: 'rgba(0,0,0,0.05)' },
+                    ticks: { color: palette.darkGrey }
+                },
+                y: {
+                    grid: { display: false },
+                    ticks: { color: palette.darkGrey }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                title: {
+                    display: true,
+                    text: 'Mức độ Phổ biến của các Động lực Nhân vật',
+                    color: palette.darkGrey,
+                    font: { size: 16 }
+                },
+                tooltip: sharedTooltipOptions.plugins.tooltip
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
