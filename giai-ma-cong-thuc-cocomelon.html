@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Giải Mã Công Thức Cocomelon</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F7F7F7;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #FF6B6B, #118AB2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+    <!-- 
+    Plan Phân cấp & Dẫn truyện:
+    1. Tiêu đề & Hook: Giới thiệu Cocomelon như một thế lực toàn cầu với số liệu ấn tượng.
+    2. Nền tảng Âm nhạc: Phân tích DNA hòa âm và giai điệu qua biểu đồ Donut.
+    3. Công thức Lời ca: Trực quan hóa các kỹ thuật viết lời qua sơ đồ và biểu tượng.
+    4. Kiến trúc Bài hát: So sánh các cấu trúc bài hát bằng biểu đồ ngang.
+    5. Yếu tố Sản xuất: Trình bày các yếu tố tạo nên âm thanh đặc trưng qua các thẻ thông tin.
+    6. Kết luận: Tóm tắt lại công thức thành công.
+
+    Lựa chọn Bảng màu: "Energetic & Playful" (#FF6B6B, #FFD166, #06D6A0, #118AB2, #073B4C) được chọn để phản ánh sự vui tươi, năng động của thương hiệu Cocomelon.
+
+    Lựa chọn Hình ảnh hóa & Biện luận:
+    - Số liệu Tỷ Lượt Xem: (Goal: Inform) -> Dạng "Số Lớn" dùng HTML/Tailwind. Lý do: Gây ấn tượng mạnh mẽ ngay lập tức về quy mô.
+    - Tỷ lệ Hòa âm: (Goal: Inform/Compare) -> Biểu đồ Donut dùng Chart.js/Canvas. Lý do: Trực quan hóa hiệu quả tỷ lệ phần trăm của các thành phần trong một tổng thể.
+    - Cấu trúc Lời ca: (Goal: Organize) -> Sơ đồ quy trình (Flowchart) dùng HTML/Tailwind. Lý do: Minh họa rõ ràng các bước và khuôn mẫu lặp lại. Xác nhận: KHÔNG DÙNG Mermaid JS, KHÔNG DÙNG SVG.
+    - Các Dạng Bài hát: (Goal: Compare) -> Biểu đồ Ngang dùng Chart.js/Canvas. Lý do: So sánh hiệu quả mức độ phổ biến giữa các hạng mục khác nhau.
+    - Yếu tố Sản xuất: (Goal: Organize) -> Thẻ thông tin (Cards) dùng HTML/Tailwind. Lý do: Trình bày thông tin theo từng khối riêng biệt, dễ đọc, dễ tiêu hóa.
+    
+    Xác nhận cuối cùng: Không sử dụng Mermaid JS và không sử dụng đồ họa SVG trong toàn bộ tài liệu này. Mọi hình ảnh hóa đều được tạo bằng Chart.js (Canvas) hoặc HTML/CSS thuần túy.
+    -->
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black mb-4"><span class="gradient-text">Giải Mã Công Thức Cocomelon</span></h1>
+            <p class="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">Một phân tích chuyên sâu dựa trên dữ liệu về thế lực thống trị làng giải trí thiếu nhi.</p>
+        </header>
+
+        <main class="space-y-12">
+            
+            <section id="phenomenon" class="text-center bg-white rounded-xl shadow-lg p-8">
+                <h2 class="text-3xl font-bold mb-4 text-[#073B4C]">Một Hiện Tượng Toàn Cầu</h2>
+                <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Cocomelon không chỉ là một kênh giải trí. Đó là một phần không thể thiếu trong tuổi thơ của hàng triệu trẻ em, định hình thói quen nghe nhạc và học hỏi qua một công thức được tính toán kỹ lưỡng.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div class="text-center">
+                        <p class="text-7xl md:text-8xl font-black text-[#118AB2]">190 TỶ+</p>
+                        <p class="text-xl font-bold text-gray-700 mt-2">Tổng lượt xem trên YouTube</p>
+                        <p class="text-sm text-gray-500">(Tính đến năm 2024)</p>
+                    </div>
+                    <div class="text-left text-gray-700 space-y-4">
+                        <div class="flex items-start">
+                            <span class="text-2xl text-[#06D6A0] mr-3">✓</span>
+                            <p><strong class="text-[#073B4C]">Thu hút khán giả nhỏ tuổi nhất:</strong> Âm nhạc được thiết kế để bộ não non nớt của trẻ dễ dàng xử lý và yêu thích.</p>
+                        </div>
+                        <div class="flex items-start">
+                             <span class="text-2xl text-[#06D6A0] mr-3">✓</span>
+                            <p><strong class="text-[#073B4C]">Giáo dục lồng ghép:</strong> Mỗi bài hát là một bài học nhỏ về từ vựng, số đếm, màu sắc hoặc kỹ năng xã hội.</p>
+                        </div>
+                         <div class="flex items-start">
+                             <span class="text-2xl text-[#06D6A0] mr-3">✓</span>
+                            <p><strong class="text-[#073B4C]">Sự chấp thuận của phụ huynh:</strong> Nội dung an toàn và mang tính giáo dục cao khiến các bậc cha mẹ tin tưởng và bật lại nhiều lần.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="harmony">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-center mb-2 text-[#073B4C]">Nền Tảng Hòa Âm: Sức Mạnh Của Sự Dễ Đoán</h2>
+                    <p class="text-gray-600 text-center mb-8 max-w-3xl mx-auto">Cốt lõi âm nhạc của Cocomelon được xây dựng trên sự quen thuộc. Việc sử dụng lặp đi lặp lại bộ ba hợp âm Vàng (I-IV-V) tạo ra một môi trường âm thanh an toàn, dễ đoán, giúp trẻ cảm thấy thoải mái và sẵn sàng tiếp thu các thông tin mới từ lời bài hát.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                        <div class="chart-container h-64 md:h-auto">
+                            <canvas id="harmonyChart"></canvas>
+                        </div>
+                        <div class="text-gray-700 text-left">
+                            <h3 class="font-bold text-xl mb-4 text-[#073B4C]">Tại sao công thức này hiệu quả?</h3>
+                            <p class="mb-4"><strong class="text-[#118AB2]">Hòa âm I-IV-V (Tonic - Subdominant - Dominant)</strong> là nền tảng của âm nhạc phương Tây. Nó tạo ra một chu kỳ "căng thẳng - giải tỏa" đơn giản mà bộ não con người, đặc biệt là trẻ em, cảm thấy cực kỳ thỏa mãn và dễ ghi nhớ.</p>
+                             <p class="mb-4">Sự ổn định này hoạt động như một "giàn giáo nhận thức", cho phép trẻ tập trung vào việc học từ vựng và khái niệm mới được giới thiệu trong lời bài hát.</p>
+                            <p><strong class="text-[#118AB2]">Sự pha trộn của Pop (Hợp âm bậc vi):</strong> Đôi khi, Cocomelon thêm vào hợp âm bậc sáu thứ (vi) để tạo ra vòng hợp âm I-V-vi-IV, một yếu tố kinh điển của nhạc Pop. Điều này giúp bài hát có cảm giác hiện đại và giàu cảm xúc hơn, thu hút cả phụ huynh.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="lyrics">
+                 <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-center mb-2 text-[#073B4C]">Công Thức Lời Ca: Cỗ Máy Tiếp Thu Ngôn Ngữ</h2>
+                     <p class="text-gray-600 text-center mb-8 max-w-3xl mx-auto">Lời bài hát không chỉ để hát cho vui. Chúng là những công cụ sư phạm được thiết kế tinh vi để dạy ngôn ngữ một cách có hệ thống thông qua sự lặp lại và tương tác.</p>
+                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                         <div class="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                             <h3 class="font-bold text-xl text-center text-[#118AB2] mb-4">Mô Hình "Lặp Lại và Thay Thế"</h3>
+                             <p class="text-center mb-6">Đây là kỹ thuật cốt lõi: giữ nguyên một cấu trúc câu và chỉ thay đổi các từ khóa.</p>
+                             <div class="space-y-2 text-center font-mono p-4 bg-white rounded-lg shadow-inner">
+                                 <p>"The <span class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded">wheels</span> on the bus go <span class="text-green-500 font-bold bg-green-100 px-2 py-1 rounded">round and round</span>"</p>
+                                 <p class="text-2xl font-bold text-gray-300">↓</p>
+                                 <p>"The <span class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded">wipers</span> on the bus go <span class="text-green-500 font-bold bg-green-100 px-2 py-1 rounded">swish, swish, swish</span>"</p>
+                                  <p class="text-2xl font-bold text-gray-300">↓</p>
+                                  <p>"The <span class="text-red-500 font-bold bg-red-100 px-2 py-1 rounded">babies</span> on the bus go <span class="text-green-500 font-bold bg-green-100 px-2 py-1 rounded">wah, wah, wah</span>"</p>
+                             </div>
+                             <p class="mt-4 text-sm text-center text-gray-600"><strong>Hiệu quả:</strong> Giúp trẻ học từ vựng và cấu trúc câu mới trong một khuôn khổ an toàn, quen thuộc mà không bị quá tải.</p>
+                         </div>
+                         <div class="bg-green-50 p-6 rounded-lg border border-green-200">
+                             <h3 class="font-bold text-xl text-center text-[#06D6A0] mb-4">Khung "Yes, Yes" Gọi - Đáp</h3>
+                             <p class="text-center mb-6">Mô hình này dạy hành vi tích cực và củng cố từ vựng thông qua tương tác.</p>
+                             <div class="space-y-4">
+                                <div class="flex items-center">
+                                    <span class="text-3xl mr-4">📢</span>
+                                    <div><strong class="text-gray-700">Gọi (Prompt):</strong> "Broccoli, broccoli, time to eat your broccoli."</div>
+                                </div>
+                                 <div class="flex items-center">
+                                    <span class="text-3xl mr-4">🙋</span>
+                                    <div><strong class="text-gray-700">Đáp (Affirmation):</strong> "Yes, yes, yes, I want to eat my broccoli."</div>
+                                </div>
+                                 <div class="flex items-center">
+                                    <span class="text-3xl mr-4">👍</span>
+                                    <div><strong class="text-gray-700">Củng cố (Reinforcement):</strong> "Good, good, broccoli is good for you!"</div>
+                                </div>
+                             </div>
+                             <p class="mt-4 text-sm text-center text-gray-600"><strong>Hiệu quả:</strong> Làm mẫu cho các tương tác xã hội, khuyến khích thử những điều mới, và dạy từ vựng ("broccoli") một cách tích cực.</p>
+                         </div>
+                     </div>
+                 </div>
+            </section>
+
+            <section id="structure">
+                 <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-center mb-2 text-[#073B4C]">Kiến Trúc Bài Hát: Tối Ưu Hóa Sự Tương Tác</h2>
+                    <p class="text-gray-600 text-center mb-8 max-w-3xl mx-auto">Cocomelon sử dụng một cách chiến lược nhiều cấu trúc bài hát khác nhau, từ đồng dao truyền thống đến pop hiện đại, để giữ cho nội dung luôn mới mẻ và hấp dẫn, tránh sự nhàm chán cho cả trẻ em và phụ huynh.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
+                        <div class="md:col-span-3">
+                             <div class="chart-container w-full max-w-none h-80 md:h-96">
+                                <canvas id="structureChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="md:col-span-2 text-gray-700 text-left space-y-4">
+                           <div>
+                                <h4 class="font-bold text-lg text-[#118AB2]">Hình thức Đoạn khúc (Strophic)</h4>
+                                <p class="text-sm">Một giai điệu lặp đi lặp lại cho mỗi khổ thơ. Lý tưởng cho các bài hát "Lặp lại và Thay thế" như "Wheels on the Bus".</p>
+                           </div>
+                           <div>
+                                <h4 class="font-bold text-lg text-[#06D6A0]">Phiên khúc - Điệp khúc (Verse-Chorus)</h4>
+                                <p class="text-sm">Cấu trúc nhạc pop hiện đại với điệp khúc bắt tai, năng lượng cao. Giúp bài hát dễ nhớ và có cảm giác "hit" hơn, như "I Love Science Song".</p>
+                           </div>
+                            <div>
+                                <h4 class="font-bold text-lg text-[#FFD166]">Hình thức Nhị đoạn (A-B)</h4>
+                                <p class="text-sm">Gồm hai phần âm nhạc khác nhau để tạo ra sự tương phản và mới mẻ, thường thấy trong các bài hát "Yes, Yes".</p>
+                           </div>
+                           <div>
+                                <h4 class="font-bold text-lg text-[#FF6B6B]">Liên khúc (Medley)</h4>
+                                <p class="text-sm">Xâu chuỗi nhiều bài hát ngắn cùng chủ đề lại với nhau. Một chiến lược thông minh để tăng thời gian xem video.</p>
+                           </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="production">
+                <div class="bg-white rounded-xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-center mb-8 text-[#073B4C]">Bản Phối Âm Thanh Trau Chuốt</h2>
+                    <p class="text-gray-600 text-center mb-8 max-w-3xl mx-auto">Chất lượng sản xuất chuyên nghiệp là yếu tố cuối cùng tạo nên âm thanh đặc trưng của Cocomelon, khiến nó dễ chịu khi nghe đi nghe lại.</p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gray-50 p-6 rounded-lg text-center border">
+                            <div class="text-5xl mb-4">🎹</div>
+                            <h3 class="font-bold text-xl text-[#073B4C] mb-2">Nhạc Cụ</h3>
+                            <p class="text-gray-600">Âm thanh trong sáng, vui tươi từ piano, ukulele, và đặc biệt là tiếng glockenspiel hoặc xylophone lấp lánh để tăng thêm phần "ma thuật".</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg text-center border">
+                            <div class="text-5xl mb-4">🎤</div>
+                             <h3 class="font-bold text-xl text-[#073B4C] mb-2">Giọng Hát</h3>
+                            <p class="text-gray-600">Giọng hát chính của nữ cao, trong trẻo, thân thiện. Điệp khúc thường có một dàn đồng ca trẻ em hát cùng, tạo cảm giác cộng đồng, mời gọi bé hát theo.</p>
+                        </div>
+                        <div class="bg-gray-50 p-6 rounded-lg text-center border">
+                             <div class="text-5xl mb-4">🔊</div>
+                            <h3 class="font-bold text-xl text-[#073B4C] mb-2">Hiệu Ứng Âm Thanh (SFX)</h3>
+                            <p class="text-gray-600">Các hiệu ứng âm thanh (tiếng "bíp", "chụt chụt") được đồng bộ hoàn hảo với lời bài hát, giúp củng cố khái niệm và làm cho bài hát sinh động hơn.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        
+        <footer class="text-center mt-16 py-8 border-t">
+            <p class="text-gray-600">&copy; 2024 Phân Tích Dữ Liệu Infographic. Dựa trên Báo cáo "Giải Mã Công Thức Cocomelon".</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const vibrantColors = {
+            red: '#FF6B6B',
+            yellow: '#FFD166',
+            green: '#06D6A0',
+            blue: '#118AB2',
+            darkBlue: '#073B4C',
+            white: '#FFFFFF'
+        };
+
+        const chartTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(tooltipItems) {
+                            const item = tooltipItems[0];
+                            let label = item.chart.data.labels[item.dataIndex];
+                            if (Array.isArray(label)) {
+                                return label.join(' ');
+                            }
+                            return label;
+                        }
+                    }
+                },
+                legend: {
+                    position: 'bottom',
+                     labels: {
+                        color: vibrantColors.darkBlue,
+                        font: {
+                           family: "'Be Vietnam Pro', sans-serif",
+                           size: 14
+                        }
+                    }
+                }
+            }
+        };
+
+        function wrapLabel(str, maxWidth) {
+            if (str.length <= maxWidth) {
+                return str;
+            }
+            const words = str.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                if (currentLine.length + words[i].length + 1 < maxWidth) {
+                    currentLine += ' ' + words[i];
+                } else {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                }
+            }
+            lines.push(currentLine);
+            return lines;
+        }
+
+        const harmonyCtx = document.getElementById('harmonyChart').getContext('2d');
+        new Chart(harmonyCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Hòa âm Cốt lõi (I-IV-V)', 'Pha trộn Pop (hợp âm vi)', 'Khác'],
+                datasets: [{
+                    label: 'Tỷ lệ sử dụng Hòa âm',
+                    data: [85, 10, 5],
+                    backgroundColor: [
+                        vibrantColors.blue,
+                        vibrantColors.green,
+                        vibrantColors.yellow
+                    ],
+                    borderColor: vibrantColors.white,
+                    borderWidth: 4,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                ...chartTooltipOptions
+            }
+        });
+
+        const structureCtx = document.getElementById('structureChart').getContext('2d');
+        const structureLabels = ['Hình thức Đoạn khúc (Strophic)', 'Phiên khúc-Điệp khúc (Verse-Chorus)', 'Hình thức Nhị đoạn (A-B)', 'Liên khúc (Medley)'];
+        new Chart(structureCtx, {
+            type: 'bar',
+            data: {
+                labels: structureLabels.map(label => wrapLabel(label, 18)),
+                datasets: [{
+                    label: 'Mức độ hiệu quả & phổ biến',
+                    data: [90, 80, 65, 55],
+                    backgroundColor: [
+                        vibrantColors.blue,
+                        vibrantColors.green,
+                        vibrantColors.yellow,
+                        vibrantColors.red
+                    ],
+                    borderRadius: 4,
+                    barThickness: 30
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                             color: vibrantColors.darkBlue,
+                             font: { family: "'Be Vietnam Pro', sans-serif" }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            display: false,
+                            drawBorder: false
+                        },
+                        ticks: {
+                             color: vibrantColors.darkBlue,
+                             font: { family: "'Be Vietnam Pro', sans-serif", size: 14 }
+                        }
+                    }
+                },
+                ...chartTooltipOptions
+            }
+        });
+    </script>
+
+</body>
+</html>
