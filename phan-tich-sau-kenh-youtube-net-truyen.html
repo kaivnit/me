@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Phân Tích Kênh YouTube 'Net Truyện FM2'</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f0f4f8;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+            max-height: 400px;
+            height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        .card {
+            background-color: white;
+            border-radius: 1rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .flowchart-step {
+            position: relative;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .flowchart-arrow {
+            display: none;
+        }
+        @media (min-width: 1024px) {
+           .flowchart-step:not(:last-child)::after {
+                content: '→';
+                position: absolute;
+                right: -2.5rem;
+                top: 50%;
+                transform: translateY(-50%);
+                font-size: 2.5rem;
+                color: #0582CA;
+           }
+            .flowchart-arrow {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 2.5rem;
+                color: #0582CA;
+            }
+        }
+    </style>
+</head>
+<body class="bg-[#003554] text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-white text-shadow uppercase">Phân Tích Sâu</h1>
+            <p class="text-xl md:text-2xl font-bold text-[#FBB13C] mt-2">Kênh YouTube "Net Truyện FM2"</p>
+            <p class="max-w-3xl mx-auto text-gray-300 mt-4">
+                Thị trường review truyện tranh YouTube Việt Nam rất cạnh tranh. Giữa vô vàn lựa chọn, "Net Truyện FM2" nổi lên với một chiến lược độc đáo. Infographic này sẽ "giải phẫu" các yếu tố tạo nên sức hút và vị thế của kênh.
+            </p>
+        </header>
+
+        <main class="space-y-12">
+            
+            <section id="overview" class="card bg-[#0582CA] text-white">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#FBB13C]">Tổng Quan Kênh</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
+                    <div class="md:col-span-2 grid grid-cols-2 gap-6 text-center">
+                        <div class="bg-[#006494] p-6 rounded-xl">
+                            <p class="text-5xl font-extrabold text-[#FBB13C]">68,7K</p>
+                            <p class="mt-2 text-lg font-medium">Người Đăng Ký</p>
+                        </div>
+                        <div class="bg-[#006494] p-6 rounded-xl">
+                            <p class="text-5xl font-extrabold text-[#FBB13C]">247+</p>
+                            <p class="mt-2 text-lg font-medium">Video Đã Tải Lên</p>
+                        </div>
+                        <div class="col-span-2 bg-[#006494] p-6 rounded-xl">
+                             <p class="text-3xl font-extrabold text-[#FBB13C]">~8 Tiếng</p>
+                            <p class="mt-2 text-lg font-medium">Thời Lượng Video Phổ Biến Kỷ Lục</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-center mb-2">Thế Loại Nội Dung Cốt Lõi</h3>
+                         <div class="chart-container h-64 md:h-80"><canvas id="genreChart"></canvas></div>
+                        <p class="text-center text-gray-200 mt-4 text-sm">Kênh tập trung gần như hoàn toàn vào Manhua (truyện tranh Trung Quốc), với hai thể loại chủ đạo là Ngôn Tình và Xuyên Không, đánh trúng tâm lý của một lượng lớn khán giả trẻ.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="content-strategy" class="card">
+                <h2 class="text-3xl font-bold text-center mb-2 text-[#006494]">Chiến Lược Nội Dung Độc Đáo</h2>
+                <p class="text-center text-gray-600 max-w-2xl mx-auto mb-8">"Net Truyện FM2" không chỉ review, mà còn tạo ra trải nghiệm "xem một lèo" (binge-watch) với định dạng video dài và tóm tắt trọn bộ, một yếu tố khác biệt chính.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="font-bold text-xl text-center mb-2">Lượt Xem Của Các Video Nổi Bật</h3>
+                        <div class="chart-container h-80"><canvas id="popularVideosChart"></canvas></div>
+                        <p class="text-center text-gray-500 mt-4 text-sm">Các video có lượt xem cao nhất đều là các series dài kỳ được tóm tắt trong nhiều phần, chứng tỏ sức hút của định dạng "review trọn bộ" và sự kết hợp các thể loại ăn khách như ngôn tình, học đường.</p>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-xl text-center mb-2">Quy Trình Sản Xuất Video</h3>
+                        <div class="space-y-4 lg:space-y-0 lg:grid lg:grid-cols-5 lg:gap-12 items-center">
+                            <div class="flowchart-step bg-blue-100 border-2 border-blue-300">
+                                <span class="font-semibold text-blue-800">1. Chọn Truyện "Hot"</span>
+                            </div>
+                            <div class="flowchart-step bg-blue-100 border-2 border-blue-300">
+                                <span class="font-semibold text-blue-800">2. Viết Kịch Bản</span>
+                            </div>
+                            <div class="flowchart-step bg-blue-100 border-2 border-blue-300">
+                                <span class="font-semibold text-blue-800">3. Thu Âm</span>
+                            </div>
+                            <div class="flowchart-step bg-blue-100 border-2 border-blue-300">
+                                <span class="font-semibold text-blue-800">4. Biên Tập Video</span>
+                            </div>
+                            <div class="flowchart-step bg-blue-100 border-2 border-blue-300">
+                                <span class="font-semibold text-blue-800">5. Xuất Bản & SEO</span>
+                            </div>
+                        </div>
+                        <p class="text-center text-gray-500 mt-6 text-sm">Quy trình này, đặc biệt với các video dài hàng giờ, đòi hỏi sự đầu tư lớn về thời gian và công sức, thể hiện sự cống hiến của kênh để mang lại nội dung chất lượng.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="competition" class="card">
+                <h2 class="text-3xl font-bold text-center mb-2 text-[#006494]">Bối Cảnh Cạnh Tranh</h2>
+                <p class="text-center text-gray-600 max-w-3xl mx-auto mb-8">Thị trường review/tóm tắt truyện tranh rất sôi động. "Net Truyện FM2" là một người chơi chuyên biệt trong một "đại dương" có nhiều "cá mập" với lượng người đăng ký lớn hơn.</p>
+                <div class="chart-container h-[500px] md:h-[600px]"><canvas id="competitorChart"></canvas></div>
+                 <p class="text-center text-gray-500 mt-4 text-sm">Biểu đồ cho thấy "Net Truyện FM2" có quy mô nhỏ hơn so với các kênh tóm tắt tổng quát hoặc các kênh audio. Tuy nhiên, sự tập trung vào Manhua và định dạng video dài chính là lợi thế cạnh tranh cốt lõi, giúp kênh tạo ra một phân khúc riêng và thu hút khán giả trung thành.</p>
+            </section>
+            
+            <section id="swot" class="card">
+                <h2 class="text-3xl font-bold text-center mb-8 text-[#006494]">Phân Tích SWOT & Tiềm Năng</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-green-100 p-6 rounded-lg border-l-4 border-green-500">
+                        <h3 class="font-bold text-xl text-green-800 mb-2">Điểm Mạnh 💪</h3>
+                        <ul class="list-disc list-inside space-y-2 text-green-700">
+                            <li>Chuyên môn hóa Manhua rõ ràng</li>
+                            <li>Định dạng review "Trọn Bộ" chuyên sâu</li>
+                            <li>Nhanh nhạy với xu hướng</li>
+                            <li>Quản lý bản quyền chủ động</li>
+                        </ul>
+                    </div>
+                     <div class="bg-yellow-100 p-6 rounded-lg border-l-4 border-yellow-500">
+                        <h3 class="font-bold text-xl text-yellow-800 mb-2">Cơ Hội 🚀</h3>
+                        <ul class="list-disc list-inside space-y-2 text-yellow-700">
+                            <li>Đa dạng hóa định dạng (phân tích, so sánh)</li>
+                            <li>Tăng cường tính năng cộng đồng (Q&A, vote)</li>
+                            <li>Quảng bá chéo trên TikTok, Facebook</li>
+                             <li>Hợp tác với các kênh khác</li>
+                        </ul>
+                    </div>
+                    <div class="bg-orange-100 p-6 rounded-lg border-l-4 border-orange-500">
+                        <h3 class="font-bold text-xl text-orange-800 mb-2">Điểm Yếu 🤔</h3>
+                        <ul class="list-disc list-inside space-y-2 text-orange-700">
+                            <li>Quy mô nhỏ hơn đối thủ</li>
+                            <li>Phụ thuộc vào các thể loại nhất định</li>
+                            <li>Tốn nhiều nguồn lực sản xuất</li>
+                        </ul>
+                    </div>
+                    <div class="bg-red-100 p-6 rounded-lg border-l-4 border-red-500">
+                        <h3 class="font-bold text-xl text-red-800 mb-2">Thách Thức 🛡️</h3>
+                        <ul class="list-disc list-inside space-y-2 text-red-700">
+                            <li>Cạnh tranh ngày càng gay gắt</li>
+                            <li>Rủi ro về bản quyền luôn tồn tại</li>
+                            <li>Giữ chân khán giả với nội dung mới</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+            
+            <footer class="text-center pt-8">
+                <p class="text-white font-bold text-lg">"Net Truyện FM2" là minh chứng cho việc một chiến lược tập trung vào phân khúc chuyên biệt có thể tạo ra một vị thế vững chắc và một cộng đồng trung thành, ngay cả trong một thị trường đông đúc.</p>
+                <p class="text-gray-400 mt-2 text-sm">Infographic được tạo dựa trên báo cáo phân tích ngày 13/06/2025.</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        
+        const wrapLabel = (label, maxLength = 16) => {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) {
+                lines.push(currentLine.trim());
+            }
+            return lines;
+        };
+        
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const sharedChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#334155',
+                        font: {
+                            family: "'Be Vietnam Pro', sans-serif",
+                            weight: '500'
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: '#003554',
+                    titleFont: {
+                        size: 14,
+                        family: "'Be Vietnam Pro', sans-serif",
+                    },
+                    bodyFont: {
+                        size: 12,
+                        family: "'Be Vietnam Pro', sans-serif",
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    ticks: { color: '#475569' },
+                    grid: { color: '#e2e8f0' }
+                },
+                x: {
+                    ticks: { color: '#475569' },
+                    grid: { display: false }
+                }
+            }
+        };
+
+        const energeticPlayfulPalette = ['#00A6FB', '#FBB13C', '#0582CA', '#006494', '#003554'];
+
+        const genreCtx = document.getElementById('genreChart').getContext('2d');
+        new Chart(genreCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Ngôn Tình', 'Xuyên Không', 'Thể Loại Khác'],
+                datasets: [{
+                    label: 'Phân Bố Thể Loại',
+                    data: [55, 40, 5],
+                    backgroundColor: [energeticPlayfulPalette[0], energeticPlayfulPalette[1], energeticPlayfulPalette[2]],
+                    borderColor: '#0582CA',
+                    borderWidth: 3
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                 plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                           color: '#ffffff'
+                        }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: tooltipTitleCallback
+                        },
+                        backgroundColor: '#003554'
+                    }
+                 },
+                cutout: '60%',
+            }
+        });
+
+        const popularVideosCtx = document.getElementById('popularVideosChart').getContext('2d');
+        new Chart(popularVideosCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    wrapLabel('ANH ẤY RẤT HAY TRÊU CHỌC TÔI P1-5'),
+                    wrapLabel('ĐẶC CÔNG THẦN Y XUYÊN KHÔNG'),
+                    wrapLabel('TOÀN BỘ PHẢN DIỆN NGHE ĐƯỢC TIẾNG LÒNG CỦA TA')
+                ],
+                datasets: [{
+                    label: 'Lượt Xem (nghìn)',
+                    data: [334, 221, 150],
+                    backgroundColor: energeticPlayfulPalette[0],
+                    borderColor: energeticPlayfulPalette[2],
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                indexAxis: 'y',
+                scales: {
+                    y: { ticks: { color: '#475569' }, grid: { display: false } },
+                    x: { ticks: { color: '#475569' }, grid: { color: '#e2e8f0' } }
+                }
+            }
+        });
+        
+        const competitorCtx = document.getElementById('competitorChart').getContext('2d');
+        new Chart(competitorCtx, {
+            type: 'bar',
+            data: {
+                labels: [
+                    'Net Truyện FM2', 
+                    wrapLabel('Miss Review - review truyện tranh'),
+                    'MANHWA REVIEW',
+                    'ManhwaCapped', 
+                    'Manhwa Recap Zone',
+                    wrapLabel('Truyện Ngôn Tình Hay 3s Official')
+                ].reverse(),
+                datasets: [{
+                    label: 'Người Đăng Ký (nghìn)',
+                    data: [68.7, 238, 108, 393, 250, 639].reverse(),
+                    backgroundColor: (context) => {
+                        const label = context.chart.data.labels[context.dataIndex];
+                        return label === 'Net Truyện FM2' ? energeticPlayfulPalette[1] : energeticPlayfulPalette[0];
+                    },
+                    borderColor: energeticPlayfulPalette[2],
+                    borderWidth: 2,
+                    borderRadius: 5
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                indexAxis: 'y',
+                plugins: {
+                    ...sharedChartOptions.plugins,
+                    legend: { display: false }
+                },
+                scales: {
+                    y: {
+                        ticks: {
+                            color: '#334155',
+                            font: { size: 12, weight: 500 }
+                        },
+                        grid: { display: false }
+                    },
+                    x: {
+                        ticks: { color: '#475569' },
+                        grid: { color: '#e2e8f0' }
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>
