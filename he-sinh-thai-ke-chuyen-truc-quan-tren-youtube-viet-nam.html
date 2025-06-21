@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Phân Tích Các Kênh YouTube Kể Chuyện Hàng Đầu Việt Nam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F5F5F5;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 400px;
+            max-height: 50vh;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 500px;
+            }
+        }
+        .flowchart-arrow {
+            font-size: 2rem;
+            line-height: 1;
+            color: #0085FF;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+        
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-black text-[#004AAD] mb-2">Hệ Sinh Thái Kể Chuyện Trực Quan Trên YouTube Việt Nam</h1>
+            <p class="text-lg text-gray-600 max-w-3xl mx-auto">Một phân tích trực quan về 10 kênh kể chuyện hàng đầu, khám phá các chiến lược và phân khúc đã định hình nên sự thành công của họ.</p>
+        </header>
+
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div class="lg:col-span-3 bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-[#004AAD] mb-4">Bảng Xếp Hạng Các Titan: So Sánh Lượng Người Đăng Ký</h2>
+                <p class="text-gray-600 mb-6">Biểu đồ dưới đây so sánh quy mô của 10 kênh hàng đầu dựa trên lượng người đăng ký, cho thấy sự thống trị rõ rệt của các kênh thuộc lĩnh vực giải trí và khám phá. Đây là thước đo chính về tầm ảnh hưởng và quy mô thương hiệu trên nền tảng.</p>
+                <div class="chart-container" style="height: 500px; max-height: 70vh;">
+                    <canvas id="subscriberBarChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="md:col-span-2 lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                 <h2 class="text-2xl font-bold text-[#004AAD] mb-4">Các Mô Hình Thành Công Nổi Bật</h2>
+                <p class="text-gray-600 mb-6">Thành công trên YouTube Việt Nam không đến từ một công thức duy nhất. Phân tích cho thấy ba mô hình chiến lược cốt lõi đã giúp các kênh này vươn lên dẫn đầu, mỗi mô hình nhắm đến một nhu cầu khác nhau của khán giả.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                    <div class="bg-[#BBE1FF] bg-opacity-30 p-4 rounded-lg text-center">
+                        <div class="text-4xl mb-2">👤</div>
+                        <h3 class="font-bold text-[#004AAD]">Dựa trên Cá tính</h3>
+                        <p class="text-sm text-gray-700">Xây dựng đế chế xoay quanh cá tính chân thực và trải nghiệm độc đáo của người sáng tạo. (Khoa Pug, Challenge Me)</p>
+                    </div>
+                    <div class="bg-[#59AFFF] bg-opacity-30 p-4 rounded-lg text-center">
+                        <div class="text-4xl mb-2">🎓</div>
+                        <h3 class="font-bold text-[#004AAD]">Giáo dục & Giải trí</h3>
+                        <p class="text-sm text-gray-700">Biến các chủ đề học thuật phức tạp (lịch sử, xã hội) thành nội dung hấp dẫn, có tính điện ảnh. (Thanh Pahm, Spiderum)</p>
+                    </div>
+                    <div class="bg-[#0085FF] bg-opacity-30 p-4 rounded-lg text-center">
+                        <div class="text-4xl mb-2">🎯</div>
+                        <h3 class="font-bold text-[#004AAD]">Thống trị Phân khúc Hẹp</h3>
+                        <p class="text-sm text-gray-700">Trở thành nguồn thông tin hàng đầu cho một chủ đề rất cụ thể, tạo ra lượng khán giả trung thành. (VN Youtuber, EZ Sử)</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-[#004AAD] mb-4">Phân Bố Các Phân Khúc Nội Dung</h2>
+                 <p class="text-gray-600 mb-2">Lĩnh vực Lịch sử & Tri thức chiếm ưu thế trong top 10, cho thấy nhu cầu lớn của khán giả Việt đối với nội dung có chiều sâu và giá trị giáo dục.</p>
+                <div class="chart-container" style="height: 250px; max-height: 40vh;">
+                    <canvas id="nicheDonutChart"></canvas>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-3 bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                <h2 class="text-2xl font-bold text-[#004AAD] mb-4">Nghiên cứu Điển hình: "Bánh Đà Nội Dung" của Spiderum</h2>
+                <p class="text-gray-600 mb-8">Spiderum đã xây dựng một hệ sinh thái nội dung đa nền tảng cực kỳ hiệu quả. Mô hình này cho phép họ tối đa hóa giá trị từ mỗi bài viết, tạo ra một vòng lặp tăng trưởng tự duy trì giữa trang web và kênh YouTube, biến độc giả thành khán giả và ngược lại.</p>
+                <div class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 text-center">
+                    <div class="p-4 bg-gray-100 rounded-lg w-full md:w-auto">
+                        <h3 class="font-bold">1. Bài viết trên Web</h3>
+                        <p class="text-sm">Cộng đồng đóng góp bài viết trên Spiderum.com</p>
+                    </div>
+                    <div class="flowchart-arrow transform md:rotate-0 rotate-90">→</div>
+                    <div class="p-4 bg-gray-100 rounded-lg w-full md:w-auto">
+                        <h3 class="font-bold">2. Chuyển thể</h3>
+                        <p class="text-sm">Các bài viết nổi bật được chuyển thành kịch bản video</p>
+                    </div>
+                     <div class="flowchart-arrow transform md:rotate-0 rotate-90">→</div>
+                    <div class="p-4 bg-gray-100 rounded-lg w-full md:w-auto">
+                        <h3 class="font-bold">3. Video YouTube</h3>
+                        <p class="text-sm">Sản xuất video, thu hút lượng truy cập lớn</p>
+                    </div>
+                     <div class="flowchart-arrow transform md:rotate-0 rotate-90">→</div>
+                     <div class="p-4 bg-gray-100 rounded-lg w-full md:w-auto">
+                        <h3 class="font-bold">4. Dẫn Lượt truy cập</h3>
+                        <p class="text-sm">Video liên kết ngược lại bài viết gốc, hoàn thành vòng lặp</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="text-center mt-12 text-gray-500 text-sm">
+            <p>Phân tích dựa trên báo cáo "10 Kênh YouTube Kể chuyện bằng Hình ảnh có Lưu lượng Truy cập Cao nhất tại Việt Nam".</p>
+            <p>Dữ liệu về lượng người đăng ký được ước tính tại thời điểm phân tích.</p>
+        </footer>
+    </div>
+
+    <script>
+        function wrapLabel(label, maxWidth) {
+            if (typeof label !== 'string' || label.length <= maxWidth) {
+                return label;
+            }
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + word).length > maxWidth) {
+                    lines.push(currentLine.trim());
+                    currentLine = '';
+                }
+                currentLine += word + ' ';
+            }
+            lines.push(currentLine.trim());
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const sharedTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: '#004AAD',
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    padding: 10,
+                    cornerRadius: 8,
+                    displayColors: false,
+                }
+            }
+        };
+
+        const channelData = [
+            { name: "Khoa Pug", subs: 4.68, niche: "Du lịch & Khám phá" },
+            { name: "Challenge Me - Lê Hoàng Nam", subs: 4.26, niche: "Du lịch & Khám phá" },
+            { name: "Khoai Lang Thang", subs: 2.87, niche: "Du lịch & Khám phá" },
+            { name: "Dương FG", subs: 2.16, niche: "Trinh thám & Vụ án" },
+            { name: "Dòng Máu Việt", subs: 1.66, niche: "Lịch sử & Xã hội" },
+            { name: "Thanh Pahm", subs: 1.41, niche: "Lịch sử & Xã hội" },
+            { name: "Spiderum", subs: 1.05, niche: "Tri thức Đa lĩnh vực" },
+            { name: "VN Youtuber", subs: 0.84, niche: "Lịch sử & Xã hội" },
+            { name: "EZ Sử", subs: 0.53, niche: "Lịch sử & Xã hội" },
+            { name: "BATTLECRY - LỊCH SỬ THẾ GIỚI", subs: 0.43, niche: "Lịch sử & Xã hội" },
+        ].sort((a, b) => a.subs - b.subs);
+
+        const barChartLabels = channelData.map(c => wrapLabel(c.name, 16));
+        const barChartData = channelData.map(c => c.subs);
+        
+        const subscriberBarCtx = document.getElementById('subscriberBarChart').getContext('2d');
+        new Chart(subscriberBarCtx, {
+            type: 'bar',
+            data: {
+                labels: barChartLabels,
+                datasets: [{
+                    label: 'Số người đăng ký (triệu)',
+                    data: barChartData,
+                    backgroundColor: '#0085FF',
+                    borderColor: '#004AAD',
+                    borderWidth: 2,
+                    borderRadius: 8,
+                    borderSkipped: false,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                ...sharedTooltipOptions,
+                plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: {
+                        display: false
+                    },
+                },
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        grid: {
+                            color: '#e0e0e0',
+                            borderColor: '#e0e0e0',
+                        },
+                        ticks: {
+                           font: { weight: '600' }
+                        },
+                        title: {
+                            display: true,
+                            text: 'Triệu người đăng ký',
+                            font: { size: 14, weight: 'bold' }
+                        }
+                    },
+                    y: {
+                         grid: {
+                            display: false,
+                        },
+                        ticks: {
+                           font: { weight: '600' },
+                           color: '#333'
+                        }
+                    }
+                }
+            }
+        });
+
+        const nicheCounts = channelData.reduce((acc, channel) => {
+            const niche = channel.niche.includes('Lịch sử') || channel.niche.includes('Tri thức') ? 'Lịch sử & Tri thức' : 
+                          channel.niche.includes('Du lịch') ? 'Du lịch & Khám phá' : 'Trinh thám & Vụ án';
+            acc[niche] = (acc[niche] || 0) + 1;
+            return acc;
+        }, {});
+        
+        const nicheDonutCtx = document.getElementById('nicheDonutChart').getContext('2d');
+        new Chart(nicheDonutCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(nicheCounts),
+                datasets: [{
+                    data: Object.values(nicheCounts),
+                    backgroundColor: ['#004AAD', '#0085FF', '#59AFFF'],
+                    borderColor: '#F5F5F5',
+                    borderWidth: 4,
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                 ...sharedTooltipOptions,
+                 plugins: {
+                    ...sharedTooltipOptions.plugins,
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: {
+                                weight: '600'
+                            },
+                             boxWidth: 20,
+                             padding: 20
+                        }
+                    }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>
+
+</body>
+</html>
