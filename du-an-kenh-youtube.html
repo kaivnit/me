@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Kế hoạch Kênh YouTube Văn hóa Dân gian Việt Nam</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f8f9fa;
+            color: #343a40;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #D92525, #FFC700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .kpi-card {
+            background-color: #ffffff;
+            border-left: 5px solid #D92525;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .kpi-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 0.5rem;
+            left: -1rem;
+            width: 1.25rem;
+            height: 1.25rem;
+            background-color: #D92525;
+            border-radius: 9999px;
+            border: 4px solid #e9ecef;
+            z-index: 10;
+        }
+         .flowchart-step {
+            position: relative;
+            padding-right: 2.5rem;
+        }
+        .flowchart-step:not(:last-child)::after {
+            content: '→';
+            position: absolute;
+            right: 0.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2rem;
+            color: #adb5bd;
+        }
+         @media (max-width: 767px) {
+            .flowchart-step {
+                padding-right: 0;
+                padding-bottom: 2.5rem;
+            }
+            .flowchart-step:not(:last-child)::after {
+                content: '↓';
+                right: 50%;
+                top: auto;
+                bottom: 0.5rem;
+                transform: translateX(50%);
+            }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 
+    Infographic Plan Summary
+    Narrative: Visualize the strategic plan for a YouTube channel on Vietnamese folklore for an international audience, turning the provided plan document into an engaging, one-page infographic.
+    Structure:
+    1. Hero: Project title and mission statement.
+    2. The Opportunity: Visualizing the target audience and core content pillars.
+    3. Production Blueprint: Charting the recommended production model and workflow.
+    4. The Roadmap: A timeline illustrating the 3-phase growth plan.
+    5. The Business Model: A chart showing diversified revenue streams beyond AdSense.
+    6. Conclusion: A final inspiring thought.
+
+    Visualization Choices (NO SVG, NO Mermaid JS Confirmed):
+    - Key Mission Cards: Goal: Inform. Method: Styled HTML/CSS with Tailwind. Justification: Quickly conveys the project's core mission and audience. NO SVG.
+    - Content Pillars: Goal: Organize. Method: Styled HTML/CSS list. Justification: Clearly groups the main content categories. NO SVG.
+    - Production Workflow: Goal: Organize. Method: Flowchart using structured HTML/CSS with Tailwind. Justification: Visualizes a sequential process effectively without prohibited libraries. NO SVG.
+    - Monetization Streams: Goal: Compare/Composition. Method: Donut Chart (Chart.js/Canvas). Justification: Perfect for showing the proportional breakdown of revenue sources.
+    - Growth Roadmap: Goal: Show Change. Method: Timeline using structured HTML/CSS with Tailwind. Justification: The most intuitive way to represent a phased plan over time. NO SVG.
+    - All charts use Canvas rendering via Chart.js. All diagrams use structured HTML and Tailwind CSS.
+    
+    Color Palette Chosen: Energetic & Playful (Adapted to a Vietnamese theme)
+    - Red: #D92525 (Inspired by lacquer and national flag)
+    - Yellow: #FFC700 (Inspired by gold and imperial themes)
+    - Green: #34A853 (For positive actions/growth)
+    - Blue: #4D96FF (For professional/corporate elements)
+    - Background: #f8f9fa
+    - Text: #343a40
+    -->
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-16">
+            <h1 class="text-4xl md:text-6xl font-black mb-4"><span class="gradient-text">Dự Án Kênh YouTube</span></h1>
+            <p class="text-xl md:text-2xl font-bold text-gray-700">Văn Hóa Dân Gian Việt Nam</p>
+            <p class="text-lg text-gray-500 mt-2 max-w-3xl mx-auto">Trực quan hóa kế hoạch chiến lược: từ ý tưởng đến một thương hiệu văn hóa toàn cầu.</p>
+        </header>
+
+        <main class="space-y-16">
+
+            <section id="opportunity">
+                <h2 class="text-3xl font-bold text-center mb-4">Phần 1: Nắm Bắt Cơ Hội</h2>
+                <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">Kế hoạch bắt đầu bằng việc xác định một thị trường ngách đầy tiềm năng: chia sẻ chiều sâu văn hóa Việt Nam đến với bạn bè quốc tế, những người đang tìm kiếm nội dung chân thực và có giá trị.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="kpi-card p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Đối tượng Mục tiêu</h3>
+                        <p class="text-5xl mb-3">🌍</p>
+                        <p class="text-gray-600">Người nước ngoài yêu văn hóa, du lịch, lịch sử và người Việt xa xứ muốn tìm về cội nguồn.</p>
+                    </div>
+                    <div class="kpi-card p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Ngôn ngữ & Tiếp cận</h3>
+                        <p class="text-5xl mb-3">🇬🇧</p>
+                        <p class="text-gray-600">Tiếng Anh là ngôn ngữ chính, với phụ đề tiếng Việt để kết nối cộng đồng và hỗ trợ học tập.</p>
+                    </div>
+                    <div class="kpi-card p-6 rounded-lg shadow-md">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">Sứ mệnh Cốt lõi</h3>
+                        <p class="text-5xl mb-3">🧬</p>
+                        <p class="text-gray-600">"Giải mã DNA văn hóa Việt Nam" - "Decoding Vietnam's cultural DNA."</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="blueprint">
+                 <h2 class="text-3xl font-bold text-center mb-4">Phần 2: Bản Vẽ Sản Xuất</h2>
+                <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">Để tạo ra nội dung độc đáo và chất lượng, kế hoạch đề xuất một quy trình sản xuất thông minh, cân bằng giữa chi phí, hiệu quả và bản sắc nghệ thuật riêng biệt.</p>
+
+                <div class="bg-white p-8 rounded-lg shadow-xl">
+                    <h3 class="text-2xl font-bold text-center mb-6">Quy Trình Sản Xuất Một Video</h3>
+                    <div class="flex flex-col md:flex-row justify-center items-center text-center">
+                        <div class="flowchart-step p-4 flex-1">
+                            <p class="text-4xl mb-2">📜</p>
+                            <h4 class="font-bold">Viết Kịch bản</h4>
+                            <p class="text-sm text-gray-500">Cấu trúc chặt chẽ</p>
+                        </div>
+                        <div class="flowchart-step p-4 flex-1">
+                            <p class="text-4xl mb-2">🎙️</p>
+                            <h4 class="font-bold">Thu âm Giọng kể</h4>
+                            <p class="text-sm text-gray-500">Chất lượng âm thanh là VUA</p>
+                        </div>
+                        <div class="flowchart-step p-4 flex-1">
+                            <p class="text-4xl mb-2">🎨</p>
+                            <h4 class="font-bold">Tạo Hình ảnh</h4>
+                            <p class="text-sm text-gray-500">Minh họa độc quyền</p>
+                        </div>
+                        <div class="flowchart-step p-4 flex-1">
+                            <p class="text-4xl mb-2">🎬</p>
+                            <h4 class="font-bold">Dựng phim</h4>
+                            <p class="text-sm text-gray-500">Thêm hiệu ứng, nhạc nền</p>
+                        </div>
+                         <div class="flowchart-step p-4 flex-1">
+                            <p class="text-4xl mb-2">📝</p>
+                            <h4 class="font-bold">Làm Phụ đề</h4>
+                            <p class="text-sm text-gray-500">Tiếng Anh & Tiếng Việt</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="roadmap">
+                <h2 class="text-3xl font-bold text-center mb-4">Phần 3: Lộ Trình Tới Thành Công</h2>
+                <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">Thành công không đến trong một sớm một chiều. Kế hoạch vạch ra một lộ trình phát triển qua 3 giai đoạn, từ xây dựng nền móng, tối ưu hóa đến tăng tốc mở rộng.</p>
+
+                <div class="relative pl-8 border-l-4 border-dashed border-gray-300">
+                    <div class="mb-12 relative timeline-item">
+                        <div class="p-6 bg-white rounded-lg border-l-4 border-[#4D96FF] shadow-md">
+                            <span class="font-bold text-sm text-white bg-[#4D96FF] px-3 py-1 rounded-full">GIAI ĐOẠN 1 (0-6 tháng)</span>
+                            <h3 class="text-2xl font-bold my-2">Nền Tảng & Thử Nghiệm</h3>
+                            <p class="text-gray-600">Tập trung sản xuất đều đặn (1 video/tuần) để xây dựng thư viện nội dung ban đầu và thu thập phản hồi, định hình phong cách.</p>
+                        </div>
+                    </div>
+                    <div class="mb-12 relative timeline-item">
+                        <div class="p-6 bg-white rounded-lg border-l-4 border-[#34A853] shadow-md">
+                             <span class="font-bold text-sm text-white bg-[#34A853] px-3 py-1 rounded-full">GIAI ĐOẠN 2 (6-18 tháng)</span>
+                            <h3 class="text-2xl font-bold my-2">Tối Ưu Hóa & Mở Rộng</h3>
+                            <p class="text-gray-600">Phân tích dữ liệu để tối ưu hóa nội dung, xây dựng thương hiệu cá nhân và bắt đầu các hình thức kiếm tiền đơn giản như tiếp thị liên kết.</p>
+                        </div>
+                    </div>
+                    <div class="relative timeline-item">
+                       <div class="p-6 bg-white rounded-lg border-l-4 border-[#FFC700] shadow-md">
+                             <span class="font-bold text-sm text-white bg-[#FFC700] px-3 py-1 rounded-full">GIAI ĐOẠN 3 (18+ tháng)</span>
+                            <h3 class="text-2xl font-bold my-2">Tăng Tốc & Khai Thác IP</h3>
+                            <p class="text-gray-600">Tái đầu tư nâng cấp sản xuất, hợp tác quảng bá chéo, tìm kiếm nhà tài trợ và phát triển kênh thành một tài sản trí tuệ (IP) có giá trị.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="monetization">
+                 <h2 class="text-3xl font-bold text-center mb-4">Phần 4: Mô Hình Kinh Doanh Bền Vững</h2>
+                <p class="text-center text-gray-600 mb-10 max-w-2xl mx-auto">Để phát triển dài hạn và không phụ thuộc vào một nguồn thu duy nhất, kế hoạch đề xuất một mô hình kinh doanh đa dạng hóa, biến kênh thành một thương hiệu thực thụ.</p>
+                <div class="bg-white p-6 md:p-8 rounded-lg shadow-xl grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="chart-container h-[300px] md:h-[350px]">
+                        <canvas id="monetizationChart"></canvas>
+                    </div>
+                    <div class="text-gray-700">
+                        <h3 class="text-2xl font-bold mb-4">Các Nguồn Doanh Thu Chiến Lược</h3>
+                        <p class="mb-4">Mục tiêu là giảm sự phụ thuộc vào quảng cáo (AdSense) và xây dựng các nguồn thu nhập ổn định hơn từ chính cộng đồng và giá trị thương hiệu.</p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><span class="w-3 h-3 rounded-full mt-1.5 mr-3" style="background-color: #34A853;"></span><strong>Tài trợ (Sponsorships):</strong> Hợp tác với các nhãn hàng du lịch, giáo dục.</li>
+                            <li class="flex items-start"><span class="w-3 h-3 rounded-full mt-1.5 mr-3" style="background-color: #4D96FF;"></span><strong>Hội viên/Quyên góp (Patreon):</strong> Cung cấp nội dung độc quyền cho người hâm mộ.</li>
+                             <li class="flex items-start"><span class="w-3 h-3 rounded-full mt-1.5 mr-3" style="background-color: #D92525;"></span><strong>Quảng cáo (AdSense):</strong> Nguồn thu cơ bản từ YouTube.</li>
+                            <li class="flex items-start"><span class="w-3 h-3 rounded-full mt-1.5 mr-3" style="background-color: #FFC700;"></span><strong>Tiếp thị Liên kết:</strong> Giới thiệu sách, sản phẩm văn hóa liên quan.</li>
+                            <li class="flex items-start"><span class="w-3 h-3 rounded-full mt-1.5 mr-3" style="background-color: #6c757d;"></span><strong>Sản phẩm riêng (Merch/IP):</strong> Mục tiêu dài hạn với sách, tour, vật phẩm.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-16">
+            <p class="text-lg font-bold">Kế hoạch đã sẵn sàng. Hành trình bắt đầu!</p>
+        </footer>
+
+    </div>
+
+<script>
+    function wrapLabel(label, maxLength = 16) {
+        if (typeof label !== 'string' || label.length <= maxLength) {
+            return label;
+        }
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLength && currentLine.length > 0) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) {
+            lines.push(currentLine.trim());
+        }
+        return lines;
+    }
+    
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(' ');
+        }
+        return label;
+    };
+    
+    const chartFont = {
+        family: 'Be Vietnam Pro',
+    };
+
+    const monetizationCtx = document.getElementById('monetizationChart').getContext('2d');
+    new Chart(monetizationCtx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                'Tài trợ', 
+                wrapLabel('Hội viên/Quyên góp'), 
+                'Quảng cáo', 
+                wrapLabel('Tiếp thị Liên kết'), 
+                wrapLabel('Sản phẩm riêng (IP)')
+            ],
+            datasets: [{
+                label: 'Phân bổ Doanh thu Mục tiêu',
+                data: [30, 25, 20, 15, 10],
+                backgroundColor: [
+                    '#34A853',
+                    '#4D96FF',
+                    '#D92525',
+                    '#FFC700',
+                    '#6c757d'
+                ],
+                borderColor: '#f8f9fa',
+                borderWidth: 4,
+                hoverBorderWidth: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                tooltip: {
+                    backgroundColor: '#343a40',
+                    titleFont: { ...chartFont, size: 14 },
+                    bodyFont: { ...chartFont, size: 12 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    callbacks: {
+                        title: tooltipTitleCallback,
+                        label: function(context) {
+                            let label = context.dataset.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed !== null) {
+                                label += context.parsed + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
