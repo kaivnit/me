@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Chiến lược Xây dựng Kênh YouTube Kể chuyện Thiếu nhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            scroll-behavior: smooth;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #4285F4, #34A853);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+        .kpi-card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            top: 1.25rem;
+            left: -0.5rem;
+            width: 1rem;
+            height: 1rem;
+            background-color: #4285F4;
+            border-radius: 9999px;
+            border: 2px solid #F4F4F4;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="bg-[#F4F4F4] text-[#434343]">
+
+    <!-- 
+    Infographic Plan Summary
+    Narrative: Guide a creator from understanding the market to building a sustainable YouTube kids' channel, based on the provided report.
+    Structure: 
+    1. Hero: Title & Intro - The opportunity.
+    2. The Market: Potential vs. Challenges (COPPA).
+    3. Competitor Landscape: Chart comparing top channels.
+    4. Production Strategy: Cost comparison chart and model recommendations.
+    5. Business Model: Diagram of diversified revenue streams beyond AdSense.
+    6. Roadmap to Success: A 3-phase timeline.
+    7. Conclusion: Final strategic takeaway.
+
+    Visualization Choices (NO SVG, NO Mermaid JS Confirmed):
+    - Competitor Subscribers: Bar Chart (Chart.js) - Goal: Compare. Justification: Best for comparing values across categories.
+    - Production Costs: Bar Chart (Chart.js) - Goal: Compare. Justification: Clearly shows cost differences between production tiers.
+    - Revenue Streams: Flowchart (HTML/CSS/Tailwind) - Goal: Organize. Justification: Visualizes the relationship between the channel and various income sources without using prohibited libraries.
+    - Development Roadmap: Timeline (HTML/CSS/Tailwind) - Goal: Show Change. Justification: Effectively represents a process over time.
+    - All charts use Canvas rendering via Chart.js. All diagrams use structured HTML and Tailwind CSS.
+
+    Color Palette Chosen: Energetic & Playful
+    - Blue: #4285F4
+    - Green: #34A853
+    - Yellow: #FFC700
+    - Red: #EA4335
+    - Background: #F4F4F4
+    - Text: #434343
+    -->
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <!-- Header Section -->
+        <header class="text-center mb-12 md:mb-16">
+            <h1 class="text-4xl md:text-6xl font-black mb-4"><span class="gradient-text">Xây Dựng Kênh Kể Chuyện Thiếu Nhi</span></h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">Một bản đồ họa thông tin toàn diện, phân tích chiến lược để thành công trên YouTube, từ thị trường, sản xuất đến mô hình kinh doanh bền vững.</p>
+        </header>
+
+        <!-- Main Grid -->
+        <main class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <!-- Market Potential & Challenges -->
+            <section class="lg:col-span-3 grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-center items-center text-center">
+                    <h2 class="text-2xl font-bold mb-3">Thị Trường Tiềm Năng</h2>
+                    <p class="text-6xl font-black text-[#34A853] mb-4">Hàng Tỷ</p>
+                    <p class="text-gray-600">Lượt xem là con số mà các kênh thiếu nhi hàng đầu có thể đạt được. Khả năng xem lại (replayability) cao và sự tin tưởng của phụ huynh là chìa khóa vàng.</p>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold mb-4 text-center">Thách Thức: Luật COPPA</h2>
+                    <p class="text-gray-600 mb-4">YouTube áp dụng chính sách "Dành cho trẻ em" (Made for Kids) với nhiều hạn chế quan trọng. Điều này buộc các nhà sáng tạo phải tư duy kinh doanh vượt ra ngoài quảng cáo.</p>
+                    <ul class="space-y-3">
+                        <li class="flex items-center"><span class="text-2xl mr-4">🚫</span><span class="font-semibold text-[#EA4335]">Tắt quảng cáo cá nhân hóa:</span> Giảm đáng kể doanh thu (RPM).</li>
+                        <li class="flex items-center"><span class="text-2xl mr-4">🚫</span><span class="font-semibold text-[#EA4335]">Tắt tính năng bình luận:</span> Hạn chế tương tác trực tiếp với cộng đồng.</li>
+                        <li class="flex items-center"><span class="text-2xl mr-4">🚫</span><span class="font-semibold text-[#EA4335]">Tắt tính năng hội viên:</span> Không thể tạo gói thành viên trả phí trên YouTube.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Competitor Landscape -->
+            <section class="lg:col-span-3 bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Bản Đồ Cạnh Tranh</h2>
+                <p class="text-center text-gray-600 mb-6">So sánh lượng người đăng ký (ước tính) của các kênh kể chuyện thiếu nhi hàng đầu. Thị trường có sự phân hóa rõ rệt giữa các "ông lớn" và các kênh đang phát triển.</p>
+                <div class="chart-container h-[450px] md:h-[500px]">
+                    <canvas id="competitorChart"></canvas>
+                </div>
+                <p class="text-center text-sm text-gray-500 mt-4">Phân tích cho thấy một khoảng trống cho các kênh chuyên về truyện cổ tích nước ngoài chất lượng cao tại Việt Nam.</p>
+            </section>
+
+            <!-- Production Strategy -->
+            <section class="md:col-span-2 lg:col-span-2 bg-white rounded-2xl shadow-lg p-6">
+                 <h2 class="text-3xl font-bold text-center mb-2">Chiến Lược Sản Xuất</h2>
+                <p class="text-center text-gray-600 mb-6">Chi phí sản xuất mỗi phút video hoạt hình là yếu tố quyết định. Lựa chọn mô hình phù hợp là chìa khóa để cân bằng giữa chất lượng và ngân sách.</p>
+                <div class="chart-container h-[400px]">
+                    <canvas id="costChart"></canvas>
+                </div>
+            </section>
+            
+            <section class="flex flex-col gap-y-8">
+                <div class="bg-white rounded-2xl shadow-lg p-6 h-full flex flex-col">
+                    <h3 class="text-xl font-bold mb-3">Mô Hình Đề Xuất</h3>
+                    <p class="font-semibold text-[#34A853] mb-2">🎨 Minh họa Kỹ thuật số có Hiệu ứng</p>
+                    <p class="text-gray-600 flex-grow">Đây là hướng đi cân bằng nhất: thuê họa sĩ vẽ các cảnh chính, sau đó dùng phần mềm tạo hiệu ứng chuyển động đơn giản (pan, zoom). Cách này giúp tạo phong cách độc đáo, kiểm soát bản quyền và tiết kiệm chi phí so với làm hoạt hình đầy đủ.</p>
+                </div>
+                 <div class="bg-white rounded-2xl shadow-lg p-6 h-full flex flex-col">
+                    <h3 class="text-xl font-bold mb-3">Công Cụ Khởi Đầu</h3>
+                    <p class="font-semibold text-[#4285F4] mb-2">🚀 Adobe Animate</p>
+                    <p class="text-gray-600 flex-grow">Là lựa chọn hợp lý cho nhà sáng tạo độc lập, cân bằng giữa sức mạnh, chi phí và khả năng tích hợp với hệ sinh thái Adobe. Dễ tiếp cận hơn so với Toon Boom Harmony nhưng vẫn đủ mạnh mẽ để tạo sản phẩm chuyên nghiệp.</p>
+                </div>
+            </section>
+
+            <!-- Business Model -->
+            <section class="lg:col-span-3 bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-3xl font-bold text-center mb-2">Mô Hình Kinh Doanh Bền Vững</h2>
+                <p class="text-center text-gray-600 mb-8">Doanh thu từ quảng cáo (AdSense) rất thấp. Thành công dài hạn đòi hỏi phải đa dạng hóa nguồn thu nhập.</p>
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 text-center">
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 bg-[#f4f4f4] rounded-full flex items-center justify-center text-4xl mb-3 border-2 border-[#4285F4]">👕</div>
+                        <h4 class="font-bold">Bán Vật Phẩm</h4>
+                        <p class="text-sm text-gray-600">(Merchandise)</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 bg-[#f4f4f4] rounded-full flex items-center justify-center text-4xl mb-3 border-2 border-[#34A853]">🤝</div>
+                        <h4 class="font-bold">Tài Trợ</h4>
+                        <p class="text-sm text-gray-600">(Sponsorships)</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 bg-[#f4f4f4] rounded-full flex items-center justify-center text-4xl mb-3 border-2 border-[#FFC700]">🔗</div>
+                        <h4 class="font-bold">Tiếp Thị Liên Kết</h4>
+                        <p class="text-sm text-gray-600">(Affiliate)</p>
+                    </div>
+                     <div class="flex flex-col items-center">
+                        <div class="w-20 h-20 bg-[#f4f4f4] rounded-full flex items-center justify-center text-4xl mb-3 border-2 border-[#EA4335]">❤️</div>
+                        <h4 class="font-bold">Quyên Góp</h4>
+                        <p class="text-sm text-gray-600">(Patreon, Ko-fi)</p>
+                    </div>
+                     <div class="flex flex-col items-center col-span-2 md:col-span-1 lg:col-span-1">
+                        <div class="w-20 h-20 bg-[#f4f4f4] rounded-full flex items-center justify-center text-4xl mb-3 border-2 border-gray-500">📱</div>
+                        <h4 class="font-bold">Ứng Dụng Riêng</h4>
+                        <p class="text-sm text-gray-600">(SVOD/OTT)</p>
+                    </div>
+                </div>
+                 <p class="text-center text-gray-600 mt-8 font-semibold">Tư duy dài hạn: Kênh YouTube là vườn ươm, Tài sản Trí tuệ (IP) mới là giá trị cốt lõi.</p>
+            </section>
+
+            <!-- Roadmap to Success -->
+            <section class="lg:col-span-3 bg-white rounded-2xl shadow-lg p-6">
+                <h2 class="text-3xl font-bold text-center mb-8">Lộ Trình Phát Triển Kênh</h2>
+                <div class="relative pl-8 border-l-4 border-dashed border-gray-300">
+                    <!-- Phase 1 -->
+                    <div class="mb-12 relative timeline-item">
+                        <div class="p-6 bg-blue-50 rounded-lg border border-blue-200">
+                            <span class="font-bold text-sm text-[#4285F4] bg-blue-100 px-3 py-1 rounded-full">GIAI ĐOẠN 1 (0-6 tháng)</span>
+                            <h3 class="text-2xl font-bold my-2">Nền Tảng & Thử Nghiệm</h3>
+                            <p class="text-gray-600 mb-4">Tập trung vào sản xuất nội dung đều đặn và xây dựng thư viện ban đầu. Ưu tiên chất lượng audio.</p>
+                            <p class="font-semibold">🎯 <span class="font-normal">Mục tiêu: Xuất bản 1 video/tuần, thu thập phản hồi đầu tiên.</span></p>
+                        </div>
+                    </div>
+                    <!-- Phase 2 -->
+                    <div class="mb-12 relative timeline-item">
+                        <div class="p-6 bg-green-50 rounded-lg border border-green-200">
+                             <span class="font-bold text-sm text-[#34A853] bg-green-100 px-3 py-1 rounded-full">GIAI ĐOẠN 2 (6-18 tháng)</span>
+                            <h3 class="text-2xl font-bold my-2">Tối Ưu Hóa & Mở Rộng</h3>
+                            <p class="text-gray-600 mb-4">Phân tích dữ liệu để tối ưu nội dung. Xây dựng nhân vật/linh vật thương hiệu. Bắt đầu các hình thức kinh doanh đơn giản (tiếp thị liên kết).</p>
+                             <p class="font-semibold">🎯 <span class="font-normal">Mục tiêu: Đạt 10.000 người đăng ký, định hình bản sắc thương hiệu.</span></p>
+                        </div>
+                    </div>
+                    <!-- Phase 3 -->
+                    <div class="relative timeline-item">
+                       <div class="p-6 bg-yellow-50 rounded-lg border border-yellow-200">
+                             <span class="font-bold text-sm text-[#FFC700] bg-yellow-100 px-3 py-1 rounded-full">GIAI ĐOẠN 3 (18+ tháng)</span>
+                            <h3 class="text-2xl font-bold my-2">Tăng Tốc & Khai Thác IP</h3>
+                            <p class="text-gray-600 mb-4">Tái đầu tư nâng cấp sản xuất. Hợp tác quảng bá chéo. Tìm kiếm nhà tài trợ và phát triển vật phẩm.</p>
+                             <p class="font-semibold">🎯 <span class="font-normal">Mục tiêu: Trở thành kênh hàng đầu, xây dựng hồ sơ Tài sản Trí tuệ (IP).</span></p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+    function wrapLabel(label, maxLength = 16) {
+        if (label.length <= maxLength) {
+            return label;
+        }
+
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+
+        words.forEach(word => {
+            if ((currentLine + ' ' + word).trim().length > maxLength) {
+                lines.push(currentLine.trim());
+                currentLine = word;
+            } else {
+                currentLine = (currentLine + ' ' + word).trim();
+            }
+        });
+        if (currentLine) {
+            lines.push(currentLine.trim());
+        }
+        return lines;
+    }
+
+    const tooltipTitleCallback = (tooltipItems) => {
+        const item = tooltipItems[0];
+        let label = item.chart.data.labels[item.dataIndex];
+        if (Array.isArray(label)) {
+          return label.join(' ');
+        }
+        return label;
+    };
+    
+    const sharedChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                backgroundColor: '#434343',
+                titleFont: {
+                    size: 14,
+                    family: 'Be Vietnam Pro',
+                },
+                bodyFont: {
+                    size: 12,
+                    family: 'Be Vietnam Pro',
+                },
+                padding: 10,
+                cornerRadius: 8,
+                callbacks: {
+                    title: tooltipTitleCallback
+                }
+            }
+        },
+        scales: {
+            x: {
+                ticks: {
+                    font: {
+                        family: 'Be Vietnam Pro',
+                        size: 10
+                    },
+                    color: '#6b7280'
+                },
+                grid: {
+                    display: false
+                }
+            },
+            y: {
+                beginAtZero: true,
+                ticks: {
+                     font: {
+                        family: 'Be Vietnam Pro'
+                    },
+                    color: '#6b7280'
+                }
+            }
+        }
+    };
+
+
+    // Competitor Chart
+    const competitorCtx = document.getElementById('competitorChart').getContext('2d');
+    const competitorLabels = [
+        'ChuChuTV Storytime', 'English Fairy Tales', 'T-Series Kids Hut', 
+        'Fairy Tales and Stories...', 'WOA Fairy Tales', 'Little Fox', 
+        'Vietnamese Fairy Tales', 'StoryTime at Awnie\'s House', 'Kể Bé Nghe'
+    ];
+    new Chart(competitorCtx, {
+        type: 'bar',
+        data: {
+            labels: competitorLabels.map(l => wrapLabel(l)),
+            datasets: [{
+                label: 'Lượng đăng ký (triệu)',
+                data: [5.4, 4.0, 3.5, 2.7, 2.5, 2.3, 1.8, 0.5, 0.055],
+                backgroundColor: [
+                    '#4285F4', '#34A853', '#FFC700', '#EA4335', '#9333ea', 
+                    '#f97316', '#14b8a6', '#64748b', '#ec4899'
+                ],
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            ...sharedChartOptions,
+            scales: {
+                 ...sharedChartOptions.scales,
+                y: {
+                    ...sharedChartOptions.scales.y,
+                    title: {
+                        display: true,
+                        text: 'Lượt đăng ký (triệu)',
+                        font: { family: 'Be Vietnam Pro' }
+                    }
+                }
+            }
+        }
+    });
+
+    // Cost Chart
+    const costCtx = document.getElementById('costChart').getContext('2d');
+    const costLabels = ['Cơ bản (Minh họa + Hiệu ứng)', 'Tầm trung (Hoạt hình 2D)', 'Chuyên nghiệp (2D/3D Cao cấp)'];
+    new Chart(costCtx, {
+        type: 'bar',
+        data: {
+            labels: costLabels.map(l => wrapLabel(l, 20)),
+            datasets: [{
+                label: 'Chi phí ước tính tối đa/phút (USD)',
+                data: [2000, 7000, 25000],
+                backgroundColor: ['#34A853', '#FFC700', '#EA4335'],
+                borderRadius: 6,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+             ...sharedChartOptions,
+             indexAxis: 'y',
+             scales: {
+                x: {
+                   ...sharedChartOptions.scales.x,
+                    title: {
+                        display: true,
+                        text: 'Chi phí / phút (USD)',
+                        font: { family: 'Be Vietnam Pro' }
+                    },
+                    ticks: {
+                        callback: function(value) {
+                            return '$' + (value / 1000) + 'k';
+                        }
+                    }
+                },
+                 y: {
+                    ...sharedChartOptions.scales.y,
+                     ticks: {
+                        ...sharedChartOptions.scales.y.ticks,
+                        font: { size: 11 }
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
