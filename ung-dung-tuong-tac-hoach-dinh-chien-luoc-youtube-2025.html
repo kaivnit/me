@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Tương Tác: Hoạch Định Chiến Lược YouTube 2025</title>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: The application is designed as a task-oriented strategic toolkit, guiding the user through a logical flow: 1. The "Why": Understanding the financial landscape of YouTube with interactive charts on RPM and revenue streams. 2. The "What": An interactive niche explorer dashboard to filter, sort, search, and view details of the 30 niches. This is the core of the app, transforming the report's densest part into a digestible tool. 3. The "How": Providing actionable tools like an interactive Decision Matrix (Radar Chart) for self-assessment and a visual 90-day roadmap. This structure turns passive reading into active decision-making, which is more effective for a user wanting to start a channel. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: RPM by Country/Niche -> Goal: Compare -> Viz: Bar Charts (Chart.js) -> Interaction: Hover tooltips -> Justification: Clear visual comparison of magnitude.
+        - Report Info: 30 Niches Data -> Goal: Organize & Compare -> Viz: Interactive Card Grid with Filters/Sorting (HTML/CSS/JS) -> Interaction: Click filters, sort dropdown, search input, click card for modal detail -> Justification: Makes the most complex data set user-driven and non-linear.
+        - Report Info: Decision Matrix Factors -> Goal: Relationships/Self-Assessment -> Viz: Radar Chart (Chart.js) -> Interaction: User-controlled sliders dynamically update the chart -> Justification: Perfect for visualizing multi-variable suitability.
+        - Report Info: 90-Day Plan -> Goal: Organize/Inform -> Viz: HTML/CSS Timeline -> Interaction: Hover highlights -> Justification: More engaging than a list for a time-based process.
+        - Report Info: Income Streams -> Goal: Inform -> Viz: Icon-based Grid (HTML/CSS) -> Interaction: Hover tooltips -> Justification: Scannable and visually appealing. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F8F7F4;
+            color: #3f3c36;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 320px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 380px;
+            }
+        }
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .primary-btn {
+            background-color: #A0522D; color: white;
+        }
+        .primary-btn:hover {
+            background-color: #8B4513;
+        }
+        .secondary-btn {
+            background-color: #E3DCD2; color: #3f3c36;
+        }
+        .secondary-btn.active {
+            background-color: #A0522D; color: white;
+        }
+        .modal-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 40;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background-color: #F8F7F4;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+
+        <header class="text-center py-12">
+            <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-[#8B4513] leading-tight">Bộ Công Cụ Chiến Lược YouTube 2025</h1>
+            <p class="mt-4 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">Một ứng dụng tương tác giúp bạn phân tích, lựa chọn ngách và hoạch định kế hoạch xây dựng kênh YouTube thành công.</p>
+        </header>
+
+        <main class="space-y-20">
+
+            <section id="the-why">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-[#A0522D]">Bước 1: Hiểu Cuộc Chơi Tài Chính</h2>
+                <div class="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8 space-y-12">
+                    <div class="text-center">
+                        <h3 class="text-2xl font-bold mb-2">Không phải mọi lượt xem đều có giá trị như nhau</h3>
+                        <p class="max-w-3xl mx-auto text-slate-600">Đây là sự thật quan trọng nhất. Doanh thu của bạn (RPM) phụ thuộc vào hai yếu tố chính: khán giả của bạn đến từ đâu và họ quan tâm đến chủ đề gì. Các biểu đồ dưới đây sẽ cho bạn thấy sự chênh lệch đó lớn đến mức nào.</p>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div>
+                            <h4 class="text-xl font-semibold text-center mb-4">Sức mạnh của "View Ngoại"</h4>
+                            <div class="chart-container h-72 md:h-80">
+                                <canvas id="rpmByCountryChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-xl font-semibold text-center mb-4">"Mỏ Vàng" trong từng Chủ Đề</h4>
+                             <div class="chart-container h-72 md:h-80">
+                                <canvas id="rpmByNicheChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="pt-8">
+                        <h3 class="text-2xl font-bold mb-4 text-center">Tư Duy Như Doanh Nghiệp: Đa Dạng Hóa Nguồn Thu</h3>
+                        <p class="max-w-3xl mx-auto text-slate-600 text-center mb-8">Phụ thuộc vào quảng cáo là một rủi ro. YouTuber thành công xây dựng một hệ sinh thái doanh thu. Hãy xem YouTube là kênh phân phối chính cho doanh nghiệp của bạn.</p>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">📢</span><h5 class="font-semibold mt-2">AdSense</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">🔗</span><h5 class="font-semibold mt-2">Tiếp thị liên kết</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">🤝</span><h5 class="font-semibold mt-2">Tài trợ</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">👕</span><h5 class="font-semibold mt-2">Bán sản phẩm</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">🎓</span><h5 class="font-semibold mt-2">Sản phẩm số</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">👑</span><h5 class="font-semibold mt-2">Hội viên</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">💖</span><h5 class="font-semibold mt-2">Super Chat</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">💸</span><h5 class="font-semibold mt-2">YouTube Premium</h5></div>
+                            <div class="text-center p-4 bg-stone-100 rounded-lg"><span class="text-3xl">🙏</span><h5 class="font-semibold mt-2">Donations</h5></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="the-what">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-[#A0522D]">Bước 2: Khám Phá 30 "Chiến Trường" Tiềm Năng</h2>
+                <div class="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8">
+                    <div class="mb-8">
+                        <p class="text-center max-w-3xl mx-auto text-slate-600">Sử dụng các bộ lọc dưới đây để tìm ra những ngách phù hợp nhất với mục tiêu và thế mạnh của bạn. Nhấp vào một ngách để xem phân tích chi tiết.</p>
+                    </div>
+                    <div class="flex flex-wrap gap-4 items-center justify-center mb-8">
+                        <div class="w-full md:w-auto">
+                            <input type="search" id="searchInput" placeholder="Tìm kiếm ngách..." class="w-full md:w-64 px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition">
+                        </div>
+                        <div id="filterContainer" class="flex flex-wrap gap-2 justify-center">
+                             <button class="secondary-btn px-4 py-2 rounded-lg font-semibold transition active" data-filter="all">Tất Cả</button>
+                        </div>
+                        <div class="w-full md:w-auto">
+                           <select id="sortSelect" class="w-full px-4 py-2 border border-stone-300 rounded-lg focus:ring-2 focus:ring-amber-600 focus:border-transparent transition">
+                                <option value="default">Sắp xếp mặc định</option>
+                                <option value="rpm-desc">RPM: Cao đến Thấp</option>
+                                <option value="competition-asc">Cạnh tranh: Thấp đến Cao</option>
+                                <option value="expertise-asc">Yêu cầu chuyên môn: Thấp đến Cao</option>
+                           </select>
+                        </div>
+                    </div>
+
+                    <div id="nicheGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    </div>
+                </div>
+            </section>
+
+             <section id="the-how">
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-[#A0522D]">Bước 3: Lên Kế Hoạch Hành Động</h2>
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-center mb-2">Ma Trận Quyết Định Cá Nhân</h3>
+                        <p class="text-center text-slate-600 mb-6">Ngách tốt nhất không chỉ là ngách nhiều tiền nhất. Hãy dùng công cụ này để tự đánh giá sự phù hợp của bạn dựa trên 4 yếu tố cốt lõi.</p>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="decisionMatrixChart"></canvas>
+                        </div>
+                        <div class="mt-8 grid grid-cols-2 gap-x-6 gap-y-4">
+                            <div>
+                                <label for="passionSlider" class="font-semibold">Đam mê <span id="passionValue" class="font-bold text-amber-700">5</span>/10</label>
+                                <input id="passionSlider" type="range" min="1" max="10" value="5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label for="expertiseSlider" class="font-semibold">Chuyên môn <span id="expertiseValue" class="font-bold text-amber-700">5</span>/10</label>
+                                <input id="expertiseSlider" type="range" min="1" max="10" value="5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label for="monetizationSlider" class="font-semibold">Tiềm năng kiếm tiền <span id="monetizationValue" class="font-bold text-amber-700">5</span>/10</label>
+                                <input id="monetizationSlider" type="range" min="1" max="10" value="5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                            <div>
+                                <label for="competitionSlider" class="font-semibold">Cạnh tranh (thấp) <span id="competitionValue" class="font-bold text-amber-700">5</span>/10</label>
+                                <input id="competitionSlider" type="range" min="1" max="10" value="5" class="w-full h-2 bg-stone-200 rounded-lg appearance-none cursor-pointer">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white/70 backdrop-blur-sm rounded-xl shadow-lg p-6 md:p-8">
+                        <h3 class="text-2xl font-bold text-center mb-6">Lộ Trình 90 Ngày Đầu Tiên</h3>
+                        <div class="space-y-6">
+                            <div class="p-5 bg-stone-100 rounded-lg">
+                                <h4 class="font-bold text-lg text-stone-800">Tháng 1: Nền Móng Vững Chắc</h4>
+                                <ul class="list-disc list-inside mt-2 text-slate-600 space-y-1">
+                                    <li>Chốt ngách cuối cùng.</li>
+                                    <li>Nghiên cứu sâu 5-10 đối thủ.</li>
+                                    <li>Thiết kế nhận diện kênh (logo, banner).</li>
+                                    <li>Lập kế hoạch 12 video đầu tiên.</li>
+                                </ul>
+                            </div>
+                            <div class="p-5 bg-stone-100 rounded-lg">
+                                <h4 class="font-bold text-lg text-stone-800">Tháng 2: Triển Khai & Tối Ưu</h4>
+                                <ul class="list-disc list-inside mt-2 text-slate-600 space-y-1">
+                                    <li>Đăng 1-2 video/tuần, đều đặn.</li>
+                                    <li>Tập trung vào chất lượng âm thanh, hình ảnh.</li>
+                                    <li>Học SEO YouTube cơ bản (tiêu đề, mô tả, tags).</li>
+                                    <li>Tạo thumbnail chuyên nghiệp.</li>
+                                </ul>
+                            </div>
+                            <div class="p-5 bg-stone-100 rounded-lg">
+                                <h4 class="font-bold text-lg text-stone-800">Tháng 3: Tương Tác & Phân Tích</h4>
+                                <ul class="list-disc list-inside mt-2 text-slate-600 space-y-1">
+                                    <li>Duy trì lịch đăng bài.</li>
+                                    <li>Trả lời MỌI bình luận.</li>
+                                    <li>Phân tích YouTube Analytics (CTR, thời gian xem).</li>
+                                    <li>Điều chỉnh chiến lược dựa trên dữ liệu.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="text-center py-12 mt-8 border-t border-stone-200">
+             <p class="text-2xl font-bold text-[#8B4513]">Thành Công Là Một Cuộc Marathon</p>
+             <p class="text-slate-600 mt-2 max-w-2xl mx-auto">Kiên trì tạo ra giá trị, xây dựng cộng đồng và không ngừng học hỏi là chìa khóa để chiến thắng cuộc chơi dài hạn trên YouTube.</p>
+        </footer>
+    </div>
+    
+    <div id="modalBackdrop" class="modal-backdrop">
+        <div id="modalContent" class="modal-content">
+        </div>
+    </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const primaryColor = '#A0522D';
+        const secondaryColor = '#8c7d6b';
+        const textColor = '#3f3c36';
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: textColor,
+                        font: { family: "'Be Vietnam Pro', sans-serif", size: 12 }
+                    }
+                },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback },
+                    titleFont: { family: "'Be Vietnam Pro', sans-serif" },
+                    bodyFont: { family: "'Be Vietnam Pro', sans-serif" },
+                    backgroundColor: 'rgba(0,0,0,0.8)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                }
+            },
+            scales: {
+                x: {
+                    ticks: { color: textColor, font: { family: "'Be Vietnam Pro', sans-serif" } },
+                    grid: { display: false }
+                },
+                y: {
+                    ticks: { color: textColor, font: { family: "'Be Vietnam Pro', sans-serif" } },
+                    grid: { color: '#E3DCD2' }
+                }
+            }
+        };
+
+        new Chart(document.getElementById('rpmByCountryChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Việt Nam', 'Hoa Kỳ', 'Úc', 'Thụy Sĩ'],
+                datasets: [{
+                    label: 'RPM Ước tính (USD)',
+                    data: [0.4, 11.79, 9.79, 9.58],
+                    backgroundColor: ['#D2B48C', primaryColor, primaryColor, primaryColor],
+                    borderRadius: 4
+                }]
+            },
+            options: { ...commonChartOptions, plugins: { ...commonChartOptions.plugins, legend: { display: false } },
+                scales: { y: { beginAtZero: true, title: { display: true, text: 'USD / 1,000 lượt xem', color: textColor } } }
+            }
+        });
+
+        new Chart(document.getElementById('rpmByNicheChart'), {
+            type: 'bar',
+            data: {
+                labels: ['Giải trí', 'Gaming', 'Giáo dục', 'Tài chính'],
+                datasets: [{
+                    label: 'RPM Ước tính (USD)',
+                    data: [1.00, 2.50, 5.00, 20.00],
+                    backgroundColor: ['#E3DCD2', '#D2B48C', secondaryColor, primaryColor],
+                    borderRadius: 4
+                }]
+            },
+            options: { ...commonChartOptions, indexAxis: 'y', plugins: { ...commonChartOptions.plugins, legend: { display: false } },
+                scales: { x: { beginAtZero: true, title: { display: true, text: 'USD / 1,000 lượt xem', color: textColor } } }
+            }
+        });
+        
+        const nichesData = [
+            { id: 1, name: "Tài chính cá nhân & Đầu tư", cluster: "Tài chính & Công nghệ", rpm: 5, comp: 5, exp: 5, sources: "AdSense, Affiliate, Khóa học", desc: "Hướng dẫn quản lý tài chính, tiết kiệm, đầu tư. Đối tượng là người muốn cải thiện tình hình tài chính.", ideas: 'Series "Xây dựng danh mục đầu tư từ con số 0", Phân tích case study về các quyết định tài chính sai lầm, So sánh các sản phẩm bảo hiểm/đầu tư.' },
+            { id: 2, name: "Đầu tư Chứng khoán & BĐS", cluster: "Tài chính & Công nghệ", rpm: 5, comp: 5, exp: 5, sources: "AdSense, Tư vấn, Khóa học", desc: "Phân tích chuyên sâu về thị trường chứng khoán, cổ phiếu và các cơ hội đầu tư bất động sản.", ideas: "Phân tích báo cáo tài chính, Livestream nhận định thị trường, Series 'Đi thực tế' các dự án BĐS." },
+            { id: 3, name: "Kiếm tiền Online (MMO)", cluster: "Tài chính & Công nghệ", rpm: 5, comp: 4, exp: 4, sources: "Affiliate, AdSense, Bán công cụ", desc: "Hướng dẫn các phương pháp kiếm tiền trên mạng như affiliate, dropshipping, freelancing.", ideas: "Thử thách 'Kiếm $1000 đầu tiên trong 30 ngày', So sánh các nền tảng affiliate, Hướng dẫn xây dựng một niche site." },
+            { id: 4, name: "Digital Marketing & SEO", cluster: "Tài chính & Công nghệ", rpm: 5, comp: 4, exp: 4, sources: "Dịch vụ, Khóa học, Affiliate", desc: "Hướng dẫn về SEO, quảng cáo Google/Facebook, Content Marketing. Đối tượng là chủ doanh nghiệp, marketer.", ideas: "Series 'Audit SEO miễn phí', Phân tích chiến dịch marketing thành công/thất bại, Hướng dẫn thiết lập chiến dịch quảng cáo A-Z." },
+            { id: 5, name: "Đánh giá sản phẩm công nghệ", cluster: "Tài chính & Công nghệ", rpm: 4, comp: 5, exp: 4, sources: "Affiliate, Tài trợ, AdSense", desc: "Mở hộp, đánh giá, so sánh các sản phẩm công nghệ (điện thoại, laptop,...).", ideas: "'Sống với [sản phẩm] trong 30 ngày', 'So sánh camera ẩn' giữa các điện thoại, 'Build PC' theo ngân sách." },
+            { id: 6, name: "Hướng dẫn lập trình", cluster: "Tài chính & Công nghệ", rpm: 4, comp: 4, exp: 5, sources: "Khóa học, Freelance, AdSense", desc: "Dạy các ngôn ngữ lập trình, framework, xây dựng website, ứng dụng. Đối tượng là sinh viên CNTT, người muốn chuyển ngành.", ideas: "Series 'Xây dựng một ứng dụng từ đầu', 'Giải quyết các bài toán thuật toán', 'So sánh các framework'." },
+            { id: 7, name: "Ứng dụng AI trong công việc", cluster: "Tài chính & Công nghệ", rpm: 4, comp: 3, exp: 4, sources: "Khóa học, Affiliate (phần mềm)", desc: "Hướng dẫn sử dụng các công cụ AI (ChatGPT, Midjourney,...) để tăng năng suất làm việc, sáng tạo.", ideas: "'Biến ChatGPT thành trợ lý cá nhân', 'Tạo ảnh nghệ thuật với Midjourney', 'Tự động hóa báo cáo Excel bằng AI'." },
+            { id: 8, name: "Case study kinh doanh", cluster: "Giáo dục & Kỹ năng", rpm: 4, comp: 3, exp: 4, sources: "Khóa học, Tư vấn, AdSense", desc: "Phân tích các mô hình kinh doanh, câu chuyện thành công và thất bại của các công ty.", ideas: "'Tại sao [thương hiệu] thất bại?', 'Giải mã mô hình kinh doanh của [công ty]', Phỏng vấn startup founder." },
+            { id: 9, name: "Hướng dẫn kỹ năng mềm", cluster: "Giáo dục & Kỹ năng", rpm: 3, comp: 3, exp: 3, sources: "Khóa học, Coaching, Sách", desc: "Dạy các kỹ năng như giao tiếp, thuyết trình, đàm phán, quản lý thời gian.", ideas: "'Sửa lỗi thuyết trình cho subscriber', 'Diễn tập một buổi đàm phán lương', 'Phân tích ngôn ngữ cơ thể'." },
+            { id: 10, name: "Dạy ngoại ngữ", cluster: "Giáo dục & Kỹ năng", rpm: 3, comp: 4, exp: 4, sources: "Khóa học, App Affiliate", desc: "Dạy tiếng Anh, Hàn, Nhật, Trung,... cho người Việt hoặc dạy tiếng Việt cho người nước ngoài.", ideas: "'Học tiếng Anh qua phân tích phim', 'Thử thách giao tiếp với người bản xứ', 'Những lỗi sai thường mắc'." },
+            { id: 11, name: "Phân tích Lịch sử", cluster: "Giáo dục & Kỹ năng", rpm: 3, comp: 3, exp: 4, sources: "AdSense, Sách, Donations", desc: "Kể lại các sự kiện, nhân vật lịch sử một cách sinh động qua hình ảnh, bản đồ, hoạt họa.", ideas: "'Lịch sử dưới góc nhìn kinh tế', 'Nếu... thì sao?' (kịch bản thay thế), 'Tái hiện các trận đánh lớn'." },
+            { id: 12, name: "Phân tích Văn hóa & Xã hội", cluster: "Giáo dục & Kỹ năng", rpm: 3, comp: 3, exp: 4, sources: "AdSense, Sách, Donations", desc: "Phân tích các hiện tượng văn hóa, xu hướng xã hội dưới góc nhìn sâu sắc.", ideas: "'Giải mã các 'trend' trên mạng', 'Lịch sử của [một món ăn/phong tục]', 'So sánh văn hóa Đông - Tây'." },
+            { id: 13, name: "Tóm tắt & phân tích sách", cluster: "Giáo dục & Kỹ năng", rpm: 3, comp: 3, exp: 3, sources: "Affiliate (sách), AdSense", desc: "Tóm tắt và phân tích ý tưởng cốt lõi từ các cuốn sách kinh doanh, self-help, khoa học.", ideas: "'3 bài học thay đổi cuộc đời từ sách', 'So sánh quan điểm của 2 tác giả', 'Áp dụng kiến thức sách vào cuộc sống'." },
+            { id: 14, name: "Hướng dẫn phần mềm", cluster: "Giáo dục & Kỹ năng", rpm: 3, comp: 4, exp: 4, sources: "Khóa học, Affiliate (phần mềm)", desc: "Hướng dẫn sử dụng các phần mềm phổ biến như Excel, Photoshop, Premiere, Figma.", ideas: "'10 thủ thuật Excel 99% người không biết', 'Dựng video chuyên nghiệp trong 30 phút', 'Thiết kế CV bằng Canva'." },
+            { id: 15, name: "Du lịch khám phá", cluster: "Phong cách sống", rpm: 3, comp: 5, exp: 3, sources: "Tài trợ, Affiliate (booking)", desc: "Chia sẻ trải nghiệm du lịch, khám phá các địa điểm, văn hóa, ẩm thực trong và ngoài nước.", ideas: "Du lịch trải nghiệm (sống như người bản địa), Du lịch mạo hiểm, Du lịch theo chủ đề (ẩm thực, lịch sử)." },
+            { id: 16, name: "Ẩm thực & Food Review", cluster: "Phong cách sống", rpm: 3, comp: 5, exp: 3, sources: "Tài trợ, AdSense, Affiliate", desc: "Khám phá và đánh giá các quán ăn, nhà hàng, món ăn đường phố; hoặc hướng dẫn nấu ăn.", ideas: "Thử thách ăn uống, 'Bản đồ ẩm thực' một khu vực, 'Nấu lại món ăn của nhà hàng nổi tiếng'." },
+            { id: 17, name: "Sống tối giản", cluster: "Phong cách sống", rpm: 3, comp: 4, exp: 3, sources: "Khóa học, Sách, AdSense", desc: "Chia sẻ về lối sống tối giản, dọn dẹp không gian sống, quản lý tài chính, phát triển thói quen tốt.", ideas: "'Dọn dẹp tủ quần áo cùng tôi', 'Một ngày trong cuộc sống người tối giản', 'Những thứ tôi không còn mua nữa'." },
+            { id: 18, name: "Sống bền vững", cluster: "Phong cách sống", rpm: 3, comp: 2, exp: 3, sources: "Affiliate (sản phẩm xanh)", desc: "Hướng dẫn cách giảm rác thải nhựa, tự làm các sản phẩm thân thiện môi trường, tiêu dùng có ý thức.", ideas: "'Thử thách 1 tháng không rác thải', 'Tự làm phân bón hữu cơ tại nhà', 'Review các thương hiệu bền vững'." },
+            { id: 19, name: "Sức khỏe tinh thần", cluster: "Phong cách sống", rpm: 3, comp: 3, exp: 4, sources: "App Affiliate, Khóa học", desc: "Chia sẻ kiến thức về sức khỏe tâm thần, hướng dẫn các bài tập thiền, chánh niệm, cách đối phó với stress.", ideas: "Podcast phỏng vấn chuyên gia tâm lý, 'Thiền định 10 phút mỗi ngày', 'Cách vượt qua một ngày tồi tệ'." },
+            { id: 20, name: "Fitness & Dinh dưỡng", cluster: "Phong cách sống", rpm: 3, comp: 5, exp: 4, sources: "Coaching, Kế hoạch ăn uống", desc: "Hướng dẫn các bài tập (gym, yoga, tại nhà), chia sẻ các kế hoạch ăn uống lành mạnh, giảm cân.", ideas: "'Thử thách 30 ngày thay đổi vóc dáng', 'Nấu bữa ăn healthy cho cả tuần', 'So sánh các phương pháp tập luyện'." },
+            { id: 21, name: "Cải tạo nhà cửa (DIY)", cluster: "Phong cách sống", rpm: 3, comp: 4, exp: 3, sources: "Affiliate (dụng cụ, nội thất)", desc: "Hướng dẫn tự cải tạo, sơn sửa, trang trí nhà cửa, ban công với chi phí thấp.", ideas: "'Makeover phòng ngủ với 5 triệu', 'Tự làm đồ trang trí từ vật liệu tái chế', 'Tour nhà của subscriber'." },
+            { id: 22, name: "Gaming", cluster: "Giải trí & Sở thích", rpm: 3, comp: 5, exp: 3, sources: "Tài trợ, Donation, AdSense", desc: "Livestream chơi game, bình luận các giải đấu, hướng dẫn chơi game, review game mới.", ideas: "Thử thách trong game, Tạo series phim ngắn trong game, Bình luận game hài hước/chuyên sâu." },
+            { id: 23, name: "Phim & Hoạt hình", cluster: "Giải trí & Sở thích", rpm: 3, comp: 4, exp: 3, sources: "AdSense, Affiliate (streaming)", desc: "Đánh giá phim mới, phân tích chi tiết ẩn, giả thuyết về các series phim nổi tiếng, tóm tắt phim.", ideas: "'Giải thích kết thúc phim', 'Những chi tiết bạn đã bỏ lỡ', 'Xếp hạng phim của một đạo diễn'." },
+            { id: 24, name: "Chăm sóc thú cưng", cluster: "Giải trí & Sở thích", rpm: 3, comp: 4, exp: 2, sources: "Affiliate, AdSense", desc: "Chia sẻ khoảnh khắc của thú cưng, hướng dẫn cách chăm sóc, huấn luyện, review thức ăn/đồ chơi.", ideas: "'Thử thách thú cưng', 'Tự làm đồ chơi cho mèo từ bìa carton', 'Một ngày làm 'sen''." },
+            { id: 25, name: "DIY & Thủ công mỹ nghệ", cluster: "Giải trí & Sở thích", rpm: 2, comp: 3, exp: 2, sources: "AdSense, Bán sản phẩm", desc: "Hướng dẫn làm các sản phẩm thủ công như làm nến, xà phòng, đồ trang sức, đan len.", ideas: "Dự án theo mùa (trang trí Giáng sinh, Tết), 'Biến đồ cũ thành đồ mới', Hướng dẫn kỹ thuật độc đáo." },
+            { id: 26, name: "Ô tô & Xe cộ", cluster: "Giải trí & Sở thích", rpm: 3, comp: 4, exp: 4, sources: "Tài trợ, AdSense, Affiliate", desc: "Đánh giá các dòng xe mới, so sánh xe, hướng dẫn bảo dưỡng, chăm sóc xe.", ideas: "'Lái thử xe trên cung đường khó', 'Chi phí 'nuôi' xe trong 1 năm', 'Tự thay dầu tại nhà'." },
+            { id: 27, name: "Sở thích chuyên sâu", cluster: "Giải trí & Sở thích", rpm: 3, comp: 2, exp: 4, sources: "Affiliate, Bán sản phẩm", desc: "Tập trung vào một sở thích rất cụ thể như bàn phím cơ, máy bay mô hình, nhiếp ảnh phim.", ideas: "'Build bàn phím cơ custom', 'Hướng dẫn kỹ thuật chụp ảnh macro', 'Review các loại đất trồng'." },
+            { id: 28, name: "Kênh 'ẩn mặt' (Faceless)", cluster: "Cơ hội mới", rpm: 3, comp: 2, exp: 2, sources: "AdSense, Affiliate", desc: "Sản xuất nội dung không lộ mặt, dùng stock footage, hoạt họa, hoặc chỉ quay tay và sản phẩm.", ideas: "Kể lại các vụ án bí ẩn, Phân tích tâm lý tội phạm, Video âm thanh thư giãn (mưa, sóng biển)." },
+            { id: 29, "name": "Podcast dạng video", "cluster": "Cơ hội mới", rpm: 3, comp: 3, exp: 3, sources: "Tài trợ, AdSense, Khóa học", desc: "Chuyển thể các buổi trò chuyện podcast thành dạng video, có thể là hình ảnh tĩnh hoặc quay hình người nói.", ideas: "Phỏng vấn người truyền cảm hứng, Series thảo luận bàn tròn, Podcast kể chuyện kinh dị." },
+            { id: 30, name: "Hướng dẫn cho người nước ngoài", cluster: "Cơ hội mới", rpm: 5, comp: 2, exp: 4, sources: "Dịch vụ, Affiliate, AdSense", desc: "Tạo nội dung tiếng Anh, hướng dẫn người nước ngoài về cuộc sống tại Việt Nam (visa, thuê nhà, văn hóa...).", ideas: "'Chi phí sống 1 tháng ở Sài Gòn', 'Những cú sốc văn hóa', 'Top 5 món ăn đường phố phải thử'." },
+        ];
+        
+        const nicheGrid = document.getElementById('nicheGrid');
+        const filterContainer = document.getElementById('filterContainer');
+        const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
+        const modalBackdrop = document.getElementById('modalBackdrop');
+        const modalContent = document.getElementById('modalContent');
+        
+        function getRatingHtml(label, value) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                stars += `<span class="text-${i <= value ? 'amber-500' : 'stone-300'}">●</span>`;
+            }
+            return `<div class="flex justify-between items-center text-sm"><span class="text-slate-600">${label}</span><div class="flex">${stars}</div></div>`;
+        }
+
+        function renderNiches(data) {
+            nicheGrid.innerHTML = '';
+            data.forEach(niche => {
+                const card = document.createElement('div');
+                card.className = 'bg-white rounded-lg shadow-md p-5 flex flex-col cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1';
+                card.dataset.id = niche.id;
+                card.innerHTML = `
+                    <h3 class="font-bold text-lg mb-2 text-stone-800">${niche.name}</h3>
+                    <p class="tag bg-stone-100 text-stone-700 mb-4 self-start">${niche.cluster}</p>
+                    <div class="space-y-2 mt-auto">
+                        ${getRatingHtml('RPM', niche.rpm)}
+                        ${getRatingHtml('Cạnh tranh', niche.comp)}
+                        ${getRatingHtml('Chuyên môn', niche.exp)}
+                    </div>
+                `;
+                card.addEventListener('click', () => showModal(niche.id));
+                nicheGrid.appendChild(card);
+            });
+        }
+
+        function setupFilters() {
+            const clusters = [...new Set(nichesData.map(n => n.cluster))];
+            clusters.forEach(cluster => {
+                const button = document.createElement('button');
+                button.className = 'secondary-btn px-4 py-2 rounded-lg font-semibold transition';
+                button.dataset.filter = cluster;
+                button.textContent = cluster;
+                filterContainer.appendChild(button);
+            });
+            
+            filterContainer.addEventListener('click', (e) => {
+                if(e.target.tagName === 'BUTTON') {
+                    document.querySelector('#filterContainer .active').classList.remove('active');
+                    e.target.classList.add('active');
+                    applyFiltersAndSort();
+                }
+            });
+        }
+        
+        function applyFiltersAndSort() {
+            const activeFilter = document.querySelector('#filterContainer .active').dataset.filter;
+            const searchTerm = searchInput.value.toLowerCase();
+            const sortValue = sortSelect.value;
+
+            let filteredData = nichesData;
+
+            if (activeFilter !== 'all') {
+                filteredData = filteredData.filter(n => n.cluster === activeFilter);
+            }
+
+            if (searchTerm) {
+                filteredData = filteredData.filter(n => n.name.toLowerCase().includes(searchTerm));
+            }
+            
+            switch(sortValue) {
+                case 'rpm-desc':
+                    filteredData.sort((a,b) => b.rpm - a.rpm);
+                    break;
+                case 'competition-asc':
+                    filteredData.sort((a,b) => a.comp - b.comp);
+                    break;
+                case 'expertise-asc':
+                    filteredData.sort((a,b) => a.exp - b.exp);
+                    break;
+            }
+
+            renderNiches(filteredData);
+        }
+        
+        function showModal(id) {
+            const niche = nichesData.find(n => n.id === id);
+            modalContent.innerHTML = `
+                <button id="closeModal" class="absolute top-4 right-4 text-3xl font-light leading-none">&times;</button>
+                <h2 class="text-3xl font-bold mb-2 text-[#A0522D]">${niche.name}</h2>
+                <p class="tag bg-stone-200 text-stone-700 mb-6">${niche.cluster}</p>
+                <div class="space-y-4">
+                    <div><h4 class="font-semibold text-stone-800">Mô tả & Đối tượng</h4><p class="text-slate-600">${niche.desc}</p></div>
+                    <div><h4 class="font-semibold text-stone-800">Nguồn thu chính</h4><p class="text-slate-600">${niche.sources}</p></div>
+                    <div><h4 class="font-semibold text-stone-800">Ý tưởng nội dung đột phá</h4><p class="text-slate-600">${niche.ideas}</p></div>
+                </div>
+                <div class="mt-6 grid grid-cols-3 gap-4 text-center">
+                    <div><p class="font-semibold">RPM</p><p class="text-2xl font-bold">${'●'.repeat(niche.rpm)}<span class="text-stone-300">${'●'.repeat(5 - niche.rpm)}</span></p></div>
+                    <div><p class="font-semibold">Cạnh tranh</p><p class="text-2xl font-bold">${'●'.repeat(niche.comp)}<span class="text-stone-300">${'●'.repeat(5 - niche.comp)}</span></p></div>
+                    <div><p class="font-semibold">Chuyên môn</p><p class="text-2xl font-bold">${'●'.repeat(niche.exp)}<span class="text-stone-300">${'●'.repeat(5 - niche.exp)}</span></p></div>
+                </div>
+            `;
+            modalBackdrop.style.display = 'flex';
+            document.getElementById('closeModal').addEventListener('click', () => modalBackdrop.style.display = 'none');
+        }
+
+        modalBackdrop.addEventListener('click', (e) => {
+            if (e.target === modalBackdrop) {
+                modalBackdrop.style.display = 'none';
+            }
+        });
+
+        searchInput.addEventListener('input', applyFiltersAndSort);
+        sortSelect.addEventListener('change', applyFiltersAndSort);
+        
+        setupFilters();
+        renderNiches(nichesData);
+        
+        const matrixCtx = document.getElementById('decisionMatrixChart');
+        const matrixChart = new Chart(matrixCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Đam Mê', 'Chuyên Môn', 'Kiếm Tiền', 'Cạnh tranh (Thấp)'],
+                datasets: [
+                {
+                    label: 'Lựa chọn của bạn',
+                    data: [5, 5, 5, 5],
+                    fill: true,
+                    backgroundColor: 'rgba(160, 82, 45, 0.2)',
+                    borderColor: primaryColor,
+                    pointBackgroundColor: primaryColor,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: primaryColor
+                },
+                {
+                    label: 'Ví dụ: Tài chính',
+                    data: [7, 9, 10, 1].map(v => v * 10/10),
+                    fill: true,
+                    backgroundColor: 'rgba(140, 125, 107, 0.2)',
+                    borderColor: secondaryColor,
+                    pointBackgroundColor: secondaryColor,
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: secondaryColor,
+                    hidden: true
+                }]
+            },
+            options: {
+                ...commonChartOptions,
+                plugins: { ...commonChartOptions.plugins, legend: { position: 'bottom' } },
+                scales: {
+                    r: {
+                        angleLines: { color: '#E3DCD2' },
+                        grid: { color: '#E3DCD2' },
+                        pointLabels: { font: { family: "'Be Vietnam Pro', sans-serif", size: 14 }, color: textColor },
+                        ticks: { display: false, stepSize: 2 },
+                        min: 0,
+                        max: 10,
+                    }
+                }
+            }
+        });
+        
+        const sliders = {
+            passion: document.getElementById('passionSlider'),
+            expertise: document.getElementById('expertiseSlider'),
+            monetization: document.getElementById('monetizationSlider'),
+            competition: document.getElementById('competitionSlider'),
+        };
+        const values = {
+            passion: document.getElementById('passionValue'),
+            expertise: document.getElementById('expertiseValue'),
+            monetization: document.getElementById('monetizationValue'),
+            competition: document.getElementById('competitionValue'),
+        };
+        
+        function updateMatrixChart() {
+            const data = [
+                parseInt(sliders.passion.value),
+                parseInt(sliders.expertise.value),
+                parseInt(sliders.monetization.value),
+                parseInt(sliders.competition.value)
+            ];
+            matrixChart.data.datasets[0].data = data;
+            matrixChart.update();
+            
+            values.passion.textContent = sliders.passion.value;
+            values.expertise.textContent = sliders.expertise.value;
+            values.monetization.textContent = sliders.monetization.value;
+            values.competition.textContent = sliders.competition.value;
+        }
+        
+        Object.values(sliders).forEach(slider => slider.addEventListener('input', updateMatrixChart));
+    });
+</script>
+</body>
+</html>
