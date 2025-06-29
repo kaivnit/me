@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Mô Thức Prompt Veo 3 Chuyên Sâu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (max-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .gradient-text {
+            background: linear-gradient(90deg, #41C9E2, #F7EEDD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .pillar-card {
+            background-color: rgba(0, 74, 173, 0.2);
+            border: 1px solid #004AAD;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .pillar-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(65, 201, 226, 0.1);
+        }
+        .table-header {
+            background-color: #004AAD;
+        }
+        .table-row-dark {
+             background-color: rgba(0, 74, 173, 0.1);
+        }
+        .table-row-light {
+             background-color: rgba(0, 74, 173, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-[#0A192F] text-[#F7EEDD]">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 gradient-text">Mô Thức Prompt Veo 3</h1>
+            <p class="text-lg md:text-xl max-w-4xl mx-auto text-slate-300">Một cẩm nang chuyên sâu để làm chủ nghệ thuật làm phim bằng AI, chuyển đổi từ các thử nghiệm đơn lẻ sang sáng tạo tường thuật có định hướng và kiểm soát ở cấp độ điện ảnh.</p>
+        </header>
+
+        <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+            <section class="lg:col-span-2 bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-2 text-center text-[#41C9E2]">8 Trụ Cột của một Prompt Hoàn Hảo</h2>
+                <p class="text-center text-slate-400 mb-8 max-w-3xl mx-auto">Để điều khiển Veo 3 một cách hiệu quả, cần một phương pháp có cấu trúc. Khuôn khổ 8 thành phần này cung cấp một luồng logic, đi từ ý tưởng cốt lõi đến các chi tiết thực thi tinh vi, đảm bảo AI diễn giải chính xác ý đồ của bạn.</p>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🎯</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">1. Chủ thể</h3>
+                        <p class="text-sm text-slate-300">Ai hoặc cái gì là trọng tâm của cảnh quay. Càng chi tiết càng tốt để đảm bảo tính nhất quán.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🗺️</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">2. Bối cảnh</h3>
+                        <p class="text-sm text-slate-300">Nơi và thời điểm diễn ra. Vẽ nên một bức tranh về không khí và môi trường.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🏃</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">3. Hành động</h3>
+                        <p class="text-sm text-slate-300">Chủ thể đang làm gì. Mô tả rõ ràng, cụ thể và tập trung vào một khoảnh khắc chính.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🎨</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">4. Phong cách</h3>
+                        <p class="text-sm text-slate-300">Thẩm mỹ hình ảnh tổng thể. Có thể là thể loại phim hoặc phong cách nghệ thuật.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🎥</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">5. Máy quay</h3>
+                        <p class="text-sm text-slate-300">Cách cảnh quay được ghi hình, bao gồm chuyển động và lựa chọn ống kính.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🖼️</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">6. Bố cục</h3>
+                        <p class="text-sm text-slate-300">Cách khung hình được sắp xếp. Sử dụng ngôn ngữ điện ảnh như cận cảnh, toàn cảnh.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">💡</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">7. Không khí</h3>
+                        <p class="text-sm text-slate-300">Tâm trạng, ánh sáng và màu sắc. Công cụ mạnh mẽ để gợi lên cảm xúc.</p>
+                    </div>
+                    <div class="pillar-card rounded-lg p-4 text-center">
+                        <div class="text-4xl mb-2">🔊</div>
+                        <h3 class="font-bold text-lg text-[#41C9E2]">8. Âm thanh</h3>
+                        <p class="text-sm text-slate-300">Toàn bộ không gian âm thanh, từ lời thoại, SFX đến nhạc nền.</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8">
+                <h2 class="text-2xl font-bold mb-2 text-[#41C9E2]">Lựa Chọn Ống Kính (Lens)</h2>
+                <p class="text-slate-400 mb-4">Việc chọn ống kính ảnh hưởng sâu sắc đến phối cảnh và độ sâu trường ảnh. Biểu đồ này so sánh các đặc tính chính của các tiêu cự phổ biến mà Veo 3 hiểu được.</p>
+                 <div class="chart-container">
+                    <canvas id="lensChart"></canvas>
+                </div>
+            </section>
+
+            <section class="bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8">
+                 <h2 class="text-2xl font-bold mb-2 text-[#41C9E2]">Bối Cảnh Cạnh Tranh</h2>
+                <p class="text-slate-400 mb-4">Veo 3 nổi bật trong cuộc đua video tạo sinh. Biểu đồ radar này so sánh các thế mạnh tương đối của Veo 3 với các đối thủ hàng đầu là Sora và Gen-3 dựa trên phân tích từ tài liệu.</p>
+                 <div class="chart-container">
+                    <canvas id="competitorChart"></canvas>
+                </div>
+            </section>
+
+             <section class="lg:col-span-2 bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-4 text-center text-[#41C9E2]">Cuộc Cách Mạng Âm Thanh & Thách Thức Nhất Quán</h2>
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-center">Tích Hợp Âm Thanh Đồng Bộ</h3>
+                        <p class="text-slate-400 text-center mb-4">Điểm khác biệt lớn nhất của Veo 3 là khả năng tạo ra video và âm thanh đồng bộ trong cùng một quy trình, mô phỏng mối quan hệ nhân quả giữa hình ảnh và âm thanh.</p>
+                        <div class="flex items-center justify-center space-x-2 md:space-x-4 text-sm md:text-base font-semibold">
+                            <div class="text-center p-3 bg-[#0A192F] rounded-lg">PROMPT<br/>(Văn bản & Hình ảnh)</div>
+                            <div class="text-2xl text-[#41C9E2] font-black">→</div>
+                            <div class="text-center p-3 bg-[#004AAD] rounded-lg shadow-lg">VEO 3<br/>ENGINE</div>
+                            <div class="text-2xl text-[#41C9E2] font-black">→</div>
+                            <div class="text-center p-3 bg-[#0A192F] rounded-lg">VIDEO<br/>+<br/>ÂM THANH ĐỒNG BỘ</div>
+                        </div>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-center">Giải Pháp cho Tính Nhất Quán</h3>
+                        <p class="text-slate-400 text-center mb-4">Duy trì nhân vật qua nhiều cảnh quay là một thách thức lớn. Hiện có hai chiến lược chính để giải quyết vấn đề này.</p>
+                        <div class="flex flex-col space-y-3">
+                            <div class="p-3 bg-[#0A192F] rounded-lg border border-[#008DDA]/50">
+                                <h4 class="font-bold text-[#41C9E2]">1. Prompt Siêu Chi Tiết</h4>
+                                <p class="text-sm text-slate-300">Tạo mô tả nhân vật cực kỳ chi tiết và lặp lại chính xác trong mọi prompt.</p>
+                            </div>
+                            <div class="p-3 bg-[#0A192F] rounded-lg border border-[#008DDA]/50">
+                                <h4 class="font-bold text-[#41C9E2]">2. Quy Trình Image-to-Video (I2V)</h4>
+                                <p class="text-sm text-slate-300">Sử dụng một hình ảnh tham chiếu làm "bản thiết kế" để tạo hoạt ảnh cho nhân vật.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="lg:col-span-2 bg-[#112240] rounded-xl shadow-2xl p-6 md:p-8">
+                <h2 class="text-3xl font-bold mb-4 text-center text-[#41C9E2]">Quy Trình Sản Xuất: Studio vs. Nhà Máy</h2>
+                <p class="text-center text-slate-400 mb-8 max-w-3xl mx-auto">Veo 3 có thể được truy cập qua hai nền tảng, mỗi nền tảng phục vụ một mục đích khác nhau. Việc lựa chọn đúng công cụ là rất quan trọng cho quy trình làm việc hiệu quả.</p>
+                <div class="overflow-x-auto rounded-lg border border-[#004AAD]">
+                    <table class="w-full text-left text-sm">
+                        <thead class="table-header text-xs uppercase">
+                            <tr>
+                                <th scope="col" class="px-6 py-3">Tiêu Chí</th>
+                                <th scope="col" class="px-6 py-3">Google Flow</th>
+                                <th scope="col" class="px-6 py-3">Vertex AI</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="table-row-dark">
+                                <th scope="row" class="px-6 py-4 font-bold">Người Dùng Mục Tiêu</th>
+                                <td class="px-6 py-4">Nhà làm phim, nhà sáng tạo, nghệ sĩ</td>
+                                <td class="px-6 py-4">Kỹ sư AI, nhà phát triển, doanh nghiệp</td>
+                            </tr>
+                            <tr class="table-row-light">
+                                <th scope="row" class="px-6 py-4 font-bold">Trường Hợp Sử Dụng</th>
+                                <td class="px-6 py-4">Lên ý tưởng, tạo storyboard, thử nghiệm sáng tạo</td>
+                                <td class="px-6 py-4">Tự động hóa quy mô lớn, tích hợp ứng dụng</td>
+                            </tr>
+                            <tr class="table-row-dark">
+                                <th scope="row" class="px-6 py-4 font-bold">Tính Năng Chính</th>
+                                <td class="px-6 py-4">Scene Builder, Giao diện trực quan</td>
+                                <td class="px-6 py-4">Truy cập API, khả năng mở rộng, kiểm soát chi tiết</td>
+                            </tr>
+                            <tr class="table-row-light">
+                                <th scope="row" class="px-6 py-4 font-bold">Mô Hình Vận Hành</th>
+                                <td class="px-6 py-4">Môi trường "Studio" tất cả trong một</td>
+                                <td class="px-6 py-4">Nền tảng "Nhà máy" cấp doanh nghiệp</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+
+        <footer class="text-center mt-12 text-slate-500 text-sm">
+            <p>Infographic được tạo tự động dựa trên tài liệu "Mô Thức Prompt Veo 3: Cẩm Nang Kỹ Thuật và Điện Ảnh Chuyên Sâu".</p>
+            <p>Thiết kế và Trực quan hóa bởi AI. 2025.</p>
+        </footer>
+
+    </div>
+
+    <script>
+        const FONT_COLOR = '#F7EEDD';
+        const GRID_COLOR = 'rgba(247, 238, 221, 0.2)';
+
+        function wrapText(text, maxWidth) {
+            if (typeof text !== 'string') return text;
+            const words = text.split(' ');
+            let lines = [];
+            let currentLine = words[0];
+
+            for (let i = 1; i < words.length; i++) {
+                let word = words[i];
+                let width = currentLine.length + word.length + 1;
+                if (width < maxWidth) {
+                    currentLine += ' ' + word;
+                } else {
+                    lines.push(currentLine);
+                    currentLine = word;
+                }
+            }
+            lines.push(currentLine);
+            return lines.length > 1 ? lines : text;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+        
+        const commonTooltipOptions = {
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    }
+                }
+            }
+        };
+
+        const PALETTE = {
+            deepBlue: '#004AAD',
+            mediumBlue: '#008DDA',
+            lightBlue: '#41C9E2',
+            cream: '#F7EEDD'
+        };
+
+        const lensData = {
+            labels: ['14mm Wide-Angle', '35mm Cinematic', '50mm Standard', '85mm Telephoto'],
+            datasets: [{
+                label: 'Đặc tính ống kính',
+                data: [90, 75, 60, 40],
+                backgroundColor: [
+                    'rgba(65, 201, 226, 0.6)',
+                    'rgba(0, 141, 218, 0.6)',
+                    'rgba(0, 74, 173, 0.6)',
+                    'rgba(10, 25, 47, 0.6)'
+                ],
+                borderColor: [
+                    PALETTE.lightBlue,
+                    PALETTE.mediumBlue,
+                    PALETTE.deepBlue,
+                    '#334155'
+                ],
+                borderWidth: 1
+            }]
+        };
+
+        const lensConfig = {
+            type: 'bar',
+            data: lensData,
+            options: {
+                indexAxis: 'y',
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        ticks: {
+                            color: FONT_COLOR,
+                            callback: function(value, index, values) {
+                                const labels = ['Yếu', 'Trung bình', 'Mạnh', 'Rất mạnh'];
+                                if (value === 0) return '';
+                                if (value <= 25) return labels[0];
+                                if (value <= 50) return labels[1];
+                                if (value <= 75) return labels[2];
+                                return labels[3];
+                            }
+                        },
+                        grid: {
+                            color: GRID_COLOR
+                        },
+                        title: {
+                            display: true,
+                            text: 'Đặc tính (Góc rộng/Nén phối cảnh)',
+                            color: FONT_COLOR
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: FONT_COLOR,
+                            font: {
+                                size: 14
+                            }
+                        },
+                         grid: {
+                            display: false
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: tooltipTitleCallback,
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.x !== null) {
+                                    const yLabel = context.label;
+                                    if(yLabel.includes('Wide')) {
+                                       label = 'Góc nhìn rất rộng, biến dạng phối cảnh';
+                                    } else if (yLabel.includes('Cinematic')) {
+                                       label = 'Góc nhìn tự nhiên, chuẩn điện ảnh';
+                                    } else if (yLabel.includes('Standard')) {
+                                        label = 'Tương tự mắt người, tốt cho chân dung';
+                                    } else if (yLabel.includes('Telephoto')) {
+                                        label = 'Nén phối cảnh mạnh, xóa phông tốt';
+                                    }
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(
+            document.getElementById('lensChart'),
+            lensConfig
+        );
+
+        const competitorData = {
+            labels: ['Âm thanh Tích hợp', 'Tuân thủ Prompt', 'Chủ nghĩa Hiện thực', 'Tốc độ & Ổn định', 'Kiểm soát Điện ảnh', 'Tính nhất quán Nhân vật'],
+            datasets: [{
+                label: 'Veo 3',
+                data: [10, 9, 8, 9, 9, 6],
+                fill: true,
+                backgroundColor: 'rgba(65, 201, 226, 0.2)',
+                borderColor: PALETTE.lightBlue,
+                pointBackgroundColor: PALETTE.lightBlue,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: PALETTE.lightBlue
+            }, {
+                label: 'Sora',
+                data: [0, 7, 9, 6, 7, 5],
+                fill: true,
+                backgroundColor: 'rgba(247, 238, 221, 0.2)',
+                borderColor: PALETTE.cream,
+                pointBackgroundColor: PALETTE.cream,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: PALETTE.cream
+            }, {
+                label: 'Gen-3',
+                data: [4, 8, 8, 8, 8, 7],
+                fill: true,
+                backgroundColor: 'rgba(0, 141, 218, 0.2)',
+                borderColor: PALETTE.mediumBlue,
+                pointBackgroundColor: PALETTE.mediumBlue,
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: PALETTE.mediumBlue
+            }]
+        };
+        
+        competitorData.labels = competitorData.labels.map(label => wrapText(label, 16));
+
+        const competitorConfig = {
+            type: 'radar',
+            data: competitorData,
+            options: {
+                maintainAspectRatio: false,
+                elements: {
+                    line: {
+                        borderWidth: 3
+                    }
+                },
+                scales: {
+                    r: {
+                        angleLines: {
+                            color: GRID_COLOR
+                        },
+                        grid: {
+                            color: GRID_COLOR
+                        },
+                        pointLabels: {
+                            color: FONT_COLOR,
+                            font: {
+                                size: 12
+                            }
+                        },
+                        ticks: {
+                            color: FONT_COLOR,
+                            backdropColor: 'rgba(0,0,0,0)'
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        labels: {
+                           color: FONT_COLOR,
+                           font: {
+                               size: 14
+                           }
+                        }
+                    },
+                    tooltip: {
+                         callbacks: {
+                            title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        };
+
+        new Chart(
+            document.getElementById('competitorChart'),
+            competitorConfig
+        );
+    </script>
+
+</body>
+</html>
