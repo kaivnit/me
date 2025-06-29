@@ -39,17 +39,20 @@
        .tab-button.active {
             background-color: #3b82f6;
             color: white;
-            border-color: #3b82f6;
         }
-        .tab-button {
-            border-color: transparent;
+        .tab-button:not(.active) {
+            background-color: #e2e8f0;
+            color: #475569;
+        }
+        .tab-button:hover:not(.active) {
+            background-color: #cbd5e1;
         }
        .analysis-card.present {
-            border-left-color: #22c55e; /* green-500 */
+            border-left-color: #22c55e;
             background-color: #f0fdf4;
         }
        .analysis-card.missing {
-            border-left-color: #f97316; /* orange-500 */
+            border-left-color: #f97316;
             background-color: #fff7ed;
         }
     </style>
@@ -73,10 +76,10 @@
                 </div>
             </div>
             <div id="mobile-menu" class="hidden md:hidden flex-col space-y-2 pb-4">
-                 <a href="#analyzer" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Phân Tích</a>
-                 <a href="#builder" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Xây Dựng</a>
-                 <a href="#toolkit" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Từ Điển</a>
-                 <a href="#examples" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Ví Dụ</a>
+                 <a href="#analyzer" class="nav-link block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Phân Tích</a>
+                 <a href="#builder" class="nav-link block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Xây Dựng</a>
+                 <a href="#toolkit" class="nav-link block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Từ Điển</a>
+                 <a href="#examples" class="nav-link block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Ví Dụ</a>
             </div>
         </div>
     </nav>
@@ -118,38 +121,14 @@
                 <div class="bg-white p-8 rounded-2xl shadow-lg space-y-4">
                     <h3 class="text-xl font-bold mb-2">Nhập các thành phần:</h3>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="builder-style" class="text-sm font-medium">1. Phong Cách</label>
-                            <input type="text" id="builder-style" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., Film Noir, hoạt hình...">
-                        </div>
-                        <div>
-                            <label for="builder-composition" class="text-sm font-medium">2. Bố Cục</label>
-                            <input type="text" id="builder-composition" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., cận cảnh, toàn cảnh...">
-                        </div>
-                        <div>
-                            <label for="builder-subject" class="text-sm font-medium">3. Chủ Thể</label>
-                            <input type="text" id="builder-subject" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., một thám tử mệt mỏi...">
-                        </div>
-                        <div>
-                            <label for="builder-action" class="text-sm font-medium">4. Hành Động</label>
-                            <input type="text" id="builder-action" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., đang châm một điếu thuốc...">
-                        </div>
-                        <div>
-                            <label for="builder-context" class="text-sm font-medium">5. Bối Cảnh</label>
-                            <input type="text" id="builder-context" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., trong con hẻm tối...">
-                        </div>
-                        <div>
-                            <label for="builder-ambiance" class="text-sm font-medium">6. Không Khí</label>
-                            <input type="text" id="builder-ambiance" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., ánh sáng tương phản cao...">
-                        </div>
-                        <div>
-                            <label for="builder-camera" class="text-sm font-medium">7. Máy Quay</label>
-                            <input type="text" id="builder-camera" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., dolly-in chậm, ống kính 50mm...">
-                        </div>
-                        <div>
-                            <label for="builder-audio" class="text-sm font-medium">8. Âm Thanh</label>
-                            <input type="text" id="builder-audio" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., tiếng mưa rơi, nhạc jazz...">
-                        </div>
+                        <input type="text" id="builder-style" class="builder-input w-full p-2 border rounded-md" placeholder="1. Phong Cách...">
+                        <input type="text" id="builder-composition" class="builder-input w-full p-2 border rounded-md" placeholder="2. Bố Cục...">
+                        <input type="text" id="builder-subject" class="builder-input w-full p-2 border rounded-md" placeholder="3. Chủ Thể...">
+                        <input type="text" id="builder-action" class="builder-input w-full p-2 border rounded-md" placeholder="4. Hành Động...">
+                        <input type="text" id="builder-context" class="builder-input w-full p-2 border rounded-md" placeholder="5. Bối Cảnh...">
+                        <input type="text" id="builder-ambiance" class="builder-input w-full p-2 border rounded-md" placeholder="6. Không Khí...">
+                        <input type="text" id="builder-camera" class="builder-input w-full p-2 border rounded-md" placeholder="7. Máy Quay...">
+                        <input type="text" id="builder-audio" class="builder-input w-full p-2 border rounded-md" placeholder="8. Âm Thanh...">
                     </div>
                 </div>
                 <div class="bg-slate-800 text-white p-8 rounded-2xl shadow-lg flex flex-col">
@@ -160,18 +139,23 @@
         </section>
 
         <section id="toolkit" class="mb-20">
-            <h2 class="text-3xl font-bold text-center mb-4">Từ Điển Điện Ảnh</h2>
-            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Tra cứu các từ khóa chuyên ngành để nâng cao khả năng kiểm soát và sáng tạo của bạn.</p>
+            <h2 class="text-3xl font-bold text-center mb-4">Từ Điển Điện Ảnh Toàn Tập</h2>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Tra cứu các từ khóa chuyên ngành để nâng cao khả năng kiểm soát và sáng tạo của bạn. Chọn một danh mục để khám phá.</p>
             <div class="bg-white p-8 rounded-2xl shadow-lg">
                 <div class="mb-6 border-b border-slate-200">
-                    <nav class="-mb-px flex space-x-2 sm:space-x-4 overflow-x-auto" aria-label="Tabs">
-                        <button class="tab-button active whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-tab="camera">🎥 Máy Quay</button>
-                        <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-tab="lighting">💡 Ánh Sáng & Màu Sắc</button>
-                        <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-tab="audio">🔊 Âm Thanh</button>
-                        <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 font-medium text-sm rounded-t-lg" data-tab="style">🎨 Phong Cách</button>
-                    </nav>
+                    <div id="toolkit-tabs" class="flex flex-wrap gap-2" aria-label="Tabs">
+                         <button class="tab-button active py-2 px-4 font-medium text-sm rounded-md transition" data-tab="style">🎨 Phong Cách & Thẩm Mỹ</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="composition">🖼️ Bố Cục & Khung Hình</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="camera">🎥 Kỹ Thuật Máy Quay</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="lighting">💡 Ánh Sáng</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="color">🌈 Màu Sắc</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="editing">🎞️ Dựng Phim</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="audio">🔊 Âm Thanh</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="vfx">✨ Hiệu Ứng Hình Ảnh</button>
+                    </div>
                 </div>
-                <div id="toolkit-content">
+                <div id="toolkit-content" class="max-h-[500px] overflow-y-auto pr-4">
+                    <!-- Content will be injected by JS -->
                 </div>
             </div>
         </section>
@@ -202,12 +186,6 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
     const pillarKeywords = {
         style: ['phong cách', 'style', 'cinematic', 'hoạt hình', 'animated', 'stop-motion', 'comic', 'film noir', 'documentary', 'tài liệu', 'commercial', 'photorealistic', 'watercolor', 'surreal', '16mm', '35mm', 'kodak', 'fujifilm'],
         composition: ['bố cục', 'composition', 'cận cảnh', 'close-up', 'trung cảnh', 'medium shot', 'toàn cảnh', 'wide shot', 'qua vai', 'over-the-shoulder', 'góc máy', 'angle'],
@@ -230,12 +208,9 @@ document.addEventListener('DOMContentLoaded', function() {
         audio: { name: 'Âm Thanh', icon: '🔊' }
     };
 
-    const analyzeBtn = document.getElementById('analyze-btn');
-    const promptInput = document.getElementById('prompt-input');
-    const analysisResults = document.getElementById('analysis-results');
-
     function performAnalysis() {
-        const promptText = promptInput.value.toLowerCase();
+        const promptText = document.getElementById('prompt-input').value.toLowerCase();
+        const analysisResults = document.getElementById('analysis-results');
         analysisResults.innerHTML = '';
 
         if (promptText.trim() === '') {
@@ -248,96 +223,128 @@ document.addEventListener('DOMContentLoaded', function() {
             const foundKeywords = keywords.filter(kw => promptText.includes(kw));
             
             const card = document.createElement('div');
-            card.className = `analysis-card p-4 rounded-lg shadow-sm border-l-4 transition-all duration-300`;
+            card.className = 'analysis-card p-4 rounded-lg shadow-sm border-l-4 transition-all duration-300';
             
             let content = `<div class="flex items-center mb-2"><span class="text-2xl mr-2">${pillarInfo[pillar].icon}</span><h4 class="font-bold text-slate-800">${pillarInfo[pillar].name}</h4></div>`;
 
             if (foundKeywords.length > 0) {
                 card.classList.add('present');
-                content += `<p class="text-sm text-green-700 font-medium">Đã phát hiện!</p>`;
-                content += `<p class="text-xs text-slate-500 mt-1">Từ khóa: ${foundKeywords.slice(0, 3).join(', ')}</p>`;
+                content += `<p class="text-sm text-green-700 font-medium">Đã phát hiện!</p><p class="text-xs text-slate-500 mt-1">Từ khóa: ${foundKeywords.slice(0, 3).join(', ')}</p>`;
             } else {
                 card.classList.add('missing');
-                content += `<p class="text-sm text-orange-600 font-medium">Còn thiếu!</p>`;
-                content += `<p class="text-xs text-slate-500 mt-1">Gợi ý: Thêm mô tả về ${pillarInfo[pillar].name.toLowerCase()} để prompt rõ ràng hơn.</p>`;
+                content += `<p class="text-sm text-orange-600 font-medium">Còn thiếu!</p><p class="text-xs text-slate-500 mt-1">Gợi ý: Thêm mô tả về ${pillarInfo[pillar].name.toLowerCase()}.</p>`;
             }
             card.innerHTML = content;
             analysisResults.appendChild(card);
         }
     }
-
-    analyzeBtn.addEventListener('click', performAnalysis);
+    document.getElementById('analyze-btn').addEventListener('click', performAnalysis);
 
     const builderInputs = document.querySelectorAll('.builder-input');
-    const builderOutput = document.getElementById('builder-output');
-
     function updateBuilderOutput() {
-        const parts = [];
-        builderInputs.forEach(input => {
-            if (input.value.trim() !== '') {
-                parts.push(input.value.trim());
-            }
-        });
+        const parts = Array.from(builderInputs).map(input => input.value.trim()).filter(Boolean);
         const fullPrompt = parts.join('. ') + (parts.length > 0 ? '.' : '');
-        builderOutput.textContent = fullPrompt || 'Hãy bắt đầu nhập vào các ô bên trái...';
+        document.getElementById('builder-output').textContent = fullPrompt || 'Hãy bắt đầu nhập vào các ô bên trái...';
     }
-
-    builderInputs.forEach(input => {
-        input.addEventListener('input', updateBuilderOutput);
+    builderInputs.forEach(input => input.addEventListener('input', updateBuilderOutput));
+    
+    document.querySelectorAll('.use-example-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            document.getElementById('prompt-input').value = e.target.previousElementSibling.textContent;
+            performAnalysis();
+            document.getElementById('analyzer').scrollIntoView({ behavior: 'smooth' });
+        });
     });
 
-    const toolkitTabs = {
-        camera: {
-            title: 'Máy Quay: Chuyển Động & Ống Kính',
+    const toolkitData = {
+        style: {
+            title: '🎨 Phong Cách & Thẩm Mỹ',
             content: [
-                { term: 'Chuyển động Dolly', desc: '`dolly in`/`dolly out`. Di chuyển máy quay tới gần hoặc ra xa chủ thể, tạo ra sự thay đổi phối cảnh tự nhiên.' },
-                { term: 'Chuyển động Pan/Tilt', desc: '`pan left`/`pan right`, `tilt up`/`tilt down`. Lia máy quay theo chiều ngang hoặc dọc từ một điểm cố định.' },
-                { term: 'Tracking Shot', desc: 'Di chuyển máy quay song song theo chủ thể đang di chuyển. Ví dụ: `tracking shot`.' },
-                { term: 'Ống kính góc rộng (Wide)', desc: '`14mm lens`, `24mm lens`. Tạo góc nhìn rộng, bao quát, có thể làm biến dạng phối cảnh, DOF sâu.' },
-                { term: 'Ống kính tiêu chuẩn (Standard)', desc: '`35mm lens`, `50mm lens`. Cho góc nhìn tự nhiên, gần với mắt người, rất linh hoạt và phổ biến trong điện ảnh.' },
-                { term: 'Ống kính tele (Telephoto)', desc: '`85mm lens`, `135mm lens`. Nén phối cảnh, tạo độ sâu trường ảnh nông (xóa phông), lý tưởng để cô lập chủ thể.' }
+                { term: 'Thể loại phim (Genre)', desc: 'Gợi ý các quy ước hình ảnh của một thể loại. Ví dụ: `Film Noir`, `Science Fiction`, `Western`, `Horror`, `Comedy`, `Documentary`.' },
+                { term: 'Phong trào nghệ thuật', desc: 'Áp dụng thẩm mỹ từ các phong trào nghệ thuật. Ví dụ: `Surrealism` (siêu thực), `German Expressionism` (biểu hiện Đức), `Impressionism` (ấn tượng).' },
+                { term: 'Thẩm mỹ hình ảnh', desc: 'Mô tả "cái nhìn" tổng thể. Ví dụ: `Photorealistic`, `Cinematic`, `Vintage`, `Grunge`, `Clean and minimal`, `Lo-fi`.' },
+                { term: 'Hoạt hình (Animation)', desc: 'Chỉ định các phong cách hoạt hình. Ví dụ: `Stop-motion animation`, `Claymation` (đất sét), `2D hand-drawn animation`, `Japanese anime style`, `Pixar style`.' },
+                { term: 'Thẩm mỹ phim (Film Stock)', desc: 'Mô phỏng chất liệu phim. Ví dụ: `shot on 16mm film`, `35mm Kodak Portra 400`, `Technicolor`, `vintage archival footage`.' }
+            ]
+        },
+        composition: {
+            title: '🖼️ Bố Cục & Khung Hình',
+            content: [
+                { term: 'Cú máy (Shot Type)', desc: 'Xác định khoảng cách từ máy quay đến chủ thể. Ví dụ: `Extreme Wide Shot` (toàn cảnh cực rộng), `Wide Shot` (toàn cảnh), `Medium Shot` (trung cảnh), `Close-up` (cận cảnh), `Extreme Close-up` (cận cảnh cực đại).' },
+                { term: 'Góc máy (Camera Angle)', desc: 'Xác định vị trí máy quay so với chủ thể. Ví dụ: `Eye-level` (ngang tầm mắt), `High-angle` (góc cao), `Low-angle` (góc thấp), `Dutch angle` (góc nghiêng), `Bird\'s-eye view` (nhìn từ trên xuống).' },
+                { term: 'Quy tắc bố cục', desc: 'Các nguyên tắc sắp xếp khung hình. Ví dụ: `Rule of Thirds` (quy tắc 1/3), `Leading lines` (đường dẫn), `Symmetry` (đối xứng), `Framing within a frame` (khung trong khung).' },
+                { term: 'Số lượng chủ thể', desc: 'Mô tả số người trong khung hình. Ví dụ: `One-shot` (1 người), `Two-shot` (2 người), `Group shot` (nhóm người).' },
+                { term: 'Cú máy đặc biệt', desc: 'Các kỹ thuật khung hình cụ thể. Ví dụ: `Over-the-shoulder shot` (qua vai), `Point of View (POV)` (góc nhìn chủ quan).' }
+            ]
+        },
+        camera: {
+            title: '🎥 Kỹ Thuật Máy Quay',
+            content: [
+                { term: 'Chuyển động quang học', desc: '`Zoom in / Zoom out`. Thay đổi tiêu cự ống kính, không làm thay đổi phối cảnh.' },
+                { term: 'Chuyển động vật lý', desc: '`Dolly in / Dolly out` (đẩy/kéo máy quay), `Truck left / Truck right` (di chuyển ngang). Thay đổi vị trí máy quay, tạo ra sự thay đổi phối cảnh tự nhiên.' },
+                { term: 'Chuyển động xoay', desc: '`Pan left / Pan right` (lia ngang), `Tilt up / Tilt down` (nghiêng dọc). Máy quay xoay từ một điểm cố định.' },
+                { term: 'Chuyển động phức hợp', desc: '`Tracking shot` (theo dấu), `Crane shot` (cú máy cẩu), `Steadicam shot` (máy quay ổn định), `Drone/Aerial shot` (quay từ trên không).' },
+                { term: 'Độ ổn định', desc: '`Handheld` (cầm tay, tạo độ rung), `Tripod shot` (cố định trên chân máy), `Locked-off` (khóa chết khung hình).' },
+                { term: 'Ống kính (Lens)', desc: 'Kiểm soát góc nhìn và DOF. Ví dụ: `14mm wide lens`, `50mm standard lens`, `85mm telephoto lens`.' },
+                { term: 'Quang học (Optics)', desc: 'Kiểm soát ánh sáng và tiêu điểm. Ví dụ: `Shallow/Deep depth of field` (DOF nông/sâu), `Rack focus` (chuyển tiêu điểm), `Lens flare` (lóe sáng ống kính).' }
             ]
         },
         lighting: {
-            title: 'Ánh Sáng & Màu Sắc: Tạo Tâm Trạng',
+            title: '💡 Ánh Sáng',
             content: [
-                { term: 'Giờ Vàng (Golden Hour)', desc: 'Ánh sáng tự nhiên, mềm mại, ấm áp ngay sau khi mặt trời mọc hoặc trước khi mặt trời lặn.' },
-                { term: 'Giờ Xanh (Blue Hour)', desc: 'Ánh sáng tự nhiên, dịu, có tông màu xanh lạnh ngay trước khi mặt trời mọc hoặc sau khi mặt trời lặn.' },
-                { term: 'Đèn viền (Rim Light)', desc: 'Nguồn sáng đặt phía sau chủ thể để tạo ra một đường viền sáng, giúp tách chủ thể khỏi hậu cảnh.' },
-                { term: 'Tương phản cao (Chiaroscuro)', desc: 'Sự tương phản mạnh mẽ giữa vùng sáng và vùng tối, thường dùng trong phim Film Noir để tạo kịch tính.' },
-                { term: 'Chỉnh màu Teal & Orange', desc: 'Phong cách chỉnh màu phổ biến trong phim bom tấn, đẩy tông màu da về phía cam và hậu cảnh về phía xanh mòng két.' },
-                { term: 'Màu phim (Film Stock)', desc: 'Mô phỏng lại màu sắc và độ nhiễu của các loại phim cụ thể. Ví dụ: `rich Kodak Portra 400 colors`, `muted Fujifilm look`.' }
+                { term: 'Cấu trúc ánh sáng', desc: 'Hệ thống đèn cơ bản. Ví dụ: `Three-point lighting` (3 điểm sáng), `Key light` (đèn chính), `Fill light` (đèn phụ), `Backlight / Rim light` (đèn nền/viền).' },
+                { term: 'Chất lượng ánh sáng', desc: '`Hard light` (ánh sáng gắt, tạo bóng đổ sắc nét), `Soft light` (ánh sáng mềm, khuếch tán, bóng đổ mịn).' },
+                { term: 'Phong cách ánh sáng', desc: '`High-key lighting` (sáng tổng thể, ít bóng, tạo cảm giác lạc quan), `Low-key lighting` (tối tổng thể, nhiều bóng, tạo cảm giác kịch tính, bí ẩn), `Chiaroscuro` (tương phản sáng-tối cực độ).' },
+                { term: 'Ánh sáng tự nhiên', desc: '`Golden hour` (giờ vàng), `Blue hour` (giờ xanh), `Overcast` (trời nhiều mây), `Dappled sunlight` (nắng lốm đốm).' },
+                { term: 'Ánh sáng nhân tạo', desc: '`Neon lights`, `Fluorescent lights` (đèn huỳnh quang), `Candlelight` (ánh nến), `Streetlights` (đèn đường).' }
+            ]
+        },
+        color: {
+            title: '🌈 Màu Sắc',
+            content: [
+                { term: 'Bảng màu (Palette)', desc: 'Sự kết hợp màu sắc tổng thể. Ví dụ: `Monochromatic` (đơn sắc), `Analogous` (màu liền kề), `Complementary` (màu bổ túc), `Triadic` (bộ ba màu).' },
+                { term: 'Chỉnh màu (Color Grading)', desc: 'Điều chỉnh thẩm mỹ màu sắc. Ví dụ: `Teal and Orange`, `Bleach bypass` (giảm bão hòa, tăng tương phản), `Sepia tone` (tông màu nâu đỏ).' },
+                { term: 'Đặc tính màu sắc', desc: '`Vibrant / Saturated colors` (màu rực rỡ/bão hòa), `Muted / Desaturated colors` (màu trầm/giảm bão hòa), `Warm tones` (tông ấm), `Cool tones` (tông lạnh).' }
+            ]
+        },
+        editing: {
+            title: '🎞️ Dựng Phim',
+            content: [
+                { term: 'Cú cắt (Cut)', desc: '`Standard cut` (cắt thẳng), `Jump cut` (cắt nhảy), `Match cut` (cắt tương hợp), `Cutaway` (cắt chuyển cảnh), `J-cut` (âm thanh vào trước hình), `L-cut` (hình vào trước âm thanh).' },
+                { term: 'Chuyển cảnh (Transition)', desc: '`Dissolve` (mờ chồng), `Fade in / Fade out` (mờ hiện/mờ tắt), `Wipe` (gạt hình).' },
+                { term: 'Nhịp độ (Pacing)', desc: '`Fast-paced editing` (dựng nhanh, nhiều cú cắt ngắn), `Slow-paced editing` (dựng chậm, cú cắt dài).' },
+                { term: 'Kỹ thuật dựng', desc: '`Montage` (chuỗi cảnh lắp ghép), `Cross-cutting / Parallel editing` (dựng song song), `Split screen` (chia đôi màn hình).' },
+                { term: 'Tốc độ thời gian', desc: '`Slow motion` (chuyển động chậm), `Fast motion` (chuyển động nhanh), `Time-lapse` (tua nhanh thời gian).' }
             ]
         },
         audio: {
-            title: 'Âm Thanh: Xây Dựng Thế Giới Sống Động',
+            title: '🔊 Âm Thanh',
             content: [
-                { term: 'Lời thoại (Dialogue)', desc: 'Chỉ định tông điệu và cảm xúc trước câu thoại. Ví dụ: `giọng nam trầm khàn: Chạy đi.`' },
-                { term: 'Hiệu ứng âm thanh (SFX)', desc: 'Các âm thanh cụ thể đồng bộ với hành động. Ví dụ: `tiếng cành cây gãy dưới chân`.' },
-                { term: 'Âm thanh môi trường (Ambient)', desc: 'Âm thanh nền của bối cảnh. Ví dụ: `tiếng mưa rơi nhẹ`, `giao thông thành phố ồn ào`.' },
-                { term: 'Nhạc nền (Music)', desc: 'Chỉ định thể loại và tâm trạng. Ví dụ: `nhạc giao hưởng hoành tráng`, `nhạc jazz nhẹ nhàng`.' },
-                { term: 'Mẹo quan trọng', desc: 'Thêm `(no subtitles)` vào cuối prompt để tránh phụ đề bị "nướng" vào video.' }
+                { term: 'Loại âm thanh', desc: '`Diegetic sound` (âm thanh thuộc thế giới phim), `Non-diegetic sound` (âm thanh ngoài thế giới phim, vd: nhạc nền).' },
+                { term: 'Lời thoại (Dialogue)', desc: 'Chỉ định tông điệu và cảm xúc. Ví dụ: `giọng nam trầm khàn: Chạy đi.`.' },
+                { term: 'Hiệu ứng âm thanh (SFX)', desc: 'Âm thanh đồng bộ với hành động. Ví dụ: `Foley` (tiếng bước chân, quần áo), `sound of a gunshot`.' },
+                { term: 'Âm thanh môi trường (Ambience)', desc: 'Âm thanh nền của bối cảnh. Ví dụ: `city traffic`, `sound of the ocean`, `forest ambience`.' },
+                { term: 'Âm nhạc (Music)', desc: 'Chỉ định thể loại và tâm trạng. Ví dụ: `dramatic orchestral score`, `upbeat electronic music`, `sad piano melody`.' }
             ]
         },
-        style: {
-            title: 'Phong Cách: Định Hình Thẩm Mỹ',
+        vfx: {
+            title: '✨ Hiệu Ứng Hình Ảnh',
             content: [
-                { term: 'Photorealistic', desc: 'Tạo ra hình ảnh siêu thực, trông giống như được quay bằng máy ảnh thật.' },
-                { term: 'Cinematic', desc: 'Gợi lên cảm giác của một bộ phim điện ảnh với ánh sáng, màu sắc và bố cục được trau chuốt.' },
-                { term: 'Documentary (Phim tài liệu)', desc: 'Phong cách tự nhiên, thường sử dụng máy quay cầm tay và ánh sáng có sẵn.' },
-                { term: 'Animation (Hoạt hình)', desc: 'Chỉ định các phong cách hoạt hình khác nhau. Ví dụ: `stop-motion animation`, `claymation`, `Japanese anime style`.' },
-                { term: 'Film Noir', desc: 'Phong cách phim đen những năm 40, đặc trưng bởi ánh sáng tương phản cao, bóng đổ dài và không khí bí ẩn.' },
-                { term: 'Surreal (Siêu thực)', desc: 'Tạo ra những hình ảnh kỳ ảo, giống như trong mơ, phá vỡ các quy tắc logic thông thường.' }
+                { term: 'Kỹ thuật số (Digital)', desc: '`CGI (Computer-Generated Imagery)`, `Compositing` (kết hợp nhiều lớp hình ảnh), `Motion capture` (bắt chuyển động), `Matte painting` (vẽ cảnh nền).' },
+                { term: 'Thực tế (Practical)', desc: '`Miniatures` (mô hình thu nhỏ), `Pyrotechnics` (cháy nổ), `Prosthetics` (hóa trang giả).' },
+                { term: 'Hiệu ứng trong máy quay', desc: '`Forced perspective` (phối cảnh cưỡng bức), `In-camera transitions` (chuyển cảnh trong máy quay).' }
             ]
         }
     };
+    
+    const tabContainer = document.getElementById('toolkit-tabs');
+    const contentContainer = document.getElementById('toolkit-content');
 
-    const tabButtons = document.querySelectorAll('.tab-button');
-    const toolkitContent = document.getElementById('toolkit-content');
-
-    function renderToolkitContent(tab) {
-        const data = toolkitTabs[tab];
-        let html = `<h3 class="text-xl font-bold mb-4">${data.title}</h3><div class="space-y-3">`;
+    function renderToolkitContent(tabKey) {
+        const data = toolkitData[tabKey];
+        if (!data) return;
+        
+        let html = `<div id="tab-content-${tabKey}" class="space-y-4">`;
         data.content.forEach(item => {
             html += `
                 <div class="p-3 bg-slate-50 rounded-md border border-slate-200">
@@ -347,28 +354,44 @@ document.addEventListener('DOMContentLoaded', function() {
             `;
         });
         html += `</div>`;
-        toolkitContent.innerHTML = html;
+        contentContainer.innerHTML = html;
     }
 
-    tabButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            tabButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            renderToolkitContent(button.dataset.tab);
+    tabContainer.addEventListener('click', (e) => {
+        const targetButton = e.target.closest('button');
+        if (!targetButton) return;
+        
+        tabContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+        targetButton.classList.add('active');
+        
+        renderToolkitContent(targetButton.dataset.tab);
+    });
+
+    renderToolkitContent('style');
+
+    const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                if(mobileMenu.classList.contains('hidden') === false){
+                    mobileMenu.classList.add('hidden');
+                }
+            }
         });
     });
 
-    renderToolkitContent('camera');
-
-    const useExampleBtns = document.querySelectorAll('.use-example-btn');
-    useExampleBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const promptText = e.target.previousElementSibling.textContent;
-            promptInput.value = promptText;
-            performAnalysis();
-            document.getElementById('analyzer').scrollIntoView({ behavior: 'smooth' });
-        });
+    const mobileMenu = document.getElementById('mobile-menu');
+    document.getElementById('menu-btn').addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
     });
+
 });
 </script>
 
