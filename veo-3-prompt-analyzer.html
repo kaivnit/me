@@ -55,6 +55,9 @@
             border-left-color: #f97316;
             background-color: #fff7ed;
         }
+        .custom-input {
+            display: none;
+        }
     </style>
 </head>
 <body class="text-slate-800">
@@ -115,20 +118,56 @@
 
         <section id="builder" class="mb-20">
             <h2 class="text-3xl font-bold text-center mb-4">Trình Xây Dựng Prompt</h2>
-            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Sử dụng khuôn khổ 8 thành phần để xây dựng một prompt hoàn chỉnh từ đầu. Prompt của bạn sẽ được tự động tạo ra ở bên dưới.</p>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Sử dụng các lựa chọn và ô nhập liệu dưới đây để xây dựng một prompt hoàn chỉnh. Prompt của bạn sẽ được tự động tạo ra ở bên dưới.</p>
 
             <div class="grid lg:grid-cols-2 gap-8">
-                <div class="bg-white p-8 rounded-2xl shadow-lg space-y-4">
+                <div id="builder-form" class="bg-white p-8 rounded-2xl shadow-lg space-y-4">
                     <h3 class="text-xl font-bold mb-2">Nhập các thành phần:</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <input type="text" id="builder-style" class="builder-input w-full p-2 border rounded-md" placeholder="1. Phong Cách...">
-                        <input type="text" id="builder-composition" class="builder-input w-full p-2 border rounded-md" placeholder="2. Bố Cục...">
-                        <input type="text" id="builder-subject" class="builder-input w-full p-2 border rounded-md" placeholder="3. Chủ Thể...">
-                        <input type="text" id="builder-action" class="builder-input w-full p-2 border rounded-md" placeholder="4. Hành Động...">
-                        <input type="text" id="builder-context" class="builder-input w-full p-2 border rounded-md" placeholder="5. Bối Cảnh...">
-                        <input type="text" id="builder-ambiance" class="builder-input w-full p-2 border rounded-md" placeholder="6. Không Khí...">
-                        <input type="text" id="builder-camera" class="builder-input w-full p-2 border rounded-md" placeholder="7. Máy Quay...">
-                        <input type="text" id="builder-audio" class="builder-input w-full p-2 border rounded-md" placeholder="8. Âm Thanh...">
+                    
+                    <div>
+                        <label for="builder-subject" class="text-sm font-medium">Chủ Thể (Bắt buộc)</label>
+                        <input type="text" id="builder-subject" data-order="3" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., một nhà du hành vũ trụ">
+                    </div>
+                    <div>
+                        <label for="builder-action" class="text-sm font-medium">Hành Động (Bắt buộc)</label>
+                        <input type="text" id="builder-action" data-order="4" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., đang lơ lửng trong không gian">
+                    </div>
+                     <div>
+                        <label for="builder-context" class="text-sm font-medium">Bối Cảnh</label>
+                        <input type="text" id="builder-context" data-order="5" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., bên ngoài một trạm vũ trụ">
+                    </div>
+
+                    <div>
+                        <label for="select-style" class="text-sm font-medium">Phong Cách</label>
+                        <select id="select-style" data-order="1" class="builder-select w-full mt-1 p-2 border rounded-md bg-white">
+                        </select>
+                        <input type="text" id="custom-style" data-order="1" class="builder-input custom-input w-full mt-2 p-2 border rounded-md" placeholder="Nhập phong cách tùy chỉnh...">
+                    </div>
+                    <div>
+                        <label for="select-composition" class="text-sm font-medium">Bố Cục</label>
+                        <select id="select-composition" data-order="2" class="builder-select w-full mt-1 p-2 border rounded-md bg-white">
+                        </select>
+                        <input type="text" id="custom-composition" data-order="2" class="builder-input custom-input w-full mt-2 p-2 border rounded-md" placeholder="Nhập bố cục tùy chỉnh...">
+                    </div>
+                    <div>
+                        <label for="select-camera-movement" class="text-sm font-medium">Chuyển động máy quay</label>
+                        <select id="select-camera-movement" data-order="7" class="builder-select w-full mt-1 p-2 border rounded-md bg-white">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="select-camera-lens" class="text-sm font-medium">Ống Kính</label>
+                        <select id="select-camera-lens" data-order="7" class="builder-select w-full mt-1 p-2 border rounded-md bg-white">
+                        </select>
+                    </div>
+                    <div>
+                        <label for="select-ambiance" class="text-sm font-medium">Không Khí (Ánh sáng & Màu sắc)</label>
+                        <select id="select-ambiance" data-order="6" class="builder-select w-full mt-1 p-2 border rounded-md bg-white">
+                        </select>
+                        <input type="text" id="custom-ambiance" data-order="6" class="builder-input custom-input w-full mt-2 p-2 border rounded-md" placeholder="Nhập không khí tùy chỉnh...">
+                    </div>
+                     <div>
+                        <label for="builder-audio" class="text-sm font-medium">Âm Thanh</label>
+                        <input type="text" id="builder-audio" data-order="8" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., tiếng thở trong mũ bảo hiểm, nhạc nền du dương">
                     </div>
                 </div>
                 <div class="bg-slate-800 text-white p-8 rounded-2xl shadow-lg flex flex-col">
@@ -176,7 +215,6 @@
                 </div>
             </div>
         </section>
-
     </div>
     
     <footer class="text-center py-8 mt-12 border-t bg-slate-50">
@@ -186,47 +224,34 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const pillarKeywords = {
-        style: ['phong cách', 'style', 'cinematic', 'hoạt hình', 'animated', 'stop-motion', 'comic', 'film noir', 'documentary', 'tài liệu', 'commercial', 'photorealistic', 'watercolor', 'surreal', '16mm', '35mm', 'kodak', 'fujifilm'],
-        composition: ['bố cục', 'composition', 'cận cảnh', 'close-up', 'trung cảnh', 'medium shot', 'toàn cảnh', 'wide shot', 'qua vai', 'over-the-shoulder', 'góc máy', 'angle'],
-        subject: ['chủ thể', 'subject', 'người', 'man', 'woman', 'girl', 'boy', 'thám tử', 'detective', 'phi hành gia', 'astronaut', 'nhà sinh vật học', 'biologist', 'động vật', 'animal', 'cáo', 'fox', 'mèo', 'cat', 'vật thể', 'object', 'xe', 'car'],
-        action: ['hành động', 'action', 'đang', 'is', 'chạy', 'running', 'đi bộ', 'walking', 'nói', 'talking', 'nhìn', 'looking', 'cười', 'laughing', 'châm thuốc', 'lighting a cigarette'],
-        context: ['bối cảnh', 'context', 'trong', 'in', 'trên', 'on', 'tại', 'at', 'rừng', 'forest', 'thành phố', 'city', 'hẻm', 'alley', 'phòng', 'room', 'bãi biển', 'beach', 'không gian', 'space', 'bình minh', 'sương mù'],
-        ambiance: ['không khí', 'ambiance', 'ánh sáng', 'lighting', 'màu sắc', 'color', 'tâm trạng', 'mood', 'giờ vàng', 'golden hour', 'chiaroscuro', 'tương phản', 'neon', 'ấm', 'warm', 'lạnh', 'cool', 'đơn sắc', 'monochrome', 'huyền ảo', 'tia nắng'],
-        camera: ['máy quay', 'camera', 'dolly', 'pan', 'tilt', 'zoom', 'crane', 'aerial', 'tracking', 'handheld', 'tripod', 'ống kính', 'lens', 'mm'],
-        audio: ['âm thanh', 'audio', 'nhạc', 'music', 'lời thoại', 'dialogue', 'giọng nói', 'voice', 'tiếng', 'sound', 'sfx', 'nền', 'background', 'chim hót', 'lạo xạo']
+    const toolkitData = {
+        style: { title: '🎨 Phong Cách & Thẩm Mỹ', content: [ { term: 'Thể loại phim (Genre)', desc: 'Gợi ý các quy ước hình ảnh của một thể loại. Ví dụ: `Film Noir`, `Science Fiction`, `Western`, `Horror`, `Comedy`, `Documentary`.' }, { term: 'Phong trào nghệ thuật', desc: 'Áp dụng thẩm mỹ từ các phong trào nghệ thuật. Ví dụ: `Surrealism` (siêu thực), `German Expressionism` (biểu hiện Đức), `Impressionism` (ấn tượng).' }, { term: 'Thẩm mỹ hình ảnh', desc: 'Mô tả "cái nhìn" tổng thể. Ví dụ: `Photorealistic`, `Cinematic`, `Vintage`, `Grunge`, `Clean and minimal`, `Lo-fi`.' }, { term: 'Hoạt hình (Animation)', desc: 'Chỉ định các phong cách hoạt hình. Ví dụ: `Stop-motion animation`, `Claymation` (đất sét), `2D hand-drawn animation`, `Japanese anime style`, `Pixar style`.' }, { term: 'Thẩm mỹ phim (Film Stock)', desc: 'Mô phỏng chất liệu phim. Ví dụ: `shot on 16mm film`, `35mm Kodak Portra 400`, `Technicolor`, `vintage archival footage`.' } ] },
+        composition: { title: '🖼️ Bố Cục & Khung Hình', content: [ { term: 'Cú máy (Shot Type)', desc: 'Xác định khoảng cách từ máy quay đến chủ thể. Ví dụ: `Extreme Wide Shot` (toàn cảnh cực rộng), `Wide Shot` (toàn cảnh), `Medium Shot` (trung cảnh), `Close-up` (cận cảnh), `Extreme Close-up` (cận cảnh cực đại).' }, { term: 'Góc máy (Camera Angle)', desc: 'Xác định vị trí máy quay so với chủ thể. Ví dụ: `Eye-level` (ngang tầm mắt), `High-angle` (góc cao), `Low-angle` (góc thấp), `Dutch angle` (góc nghiêng), `Bird\'s-eye view` (nhìn từ trên xuống).' }, { term: 'Quy tắc bố cục', desc: 'Các nguyên tắc sắp xếp khung hình. Ví dụ: `Rule of Thirds` (quy tắc 1/3), `Leading lines` (đường dẫn), `Symmetry` (đối xứng), `Framing within a frame` (khung trong khung).' }, { term: 'Số lượng chủ thể', desc: 'Mô tả số người trong khung hình. Ví dụ: `One-shot` (1 người), `Two-shot` (2 người), `Group shot` (nhóm người).' }, { term: 'Cú máy đặc biệt', desc: 'Các kỹ thuật khung hình cụ thể. Ví dụ: `Over-the-shoulder shot` (qua vai), `Point of View (POV)` (góc nhìn chủ quan).' } ] },
+        camera: { title: '🎥 Kỹ Thuật Máy Quay', content: [ { term: 'Chuyển động quang học', desc: '`Zoom in / Zoom out`. Thay đổi tiêu cự ống kính, không làm thay đổi phối cảnh.' }, { term: 'Chuyển động vật lý', desc: '`Dolly in / Dolly out` (đẩy/kéo máy quay), `Truck left / Truck right` (di chuyển ngang). Thay đổi vị trí máy quay, tạo ra sự thay đổi phối cảnh tự nhiên.' }, { term: 'Chuyển động xoay', desc: '`Pan left / Pan right` (lia ngang), `Tilt up / Tilt down` (nghiêng dọc). Máy quay xoay từ một điểm cố định.' }, { term: 'Chuyển động phức hợp', desc: '`Tracking shot` (theo dấu), `Crane shot` (cú máy cẩu), `Steadicam shot` (máy quay ổn định), `Drone/Aerial shot` (quay từ trên không).' }, { term: 'Độ ổn định', desc: '`Handheld` (cầm tay, tạo độ rung), `Tripod shot` (cố định trên chân máy), `Locked-off` (khóa chết khung hình).' }, { term: 'Ống kính (Lens)', desc: 'Kiểm soát góc nhìn và DOF. Ví dụ: `14mm wide lens`, `50mm standard lens`, `85mm telephoto lens`.' }, { term: 'Quang học (Optics)', desc: 'Kiểm soát ánh sáng và tiêu điểm. Ví dụ: `Shallow/Deep depth of field` (DOF nông/sâu), `Rack focus` (chuyển tiêu điểm), `Lens flare` (lóe sáng ống kính).' } ] },
+        lighting: { title: '💡 Ánh Sáng', content: [ { term: 'Cấu trúc ánh sáng', desc: 'Hệ thống đèn cơ bản. Ví dụ: `Three-point lighting` (3 điểm sáng), `Key light` (đèn chính), `Fill light` (đèn phụ), `Backlight / Rim light` (đèn nền/viền).' }, { term: 'Chất lượng ánh sáng', desc: '`Hard light` (ánh sáng gắt, tạo bóng đổ sắc nét), `Soft light` (ánh sáng mềm, khuếch tán, bóng đổ mịn).' }, { term: 'Phong cách ánh sáng', desc: '`High-key lighting` (sáng tổng thể, ít bóng, tạo cảm giác lạc quan), `Low-key lighting` (tối tổng thể, nhiều bóng, tạo cảm giác kịch tính, bí ẩn), `Chiaroscuro` (tương phản sáng-tối cực độ).' }, { term: 'Ánh sáng tự nhiên', desc: '`Golden hour` (giờ vàng), `Blue hour` (giờ xanh), `Overcast` (trời nhiều mây), `Dappled sunlight` (nắng lốm đốm).' }, { term: 'Ánh sáng nhân tạo', desc: '`Neon lights`, `Fluorescent lights` (đèn huỳnh quang), `Candlelight` (ánh nến), `Streetlights` (đèn đường).' } ] },
+        color: { title: '🌈 Màu Sắc', content: [ { term: 'Bảng màu (Palette)', desc: 'Sự kết hợp màu sắc tổng thể. Ví dụ: `Monochromatic` (đơn sắc), `Analogous` (màu liền kề), `Complementary` (màu bổ túc), `Triadic` (bộ ba màu).' }, { term: 'Chỉnh màu (Color Grading)', desc: 'Điều chỉnh thẩm mỹ màu sắc. Ví dụ: `Teal and Orange`, `Bleach bypass` (giảm bão hòa, tăng tương phản), `Sepia tone` (tông màu nâu đỏ).' }, { term: 'Đặc tính màu sắc', desc: '`Vibrant / Saturated colors` (màu rực rỡ/bão hòa), `Muted / Desaturated colors` (màu trầm/giảm bão hòa), `Warm tones` (tông ấm), `Cool tones` (tông lạnh).' } ] },
+        editing: { title: '🎞️ Dựng Phim', content: [ { term: 'Cú cắt (Cut)', desc: '`Standard cut` (cắt thẳng), `Jump cut` (cắt nhảy), `Match cut` (cắt tương hợp), `Cutaway` (cắt chuyển cảnh), `J-cut` (âm thanh vào trước hình), `L-cut` (hình vào trước âm thanh).' }, { term: 'Chuyển cảnh (Transition)', desc: '`Dissolve` (mờ chồng), `Fade in / Fade out` (mờ hiện/mờ tắt), `Wipe` (gạt hình).' }, { term: 'Nhịp độ (Pacing)', desc: '`Fast-paced editing` (dựng nhanh, nhiều cú cắt ngắn), `Slow-paced editing` (dựng chậm, cú cắt dài).' }, { term: 'Kỹ thuật dựng', desc: '`Montage` (chuỗi cảnh lắp ghép), `Cross-cutting / Parallel editing` (dựng song song), `Split screen` (chia đôi màn hình).' }, { term: 'Tốc độ thời gian', desc: '`Slow motion` (chuyển động chậm), `Fast motion` (chuyển động nhanh), `Time-lapse` (tua nhanh thời gian).' } ] },
+        audio: { title: '🔊 Âm Thanh', content: [ { term: 'Loại âm thanh', desc: '`Diegetic sound` (âm thanh thuộc thế giới phim), `Non-diegetic sound` (âm thanh ngoài thế giới phim, vd: nhạc nền).' }, { term: 'Lời thoại (Dialogue)', desc: 'Chỉ định tông điệu và cảm xúc. Ví dụ: `giọng nam trầm khàn: Chạy đi.`.' }, { term: 'Hiệu ứng âm thanh (SFX)', desc: 'Âm thanh đồng bộ với hành động. Ví dụ: `Foley` (tiếng bước chân, quần áo), `sound of a gunshot`.' }, { term: 'Âm thanh môi trường (Ambience)', desc: 'Âm thanh nền của bối cảnh. Ví dụ: `city traffic`, `sound of the ocean`, `forest ambience`.' }, { term: 'Âm nhạc (Music)', desc: 'Chỉ định thể loại và tâm trạng. Ví dụ: `dramatic orchestral score`, `upbeat electronic music`, `sad piano melody`.' } ] },
+        vfx: { title: '✨ Hiệu Ứng Hình Ảnh', content: [ { term: 'Kỹ thuật số (Digital)', desc: '`CGI (Computer-Generated Imagery)`, `Compositing` (kết hợp nhiều lớp hình ảnh), `Motion capture` (bắt chuyển động), `Matte painting` (vẽ cảnh nền).' }, { term: 'Thực tế (Practical)', desc: '`Miniatures` (mô hình thu nhỏ), `Pyrotechnics` (cháy nổ), `Prosthetics` (hóa trang giả).' }, { term: 'Hiệu ứng trong máy quay', desc: '`Forced perspective` (phối cảnh cưỡng bức), `In-camera transitions` (chuyển cảnh trong máy quay).' } ] }
     };
 
-    const pillarInfo = {
-        style: { name: 'Phong Cách', icon: '🎨' },
-        composition: { name: 'Bố Cục', icon: '🖼️' },
-        subject: { name: 'Chủ Thể', icon: '🎯' },
-        action: { name: 'Hành Động', icon: '🏃' },
-        context: { name: 'Bối Cảnh', icon: '🗺️' },
-        ambiance: { name: 'Không Khí', icon: '💡' },
-        camera: { name: 'Máy Quay', icon: '🎥' },
-        audio: { name: 'Âm Thanh', icon: '🔊' }
-    };
+    // --- SETUP: ANALYZER ---
+    const pillarKeywords = { style: ['phong cách', 'style', 'cinematic', 'hoạt hình', 'animated', 'stop-motion', 'comic', 'film noir', 'documentary', 'tài liệu', 'commercial', 'photorealistic', 'watercolor', 'surreal', '16mm', '35mm', 'kodak', 'fujifilm'], composition: ['bố cục', 'composition', 'cận cảnh', 'close-up', 'trung cảnh', 'medium shot', 'toàn cảnh', 'wide shot', 'qua vai', 'over-the-shoulder', 'góc máy', 'angle'], subject: ['chủ thể', 'subject', 'người', 'man', 'woman', 'girl', 'boy', 'thám tử', 'detective', 'phi hành gia', 'astronaut', 'nhà sinh vật học', 'biologist', 'động vật', 'animal', 'cáo', 'fox', 'mèo', 'cat', 'vật thể', 'object', 'xe', 'car'], action: ['hành động', 'action', 'đang', 'is', 'chạy', 'running', 'đi bộ', 'walking', 'nói', 'talking', 'nhìn', 'looking', 'cười', 'laughing', 'châm thuốc', 'lighting a cigarette'], context: ['bối cảnh', 'context', 'trong', 'in', 'trên', 'on', 'tại', 'at', 'rừng', 'forest', 'thành phố', 'city', 'hẻm', 'alley', 'phòng', 'room', 'bãi biển', 'beach', 'không gian', 'space', 'bình minh', 'sương mù'], ambiance: ['không khí', 'ambiance', 'ánh sáng', 'lighting', 'màu sắc', 'color', 'tâm trạng', 'mood', 'giờ vàng', 'golden hour', 'chiaroscuro', 'tương phản', 'neon', 'ấm', 'warm', 'lạnh', 'cool', 'đơn sắc', 'monochrome', 'huyền ảo', 'tia nắng'], camera: ['máy quay', 'camera', 'dolly', 'pan', 'tilt', 'zoom', 'crane', 'aerial', 'tracking', 'handheld', 'tripod', 'ống kính', 'lens', 'mm'], audio: ['âm thanh', 'audio', 'nhạc', 'music', 'lời thoại', 'dialogue', 'giọng nói', 'voice', 'tiếng', 'sound', 'sfx', 'nền', 'background', 'chim hót', 'lạo xạo'] };
+    const pillarInfo = { style: { name: 'Phong Cách', icon: '🎨' }, composition: { name: 'Bố Cục', icon: '🖼️' }, subject: { name: 'Chủ Thể', icon: '🎯' }, action: { name: 'Hành Động', icon: '🏃' }, context: { name: 'Bối Cảnh', icon: '🗺️' }, ambiance: { name: 'Không Khí', icon: '💡' }, camera: { name: 'Máy Quay', icon: '🎥' }, audio: { name: 'Âm Thanh', icon: '🔊' } };
 
     function performAnalysis() {
         const promptText = document.getElementById('prompt-input').value.toLowerCase();
         const analysisResults = document.getElementById('analysis-results');
         analysisResults.innerHTML = '';
-
         if (promptText.trim() === '') {
             analysisResults.innerHTML = '<p class="col-span-full text-center text-slate-500">Vui lòng nhập prompt để phân tích.</p>';
             return;
         }
-
         for (const pillar in pillarKeywords) {
-            const keywords = pillarKeywords[pillar];
-            const foundKeywords = keywords.filter(kw => promptText.includes(kw));
-            
+            const foundKeywords = pillarKeywords[pillar].filter(kw => promptText.includes(kw));
             const card = document.createElement('div');
-            card.className = 'analysis-card p-4 rounded-lg shadow-sm border-l-4 transition-all duration-300';
-            
+            card.className = `analysis-card p-4 rounded-lg shadow-sm border-l-4`;
             let content = `<div class="flex items-center mb-2"><span class="text-2xl mr-2">${pillarInfo[pillar].icon}</span><h4 class="font-bold text-slate-800">${pillarInfo[pillar].name}</h4></div>`;
-
             if (foundKeywords.length > 0) {
                 card.classList.add('present');
                 content += `<p class="text-sm text-green-700 font-medium">Đã phát hiện!</p><p class="text-xs text-slate-500 mt-1">Từ khóa: ${foundKeywords.slice(0, 3).join(', ')}</p>`;
@@ -240,14 +265,100 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     document.getElementById('analyze-btn').addEventListener('click', performAnalysis);
 
-    const builderInputs = document.querySelectorAll('.builder-input');
+    // --- SETUP: BUILDER ---
+    const builderSelectOptions = {
+        style: ['Cinematic', 'Photorealistic', 'Documentary', 'Film Noir', 'Stop-motion animation', 'Japanese anime style', 'Vintage archival footage'],
+        composition: ['Close-up', 'Medium shot', 'Wide shot', 'Extreme wide shot', 'Over-the-shoulder shot', 'Point of View (POV)', 'Low-angle', 'High-angle'],
+        cameraMovement: ['Tracking shot', 'Dolly in', 'Dolly out', 'Pan left', 'Pan right', 'Tilt up', 'Tilt down', 'Handheld', 'Tripod shot', 'Drone/Aerial shot'],
+        cameraLens: ['14mm wide lens', '24mm wide lens', '35mm lens', '50mm standard lens', '85mm telephoto lens', '135mm telephoto lens'],
+        ambiance: ['Golden hour lighting', 'Blue hour lighting', 'Chiaroscuro lighting', 'High-key lighting', 'Low-key lighting', 'Neon lights', 'Monochromatic color', 'Teal and Orange color grading']
+    };
+    
+    function populateSelect(selectId, options, placeholder, allowOther = false) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = `<option value="">-- ${placeholder} --</option>`;
+        options.forEach(opt => {
+            select.innerHTML += `<option value="${opt}">${opt}</option>`;
+        });
+        if (allowOther) {
+            select.innerHTML += `<option value="other">Khác (nhập tay)...</option>`;
+        }
+    }
+
+    populateSelect('select-style', builderSelectOptions.style, 'Chọn phong cách', true);
+    populateSelect('select-composition', builderSelectOptions.composition, 'Chọn bố cục', true);
+    populateSelect('select-camera-movement', builderSelectOptions.cameraMovement, 'Chọn chuyển động');
+    populateSelect('select-camera-lens', builderSelectOptions.cameraLens, 'Chọn ống kính');
+    populateSelect('select-ambiance', builderSelectOptions.ambiance, 'Chọn không khí', true);
+
+    const builderForm = document.getElementById('builder-form');
     function updateBuilderOutput() {
-        const parts = Array.from(builderInputs).map(input => input.value.trim()).filter(Boolean);
-        const fullPrompt = parts.join('. ') + (parts.length > 0 ? '.' : '');
+        const parts = [];
+        const controls = builderForm.querySelectorAll('.builder-input, .builder-select');
+        
+        controls.forEach(control => {
+            let value = '';
+            if(control.tagName === 'SELECT') {
+                if(control.value && control.value !== 'other') {
+                    value = control.value;
+                }
+            } else { // INPUT
+                // Only take input value if it's not a custom input OR if its corresponding select is 'other'
+                const isCustom = control.id.startsWith('custom-');
+                if(!isCustom || (isCustom && document.getElementById(`select-${control.id.substring(7)}`).value === 'other')){
+                    value = control.value.trim();
+                }
+            }
+
+            if(value){
+                parts.push({order: parseInt(control.dataset.order), text: value});
+            }
+        });
+
+        const sortedParts = parts
+            .sort((a,b) => a.order - b.order)
+            .map(p => p.text);
+        
+        const uniqueParts = [...new Set(sortedParts)];
+
+        const fullPrompt = uniqueParts.join('. ') + (uniqueParts.length > 0 ? '.' : '');
         document.getElementById('builder-output').textContent = fullPrompt || 'Hãy bắt đầu nhập vào các ô bên trái...';
     }
-    builderInputs.forEach(input => input.addEventListener('input', updateBuilderOutput));
-    
+
+    builderForm.addEventListener('input', updateBuilderOutput);
+    builderForm.addEventListener('change', (e) => {
+        if (e.target.tagName === 'SELECT') {
+            const customInput = document.getElementById(`custom-${e.target.id.substring(7)}`);
+            if (customInput) {
+                customInput.style.display = e.target.value === 'other' ? 'block' : 'none';
+            }
+            updateBuilderOutput();
+        }
+    });
+
+
+    // --- SETUP: TOOLKIT & NAV ---
+    const tabContainer = document.getElementById('toolkit-tabs');
+    function renderToolkitContent(tabKey) {
+        const data = toolkitData[tabKey];
+        if (!data) return;
+        let html = `<div class="space-y-4">`;
+        data.content.forEach(item => {
+            html += `<div class="p-3 bg-slate-50 rounded-md border border-slate-200"><p class="font-semibold text-blue-700">${item.term}</p><p class="text-sm text-slate-600">${item.desc}</p></div>`;
+        });
+        html += `</div>`;
+        document.getElementById('toolkit-content').innerHTML = html;
+    }
+
+    tabContainer.addEventListener('click', (e) => {
+        const targetButton = e.target.closest('button');
+        if (!targetButton) return;
+        tabContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
+        targetButton.classList.add('active');
+        renderToolkitContent(targetButton.dataset.tab);
+    });
+    renderToolkitContent('style');
+
     document.querySelectorAll('.use-example-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
             document.getElementById('prompt-input').value = e.target.previousElementSibling.textContent;
@@ -256,142 +367,18 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    const toolkitData = {
-        style: {
-            title: '🎨 Phong Cách & Thẩm Mỹ',
-            content: [
-                { term: 'Thể loại phim (Genre)', desc: 'Gợi ý các quy ước hình ảnh của một thể loại. Ví dụ: `Film Noir`, `Science Fiction`, `Western`, `Horror`, `Comedy`, `Documentary`.' },
-                { term: 'Phong trào nghệ thuật', desc: 'Áp dụng thẩm mỹ từ các phong trào nghệ thuật. Ví dụ: `Surrealism` (siêu thực), `German Expressionism` (biểu hiện Đức), `Impressionism` (ấn tượng).' },
-                { term: 'Thẩm mỹ hình ảnh', desc: 'Mô tả "cái nhìn" tổng thể. Ví dụ: `Photorealistic`, `Cinematic`, `Vintage`, `Grunge`, `Clean and minimal`, `Lo-fi`.' },
-                { term: 'Hoạt hình (Animation)', desc: 'Chỉ định các phong cách hoạt hình. Ví dụ: `Stop-motion animation`, `Claymation` (đất sét), `2D hand-drawn animation`, `Japanese anime style`, `Pixar style`.' },
-                { term: 'Thẩm mỹ phim (Film Stock)', desc: 'Mô phỏng chất liệu phim. Ví dụ: `shot on 16mm film`, `35mm Kodak Portra 400`, `Technicolor`, `vintage archival footage`.' }
-            ]
-        },
-        composition: {
-            title: '🖼️ Bố Cục & Khung Hình',
-            content: [
-                { term: 'Cú máy (Shot Type)', desc: 'Xác định khoảng cách từ máy quay đến chủ thể. Ví dụ: `Extreme Wide Shot` (toàn cảnh cực rộng), `Wide Shot` (toàn cảnh), `Medium Shot` (trung cảnh), `Close-up` (cận cảnh), `Extreme Close-up` (cận cảnh cực đại).' },
-                { term: 'Góc máy (Camera Angle)', desc: 'Xác định vị trí máy quay so với chủ thể. Ví dụ: `Eye-level` (ngang tầm mắt), `High-angle` (góc cao), `Low-angle` (góc thấp), `Dutch angle` (góc nghiêng), `Bird\'s-eye view` (nhìn từ trên xuống).' },
-                { term: 'Quy tắc bố cục', desc: 'Các nguyên tắc sắp xếp khung hình. Ví dụ: `Rule of Thirds` (quy tắc 1/3), `Leading lines` (đường dẫn), `Symmetry` (đối xứng), `Framing within a frame` (khung trong khung).' },
-                { term: 'Số lượng chủ thể', desc: 'Mô tả số người trong khung hình. Ví dụ: `One-shot` (1 người), `Two-shot` (2 người), `Group shot` (nhóm người).' },
-                { term: 'Cú máy đặc biệt', desc: 'Các kỹ thuật khung hình cụ thể. Ví dụ: `Over-the-shoulder shot` (qua vai), `Point of View (POV)` (góc nhìn chủ quan).' }
-            ]
-        },
-        camera: {
-            title: '🎥 Kỹ Thuật Máy Quay',
-            content: [
-                { term: 'Chuyển động quang học', desc: '`Zoom in / Zoom out`. Thay đổi tiêu cự ống kính, không làm thay đổi phối cảnh.' },
-                { term: 'Chuyển động vật lý', desc: '`Dolly in / Dolly out` (đẩy/kéo máy quay), `Truck left / Truck right` (di chuyển ngang). Thay đổi vị trí máy quay, tạo ra sự thay đổi phối cảnh tự nhiên.' },
-                { term: 'Chuyển động xoay', desc: '`Pan left / Pan right` (lia ngang), `Tilt up / Tilt down` (nghiêng dọc). Máy quay xoay từ một điểm cố định.' },
-                { term: 'Chuyển động phức hợp', desc: '`Tracking shot` (theo dấu), `Crane shot` (cú máy cẩu), `Steadicam shot` (máy quay ổn định), `Drone/Aerial shot` (quay từ trên không).' },
-                { term: 'Độ ổn định', desc: '`Handheld` (cầm tay, tạo độ rung), `Tripod shot` (cố định trên chân máy), `Locked-off` (khóa chết khung hình).' },
-                { term: 'Ống kính (Lens)', desc: 'Kiểm soát góc nhìn và DOF. Ví dụ: `14mm wide lens`, `50mm standard lens`, `85mm telephoto lens`.' },
-                { term: 'Quang học (Optics)', desc: 'Kiểm soát ánh sáng và tiêu điểm. Ví dụ: `Shallow/Deep depth of field` (DOF nông/sâu), `Rack focus` (chuyển tiêu điểm), `Lens flare` (lóe sáng ống kính).' }
-            ]
-        },
-        lighting: {
-            title: '💡 Ánh Sáng',
-            content: [
-                { term: 'Cấu trúc ánh sáng', desc: 'Hệ thống đèn cơ bản. Ví dụ: `Three-point lighting` (3 điểm sáng), `Key light` (đèn chính), `Fill light` (đèn phụ), `Backlight / Rim light` (đèn nền/viền).' },
-                { term: 'Chất lượng ánh sáng', desc: '`Hard light` (ánh sáng gắt, tạo bóng đổ sắc nét), `Soft light` (ánh sáng mềm, khuếch tán, bóng đổ mịn).' },
-                { term: 'Phong cách ánh sáng', desc: '`High-key lighting` (sáng tổng thể, ít bóng, tạo cảm giác lạc quan), `Low-key lighting` (tối tổng thể, nhiều bóng, tạo cảm giác kịch tính, bí ẩn), `Chiaroscuro` (tương phản sáng-tối cực độ).' },
-                { term: 'Ánh sáng tự nhiên', desc: '`Golden hour` (giờ vàng), `Blue hour` (giờ xanh), `Overcast` (trời nhiều mây), `Dappled sunlight` (nắng lốm đốm).' },
-                { term: 'Ánh sáng nhân tạo', desc: '`Neon lights`, `Fluorescent lights` (đèn huỳnh quang), `Candlelight` (ánh nến), `Streetlights` (đèn đường).' }
-            ]
-        },
-        color: {
-            title: '🌈 Màu Sắc',
-            content: [
-                { term: 'Bảng màu (Palette)', desc: 'Sự kết hợp màu sắc tổng thể. Ví dụ: `Monochromatic` (đơn sắc), `Analogous` (màu liền kề), `Complementary` (màu bổ túc), `Triadic` (bộ ba màu).' },
-                { term: 'Chỉnh màu (Color Grading)', desc: 'Điều chỉnh thẩm mỹ màu sắc. Ví dụ: `Teal and Orange`, `Bleach bypass` (giảm bão hòa, tăng tương phản), `Sepia tone` (tông màu nâu đỏ).' },
-                { term: 'Đặc tính màu sắc', desc: '`Vibrant / Saturated colors` (màu rực rỡ/bão hòa), `Muted / Desaturated colors` (màu trầm/giảm bão hòa), `Warm tones` (tông ấm), `Cool tones` (tông lạnh).' }
-            ]
-        },
-        editing: {
-            title: '🎞️ Dựng Phim',
-            content: [
-                { term: 'Cú cắt (Cut)', desc: '`Standard cut` (cắt thẳng), `Jump cut` (cắt nhảy), `Match cut` (cắt tương hợp), `Cutaway` (cắt chuyển cảnh), `J-cut` (âm thanh vào trước hình), `L-cut` (hình vào trước âm thanh).' },
-                { term: 'Chuyển cảnh (Transition)', desc: '`Dissolve` (mờ chồng), `Fade in / Fade out` (mờ hiện/mờ tắt), `Wipe` (gạt hình).' },
-                { term: 'Nhịp độ (Pacing)', desc: '`Fast-paced editing` (dựng nhanh, nhiều cú cắt ngắn), `Slow-paced editing` (dựng chậm, cú cắt dài).' },
-                { term: 'Kỹ thuật dựng', desc: '`Montage` (chuỗi cảnh lắp ghép), `Cross-cutting / Parallel editing` (dựng song song), `Split screen` (chia đôi màn hình).' },
-                { term: 'Tốc độ thời gian', desc: '`Slow motion` (chuyển động chậm), `Fast motion` (chuyển động nhanh), `Time-lapse` (tua nhanh thời gian).' }
-            ]
-        },
-        audio: {
-            title: '🔊 Âm Thanh',
-            content: [
-                { term: 'Loại âm thanh', desc: '`Diegetic sound` (âm thanh thuộc thế giới phim), `Non-diegetic sound` (âm thanh ngoài thế giới phim, vd: nhạc nền).' },
-                { term: 'Lời thoại (Dialogue)', desc: 'Chỉ định tông điệu và cảm xúc. Ví dụ: `giọng nam trầm khàn: Chạy đi.`.' },
-                { term: 'Hiệu ứng âm thanh (SFX)', desc: 'Âm thanh đồng bộ với hành động. Ví dụ: `Foley` (tiếng bước chân, quần áo), `sound of a gunshot`.' },
-                { term: 'Âm thanh môi trường (Ambience)', desc: 'Âm thanh nền của bối cảnh. Ví dụ: `city traffic`, `sound of the ocean`, `forest ambience`.' },
-                { term: 'Âm nhạc (Music)', desc: 'Chỉ định thể loại và tâm trạng. Ví dụ: `dramatic orchestral score`, `upbeat electronic music`, `sad piano melody`.' }
-            ]
-        },
-        vfx: {
-            title: '✨ Hiệu Ứng Hình Ảnh',
-            content: [
-                { term: 'Kỹ thuật số (Digital)', desc: '`CGI (Computer-Generated Imagery)`, `Compositing` (kết hợp nhiều lớp hình ảnh), `Motion capture` (bắt chuyển động), `Matte painting` (vẽ cảnh nền).' },
-                { term: 'Thực tế (Practical)', desc: '`Miniatures` (mô hình thu nhỏ), `Pyrotechnics` (cháy nổ), `Prosthetics` (hóa trang giả).' },
-                { term: 'Hiệu ứng trong máy quay', desc: '`Forced perspective` (phối cảnh cưỡng bức), `In-camera transitions` (chuyển cảnh trong máy quay).' }
-            ]
-        }
-    };
-    
-    const tabContainer = document.getElementById('toolkit-tabs');
-    const contentContainer = document.getElementById('toolkit-content');
-
-    function renderToolkitContent(tabKey) {
-        const data = toolkitData[tabKey];
-        if (!data) return;
-        
-        let html = `<div id="tab-content-${tabKey}" class="space-y-4">`;
-        data.content.forEach(item => {
-            html += `
-                <div class="p-3 bg-slate-50 rounded-md border border-slate-200">
-                    <p class="font-semibold text-blue-700">${item.term}</p>
-                    <p class="text-sm text-slate-600">${item.desc}</p>
-                </div>
-            `;
-        });
-        html += `</div>`;
-        contentContainer.innerHTML = html;
-    }
-
-    tabContainer.addEventListener('click', (e) => {
-        const targetButton = e.target.closest('button');
-        if (!targetButton) return;
-        
-        tabContainer.querySelectorAll('button').forEach(btn => btn.classList.remove('active'));
-        targetButton.classList.add('active');
-        
-        renderToolkitContent(targetButton.dataset.tab);
-    });
-
-    renderToolkitContent('style');
-
-    const navLinks = document.querySelectorAll('.nav-link, #mobile-menu a');
-    navLinks.forEach(link => {
+    const mobileMenu = document.getElementById('mobile-menu');
+    document.getElementById('menu-btn').addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+    document.querySelectorAll('#mobile-menu a, .nav-link').forEach(link => {
         link.addEventListener('click', function(e) {
             e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
+            const targetElement = document.querySelector(this.getAttribute('href'));
             if (targetElement) {
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                if(mobileMenu.classList.contains('hidden') === false){
-                    mobileMenu.classList.add('hidden');
-                }
+                window.scrollTo({ top: targetElement.offsetTop - 80, behavior: 'smooth' });
+                if(!mobileMenu.classList.contains('hidden')){ mobileMenu.classList.add('hidden'); }
             }
         });
     });
-
-    const mobileMenu = document.getElementById('mobile-menu');
-    document.getElementById('menu-btn').addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
 });
 </script>
 
