@@ -155,7 +155,7 @@
                         </select>
                     </div>
                     <div>
-                        <label for="select-camera-lens" class="text-sm font-medium">Ống Kính</label>
+                        <label for="select-camera-lens" class="text-sm font-medium">Ống Kính & Quang học</label>
                         <select id="select-camera-lens" data-order="7" class="builder-select w-full mt-1 p-2 border rounded-md bg-white">
                         </select>
                     </div>
@@ -189,12 +189,11 @@
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="lighting">💡 Ánh Sáng</button>
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="color">🌈 Màu Sắc</button>
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="editing">🎞️ Dựng Phim</button>
-                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="audio">🔊 Âm Thanh</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="audio">� Âm Thanh</button>
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="vfx">✨ Hiệu Ứng Hình Ảnh</button>
                     </div>
                 </div>
                 <div id="toolkit-content" class="max-h-[500px] overflow-y-auto pr-4">
-                    <!-- Content will be injected by JS -->
                 </div>
             </div>
         </section>
@@ -234,10 +233,64 @@ document.addEventListener('DOMContentLoaded', function() {
         audio: { title: '🔊 Âm Thanh', content: [ { term: 'Loại âm thanh', desc: '`Diegetic sound` (âm thanh thuộc thế giới phim), `Non-diegetic sound` (âm thanh ngoài thế giới phim, vd: nhạc nền).' }, { term: 'Lời thoại (Dialogue)', desc: 'Chỉ định tông điệu và cảm xúc. Ví dụ: `giọng nam trầm khàn: Chạy đi.`.' }, { term: 'Hiệu ứng âm thanh (SFX)', desc: 'Âm thanh đồng bộ với hành động. Ví dụ: `Foley` (tiếng bước chân, quần áo), `sound of a gunshot`.' }, { term: 'Âm thanh môi trường (Ambience)', desc: 'Âm thanh nền của bối cảnh. Ví dụ: `city traffic`, `sound of the ocean`, `forest ambience`.' }, { term: 'Âm nhạc (Music)', desc: 'Chỉ định thể loại và tâm trạng. Ví dụ: `dramatic orchestral score`, `upbeat electronic music`, `sad piano melody`.' } ] },
         vfx: { title: '✨ Hiệu Ứng Hình Ảnh', content: [ { term: 'Kỹ thuật số (Digital)', desc: '`CGI (Computer-Generated Imagery)`, `Compositing` (kết hợp nhiều lớp hình ảnh), `Motion capture` (bắt chuyển động), `Matte painting` (vẽ cảnh nền).' }, { term: 'Thực tế (Practical)', desc: '`Miniatures` (mô hình thu nhỏ), `Pyrotechnics` (cháy nổ), `Prosthetics` (hóa trang giả).' }, { term: 'Hiệu ứng trong máy quay', desc: '`Forced perspective` (phối cảnh cưỡng bức), `In-camera transitions` (chuyển cảnh trong máy quay).' } ] }
     };
+    
+    // --- BUILDER SELECT OPTIONS SETUP ---
+    const builderSelectOptions = {
+        style: [
+            { group: 'Chất Lượng & Độ Phân Giải', options: ['Photorealistic', 'Cinematic', '8K high definition', 'High detail', 'Lo-fi', 'Grainy'] },
+            { group: 'Thể Loại Phim', options: ['Documentary', 'Film Noir', 'Science Fiction', 'Horror', 'Western', 'Epic film', 'Silent film'] },
+            { group: 'Phong Cách Nghệ Thuật & Hoạt Hình', options: ['Anime', 'Stop-motion', 'Claymation (đất sét)', 'Watercolor (màu nước)', 'Surrealism (siêu thực)', 'Impressionism (ấn tượng)', '3D Pixar style'] },
+            { group: 'Thẩm Mỹ Phim', options: ['Vintage archival footage', 'Shot on 16mm film', '35mm Kodak Portra 400', 'Technicolor'] }
+        ],
+        composition: [
+            { group: 'Cỡ Cảnh (Shot Size)', options: ['Extreme Wide Shot', 'Wide Shot', 'Full Shot', 'Medium shot', 'Close-up', 'Extreme close-up'] },
+            { group: 'Góc Máy (Camera Angle)', options: ['Eye-level', 'High-angle', 'Low-angle', 'Dutch angle', 'Bird\'s-eye view'] },
+            { group: 'Cú Máy Đặc Biệt', options: ['Over-the-shoulder shot', 'Point of View (POV)', 'Two-shot'] }
+        ],
+        cameraMovement: [
+            { group: 'Trạng Thái', options: ['Tĩnh (Static)'] },
+            { group: 'Di Chuyển Tuyến Tính', options: ['Di chuyển ra trước (Dolly in)', 'Di chuyển lùi ra xa (Dolly out)', 'Di chuyển lên (Crane up)', 'Di chuyển xuống (Crane down)', 'Di chuyển sang trái (Truck left)', 'Di chuyển sang phải (Truck right)'] },
+            { group: 'Chuyển Động Xoay', options: ['Quay trái (Pan left)', 'Quay phải (Pan right)', 'Xoay lên (Tilt up)', 'Xoay xuống (Tilt down)', 'Xoay trái (Roll counter-clockwise)', 'Xoay phải (Roll clockwise)'] }
+        ],
+        cameraLens: [
+            { group: 'Ống Kính Prime', options: ['14mm wide lens', '24mm wide lens', '35mm lens', '50mm standard lens', '85mm telephoto lens', '135mm telephoto lens', '100mm Macro lens'] },
+            { group: 'Đặc Tính Quang Học', options: ['Shallow depth of field (DOF nông)', 'Deep depth of field (DOF sâu)', 'Rack focus (Chuyển nét)', 'Anamorphic lens flare'] }
+        ],
+        ambiance: [
+            { group: 'Ánh Sáng Tự Nhiên', options: ['Golden hour lighting', 'Blue hour lighting', 'Overcast lighting', 'Dappled sunlight'] },
+            { group: 'Phong Cách Ánh Sáng', options: ['High-key lighting', 'Low-key lighting', 'Chiaroscuro lighting', 'Rim light', 'Silhouette'] },
+            { group: 'Nguồn Sáng Nhân Tạo', options: ['Neon lights', 'Fluorescent lights', 'Candlelight', 'Volumetric lighting'] },
+            { group: 'Màu Sắc', options: ['Monochromatic', 'Saturated colors', 'Desaturated colors', 'Teal and Orange color grading', 'Sepia tone'] }
+        ]
+    };
+    
+    function populateGroupedSelect(selectId, groupedOptions, placeholder, allowOther = false) {
+        const select = document.getElementById(selectId);
+        select.innerHTML = `<option value="">-- ${placeholder} --</option>`;
+        groupedOptions.forEach(group => {
+            const optgroup = document.createElement('optgroup');
+            optgroup.label = group.group;
+            group.options.forEach(opt => {
+                const option = document.createElement('option');
+                option.value = opt;
+                option.textContent = opt;
+                optgroup.appendChild(option);
+            });
+            select.appendChild(optgroup);
+        });
+        if (allowOther) {
+            select.innerHTML += `<option value="other">Khác (nhập tay)...</option>`;
+        }
+    }
+    
+    populateGroupedSelect('select-style', builderSelectOptions.style, 'Chọn phong cách', true);
+    populateGroupedSelect('select-composition', builderSelectOptions.composition, 'Chọn bố cục', true);
+    populateGroupedSelect('select-camera-movement', builderSelectOptions.cameraMovement, 'Chọn chuyển động');
+    populateGroupedSelect('select-camera-lens', builderSelectOptions.cameraLens, 'Chọn ống kính & quang học');
+    populateGroupedSelect('select-ambiance', builderSelectOptions.ambiance, 'Chọn không khí', true);
 
-    // --- SETUP: ANALYZER ---
+    // --- ANALYZER & BUILDER LOGIC ---
     const pillarKeywords = { style: ['phong cách', 'style', 'cinematic', 'hoạt hình', 'animated', 'stop-motion', 'comic', 'film noir', 'documentary', 'tài liệu', 'commercial', 'photorealistic', 'watercolor', 'surreal', '16mm', '35mm', 'kodak', 'fujifilm'], composition: ['bố cục', 'composition', 'cận cảnh', 'close-up', 'trung cảnh', 'medium shot', 'toàn cảnh', 'wide shot', 'qua vai', 'over-the-shoulder', 'góc máy', 'angle'], subject: ['chủ thể', 'subject', 'người', 'man', 'woman', 'girl', 'boy', 'thám tử', 'detective', 'phi hành gia', 'astronaut', 'nhà sinh vật học', 'biologist', 'động vật', 'animal', 'cáo', 'fox', 'mèo', 'cat', 'vật thể', 'object', 'xe', 'car'], action: ['hành động', 'action', 'đang', 'is', 'chạy', 'running', 'đi bộ', 'walking', 'nói', 'talking', 'nhìn', 'looking', 'cười', 'laughing', 'châm thuốc', 'lighting a cigarette'], context: ['bối cảnh', 'context', 'trong', 'in', 'trên', 'on', 'tại', 'at', 'rừng', 'forest', 'thành phố', 'city', 'hẻm', 'alley', 'phòng', 'room', 'bãi biển', 'beach', 'không gian', 'space', 'bình minh', 'sương mù'], ambiance: ['không khí', 'ambiance', 'ánh sáng', 'lighting', 'màu sắc', 'color', 'tâm trạng', 'mood', 'giờ vàng', 'golden hour', 'chiaroscuro', 'tương phản', 'neon', 'ấm', 'warm', 'lạnh', 'cool', 'đơn sắc', 'monochrome', 'huyền ảo', 'tia nắng'], camera: ['máy quay', 'camera', 'dolly', 'pan', 'tilt', 'zoom', 'crane', 'aerial', 'tracking', 'handheld', 'tripod', 'ống kính', 'lens', 'mm'], audio: ['âm thanh', 'audio', 'nhạc', 'music', 'lời thoại', 'dialogue', 'giọng nói', 'voice', 'tiếng', 'sound', 'sfx', 'nền', 'background', 'chim hót', 'lạo xạo'] };
-    const pillarInfo = { style: { name: 'Phong Cách', icon: '🎨' }, composition: { name: 'Bố Cục', icon: '🖼️' }, subject: { name: 'Chủ Thể', icon: '🎯' }, action: { name: 'Hành Động', icon: '🏃' }, context: { name: 'Bối Cảnh', icon: '🗺️' }, ambiance: { name: 'Không Khí', icon: '💡' }, camera: { name: 'Máy Quay', icon: '🎥' }, audio: { name: 'Âm Thanh', icon: '🔊' } };
 
     function performAnalysis() {
         const promptText = document.getElementById('prompt-input').value.toLowerCase();
@@ -265,32 +318,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     document.getElementById('analyze-btn').addEventListener('click', performAnalysis);
 
-    // --- SETUP: BUILDER ---
-    const builderSelectOptions = {
-        style: ['Cinematic', 'Photorealistic', 'Documentary', 'Film Noir', 'Stop-motion animation', 'Japanese anime style', 'Vintage archival footage'],
-        composition: ['Close-up', 'Medium shot', 'Wide shot', 'Extreme wide shot', 'Over-the-shoulder shot', 'Point of View (POV)', 'Low-angle', 'High-angle'],
-        cameraMovement: ['Tracking shot', 'Dolly in', 'Dolly out', 'Pan left', 'Pan right', 'Tilt up', 'Tilt down', 'Handheld', 'Tripod shot', 'Drone/Aerial shot'],
-        cameraLens: ['14mm wide lens', '24mm wide lens', '35mm lens', '50mm standard lens', '85mm telephoto lens', '135mm telephoto lens'],
-        ambiance: ['Golden hour lighting', 'Blue hour lighting', 'Chiaroscuro lighting', 'High-key lighting', 'Low-key lighting', 'Neon lights', 'Monochromatic color', 'Teal and Orange color grading']
-    };
-    
-    function populateSelect(selectId, options, placeholder, allowOther = false) {
-        const select = document.getElementById(selectId);
-        select.innerHTML = `<option value="">-- ${placeholder} --</option>`;
-        options.forEach(opt => {
-            select.innerHTML += `<option value="${opt}">${opt}</option>`;
-        });
-        if (allowOther) {
-            select.innerHTML += `<option value="other">Khác (nhập tay)...</option>`;
-        }
-    }
-
-    populateSelect('select-style', builderSelectOptions.style, 'Chọn phong cách', true);
-    populateSelect('select-composition', builderSelectOptions.composition, 'Chọn bố cục', true);
-    populateSelect('select-camera-movement', builderSelectOptions.cameraMovement, 'Chọn chuyển động');
-    populateSelect('select-camera-lens', builderSelectOptions.cameraLens, 'Chọn ống kính');
-    populateSelect('select-ambiance', builderSelectOptions.ambiance, 'Chọn không khí', true);
-
     const builderForm = document.getElementById('builder-form');
     function updateBuilderOutput() {
         const parts = [];
@@ -299,32 +326,19 @@ document.addEventListener('DOMContentLoaded', function() {
         controls.forEach(control => {
             let value = '';
             if(control.tagName === 'SELECT') {
-                if(control.value && control.value !== 'other') {
-                    value = control.value;
-                }
+                if(control.value && control.value !== 'other') { value = control.value; }
             } else { // INPUT
-                // Only take input value if it's not a custom input OR if its corresponding select is 'other'
                 const isCustom = control.id.startsWith('custom-');
-                if(!isCustom || (isCustom && document.getElementById(`select-${control.id.substring(7)}`).value === 'other')){
-                    value = control.value.trim();
-                }
+                if(!isCustom || (isCustom && document.getElementById(`select-${control.id.substring(7)}`).value === 'other')){ value = control.value.trim(); }
             }
-
-            if(value){
-                parts.push({order: parseInt(control.dataset.order), text: value});
-            }
+            if(value){ parts.push({order: parseInt(control.dataset.order), text: value}); }
         });
 
-        const sortedParts = parts
-            .sort((a,b) => a.order - b.order)
-            .map(p => p.text);
-        
+        const sortedParts = parts.sort((a,b) => a.order - b.order).map(p => p.text);
         const uniqueParts = [...new Set(sortedParts)];
-
         const fullPrompt = uniqueParts.join('. ') + (uniqueParts.length > 0 ? '.' : '');
         document.getElementById('builder-output').textContent = fullPrompt || 'Hãy bắt đầu nhập vào các ô bên trái...';
     }
-
     builderForm.addEventListener('input', updateBuilderOutput);
     builderForm.addEventListener('change', (e) => {
         if (e.target.tagName === 'SELECT') {
@@ -336,8 +350,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
-    // --- SETUP: TOOLKIT & NAV ---
+    // --- TOOLKIT & NAV LOGIC ---
     const tabContainer = document.getElementById('toolkit-tabs');
     function renderToolkitContent(tabKey) {
         const data = toolkitData[tabKey];
@@ -349,7 +362,6 @@ document.addEventListener('DOMContentLoaded', function() {
         html += `</div>`;
         document.getElementById('toolkit-content').innerHTML = html;
     }
-
     tabContainer.addEventListener('click', (e) => {
         const targetButton = e.target.closest('button');
         if (!targetButton) return;
@@ -384,3 +396,4 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+�
