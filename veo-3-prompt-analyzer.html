@@ -189,7 +189,7 @@
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="lighting">💡 Ánh Sáng</button>
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="color">🌈 Màu Sắc</button>
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="editing">🎞️ Dựng Phim</button>
-                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="audio">� Âm Thanh</button>
+                         <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="audio">🔊 Âm Thanh</button>
                          <button class="tab-button py-2 px-4 font-medium text-sm rounded-md transition" data-tab="vfx">✨ Hiệu Ứng Hình Ảnh</button>
                     </div>
                 </div>
@@ -291,6 +291,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- ANALYZER & BUILDER LOGIC ---
     const pillarKeywords = { style: ['phong cách', 'style', 'cinematic', 'hoạt hình', 'animated', 'stop-motion', 'comic', 'film noir', 'documentary', 'tài liệu', 'commercial', 'photorealistic', 'watercolor', 'surreal', '16mm', '35mm', 'kodak', 'fujifilm'], composition: ['bố cục', 'composition', 'cận cảnh', 'close-up', 'trung cảnh', 'medium shot', 'toàn cảnh', 'wide shot', 'qua vai', 'over-the-shoulder', 'góc máy', 'angle'], subject: ['chủ thể', 'subject', 'người', 'man', 'woman', 'girl', 'boy', 'thám tử', 'detective', 'phi hành gia', 'astronaut', 'nhà sinh vật học', 'biologist', 'động vật', 'animal', 'cáo', 'fox', 'mèo', 'cat', 'vật thể', 'object', 'xe', 'car'], action: ['hành động', 'action', 'đang', 'is', 'chạy', 'running', 'đi bộ', 'walking', 'nói', 'talking', 'nhìn', 'looking', 'cười', 'laughing', 'châm thuốc', 'lighting a cigarette'], context: ['bối cảnh', 'context', 'trong', 'in', 'trên', 'on', 'tại', 'at', 'rừng', 'forest', 'thành phố', 'city', 'hẻm', 'alley', 'phòng', 'room', 'bãi biển', 'beach', 'không gian', 'space', 'bình minh', 'sương mù'], ambiance: ['không khí', 'ambiance', 'ánh sáng', 'lighting', 'màu sắc', 'color', 'tâm trạng', 'mood', 'giờ vàng', 'golden hour', 'chiaroscuro', 'tương phản', 'neon', 'ấm', 'warm', 'lạnh', 'cool', 'đơn sắc', 'monochrome', 'huyền ảo', 'tia nắng'], camera: ['máy quay', 'camera', 'dolly', 'pan', 'tilt', 'zoom', 'crane', 'aerial', 'tracking', 'handheld', 'tripod', 'ống kính', 'lens', 'mm'], audio: ['âm thanh', 'audio', 'nhạc', 'music', 'lời thoại', 'dialogue', 'giọng nói', 'voice', 'tiếng', 'sound', 'sfx', 'nền', 'background', 'chim hót', 'lạo xạo'] };
+    const pillarInfo = { style: { name: 'Phong Cách', icon: '🎨' }, composition: { name: 'Bố Cục', icon: '🖼️' }, subject: { name: 'Chủ Thể', icon: '🎯' }, action: { name: 'Hành Động', icon: '🏃' }, context: { name: 'Bối Cảnh', icon: '🗺️' }, ambiance: { name: 'Không Khí', icon: '💡' }, camera: { name: 'Máy Quay', icon: '🎥' }, audio: { name: 'Âm Thanh', icon: '🔊' } };
 
     function performAnalysis() {
         const promptText = document.getElementById('prompt-input').value.toLowerCase();
@@ -396,4 +397,3 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
-�
