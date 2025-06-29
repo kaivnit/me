@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Chiến lược: Kênh Nhạc Thiếu Nhi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fdfdfd;
+            color: #333;
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 320px;
+            width: 100%;
+            max-width: 450px;
+        }
+         .radar-chart-container {
+            position: relative;
+            margin: auto;
+            height: 350px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .nav-link {
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #ff9900;
+            border-bottom: 2px solid #ff9900;
+        }
+        .kpi-card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            border: 1px solid #f0f0f0;
+        }
+        .kpi-value {
+            font-size: 2.75rem;
+            font-weight: 800;
+            color: #0077b6;
+        }
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #023e8a;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #4a4a4a;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 3rem auto;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .tab-button.active {
+            background-color: #0077b6;
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(0, 119, 182, 0.39);
+        }
+        .funnel-segment {
+            padding: 1rem 2rem;
+            color: white;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .funnel-segment:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .funnel-tofu { background-color: #00b4d8; clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%); }
+        .funnel-mofu { background-color: #0077b6; clip-path: polygon(10% 0, 90% 0, 80% 100%, 20% 100%); }
+        .funnel-bofu { background-color: #023e8a; clip-path: polygon(20% 0, 80% 0, 70% 100%, 30% 100%); }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-gray-50">
+
+    <nav class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="font-bold text-xl text-blue-800">Kênh Nhạc Thiếu Nhi</div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#opportunity" class="nav-link">Cơ Hội</a>
+                <a href="#strategy" class="nav-link">Chiến Lược</a>
+                <a href="#production" class="nav-link">Sản Xuất</a>
+                <a href="#revenue" class="nav-link">Doanh Thu</a>
+                <a href="#growth" class="nav-link">Tăng Trưởng</a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="text-center py-16 md:py-24 px-4 bg-white">
+        <h1 class="text-3xl md:text-5xl font-extrabold text-[#023e8a] mb-4">Xây Dựng Kênh Nhạc Thiếu Nhi Thế Hệ Mới</h1>
+        <p class="text-lg md:text-xl max-w-3xl mx-auto text-gray-600">Định vị lại thị trường, tập trung vào giáo dục giá trị cao và tạo ra một mô hình kinh doanh bền vững.</p>
+    </header>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="opportunity" class="py-12 md:py-16">
+            <h2 class="section-title">Phần 1: Nhận diện "Đại Dương Xanh"</h2>
+            <p class="section-subtitle">Thị trường nội dung thiếu nhi có vẻ bão hòa, nhưng một cơ hội khổng lồ đang chờ đợi. Đó là nhu cầu về nội dung giáo dục chất lượng cao, nhẹ nhàng, như một "liều thuốc giải" cho sự kích thích quá mức từ các kênh lớn.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="kpi-card">
+                    <p class="kpi-value">>$50B</p>
+                    <h3 class="font-semibold text-gray-700 mt-2">Thị trường ELL Toàn cầu</h3>
+                    <p class="text-sm text-gray-500">Dự báo năm 2033</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-value">21.5%</p>
+                    <h3 class="font-semibold text-gray-700 mt-2">Tăng trưởng Kép (CAGR)</h3>
+                     <p class="text-sm text-gray-500">Thị trường Học Tiếng Anh (ELL)</p>
+                </div>
+                <div class="kpi-card">
+                    <p class="kpi-value">$5.5B</p>
+                    <h3 class="font-semibold text-gray-700 mt-2">Thị trường ELL Đông Nam Á</h3>
+                     <p class="text-sm text-gray-500">Dự báo năm 2032</p>
+                </div>
+                 <div class="kpi-card">
+                    <div class="chart-container h-48 -my-2">
+                        <canvas id="marketShareChart"></canvas>
+                    </div>
+                    <h3 class="font-semibold text-gray-700 mt-2">Thị phần Châu Á - TBD</h3>
+                    <p class="text-sm text-gray-500">Chiếm lĩnh thị trường toàn cầu</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="strategy" class="py-12 md:py-16 bg-white rounded-2xl p-6 md:p-10">
+            <h2 class="section-title">Phần 2: Công Thức Nội Dung Chiến Thắng</h2>
+            <p class="section-subtitle">Chiến lược không phải là cạnh tranh, mà là tạo ra một hạng mục riêng. Chúng tôi đề xuất mô hình kết hợp "SEL + STEM + Ngữ âm" để tối đa hóa giá trị giáo dục và thu hút các nhà tài trợ cao cấp.</p>
+            
+            <div class="flex justify-center mb-8">
+                <div class="flex space-x-2 bg-gray-100 p-2 rounded-full">
+                    <button id="btn-compare" class="tab-button py-2 px-6 rounded-full text-sm font-semibold active">So Sánh Thể Loại</button>
+                    <button id="btn-pillars" class="tab-button py-2 px-6 rounded-full text-sm font-semibold">3 Trụ Cột Chính</button>
+                </div>
+            </div>
+
+            <div id="compare-view">
+                <p class="text-center text-gray-600 mb-6 max-w-2xl mx-auto">Biểu đồ radar này so sánh các thể loại nội dung dựa trên các tiêu chí quan trọng, cho thấy các thị trường ngách SEL và STEM vượt trội về tiềm năng kiếm tiền và giá trị giáo dục trong khi có mức độ cạnh tranh thấp hơn.</p>
+                <div class="radar-chart-container">
+                    <canvas id="genreComparisonChart"></canvas>
+                </div>
+            </div>
+            
+            <div id="pillars-view" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="kpi-card text-left p-6">
+                        <h3 class="font-bold text-lg text-[#0077b6]">💡 Ngữ âm & Ngôn ngữ</h3>
+                        <p class="text-sm text-gray-600 mt-2">Sản phẩm cốt lõi đáp ứng nhu cầu học tiếng Anh nền tảng. Đây là "cửa ngõ" để phụ huynh tìm đến kênh.</p>
+                        <p class="text-xs text-gray-500 mt-4 font-semibold">VÍ DỤ:</p>
+                        <ul class="text-xs text-gray-600 list-disc list-inside mt-1 space-y-1">
+                            <li>Bài hát về bảng chữ cái (The Alphabet Song)</li>
+                            <li>Bài hát về âm của chữ (Phonics Song)</li>
+                            <li>Từ vựng cơ bản (Màu sắc, Con số)</li>
+                        </ul>
+                    </div>
+                    <div class="kpi-card text-left p-6 ring-2 ring-[#ff9900]">
+                        <h3 class="font-bold text-lg text-[#0077b6]">💖 Học tập Cảm xúc (SEL)</h3>
+                        <p class="text-sm text-gray-600 mt-2">Trái tim và yếu tố khác biệt của thương hiệu, kết nối sâu sắc với giá trị của phụ huynh hiện đại.</p>
+                        <p class="text-xs text-gray-500 mt-4 font-semibold">VÍ DỤ:</p>
+                         <ul class="text-xs text-gray-600 list-disc list-inside mt-1 space-y-1">
+                            <li>Khóc cũng không sao (It's Alright to Cry)</li>
+                            <li>Bài hát về sự đồng cảm</li>
+                            <li>Học cách chia sẻ đồ chơi</li>
+                        </ul>
+                    </div>
+                    <div class="kpi-card text-left p-6">
+                        <h3 class="font-bold text-lg text-[#0077b6]">🚀 Khoa học & Khám phá (STEM)</h3>
+                        <p class="text-sm text-gray-600 mt-2">Nội dung cao cấp, thu hút các nhà tài trợ giá trị cao và định vị kênh là một nguồn tài nguyên giáo dục uy tín.</p>
+                        <p class="text-xs text-gray-500 mt-4 font-semibold">VÍ DỤ:</p>
+                        <ul class="text-xs text-gray-600 list-disc list-inside mt-1 space-y-1">
+                           <li>Vòng tuần hoàn của nước</li>
+                           <li>Bài hát về các Hành tinh</li>
+                           <li>Đếm số bằng tên lửa</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="production" class="py-12 md:py-16">
+            <h2 class="section-title">Phần 3: Mô Hình Sản Xuất Thông Minh</h2>
+            <p class="section-subtitle">Chất lượng cao không đồng nghĩa với chi phí cao. Bằng cách chọn hoạt hình 2D và xây dựng quy trình theo mô-đun, chúng ta có thể sản xuất nội dung hiệu quả và nhất quán.</p>
+             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                <div class="bg-white rounded-2xl p-6 md:p-8">
+                     <h3 class="font-bold text-lg text-center text-[#023e8a] mb-4">So sánh chi phí: Hoạt hình 2D vs. 3D</h3>
+                     <p class="text-sm text-center text-gray-600 mb-4">Hoạt hình 3D đắt hơn đáng kể. Lựa chọn 2D không chỉ là tiết kiệm, mà còn là một quyết định chiến lược để tạo bản sắc hình ảnh độc đáo.</p>
+                    <div class="chart-container h-64">
+                        <canvas id="costComparisonChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl p-6 md:p-8">
+                    <h3 class="font-bold text-lg text-center text-[#023e8a] mb-4">Quy trình theo mô-đun "Thư viện là trên hết"</h3>
+                    <p class="text-sm text-center text-gray-600 mb-4">Đầu tư ban đầu vào việc xây dựng một thư viện tài sản (nhân vật, bối cảnh) sẽ giảm đáng kể thời gian và chi phí cho các video sau này.</p>
+                     <div class="space-y-4">
+                        <div class="flex items-center space-x-4">
+                            <div class="bg-[#00b4d8] text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">1</div>
+                            <p class="font-semibold text-gray-700">Xây dựng Thư viện Tài sản (Nhân vật, Bối cảnh, Đạo cụ)</p>
+                        </div>
+                        <div class="ml-6 border-l-2 border-dashed border-[#00b4d8] h-8"></div>
+                        <div class="flex items-center space-x-4">
+                             <div class="bg-[#0077b6] text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">2</div>
+                            <p class="font-semibold text-gray-700">Viết Kịch bản & Sáng tác Nhạc (Dựa trên tài sản có sẵn)</p>
+                        </div>
+                         <div class="ml-6 border-l-2 border-dashed border-[#0077b6] h-8"></div>
+                        <div class="flex items-center space-x-4">
+                             <div class="bg-[#023e8a] text-white rounded-full w-12 h-12 flex items-center justify-center font-bold text-xl">3</div>
+                            <p class="font-semibold text-gray-700">Lắp ráp, Hoạt hình & Xuất bản (Nhanh chóng & Hiệu quả)</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="revenue" class="py-12 md:py-16 bg-white rounded-2xl p-6 md:p-10">
+            <h2 class="section-title">Phần 4: Phễu Doanh Thu Đa Luồng</h2>
+            <p class="section-subtitle">Không phụ thuộc vào một nguồn doanh thu duy nhất. Chúng tôi xây dựng một phễu chiến lược để chuyển đổi người xem thành khách hàng và người hâm mộ trung thành.</p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="text-center">
+                    <h3 class="font-bold text-lg text-[#023e8a] mb-2">Phễu Kiếm Tiền</h3>
+                    <p class="text-sm text-gray-600 mb-4">Nhấp vào từng giai đoạn để xem chi tiết.</p>
+                    <div id="funnel" class="mx-auto max-w-sm flex flex-col items-center space-y-1">
+                        <div id="funnel-tofu" data-id="tofu" class="funnel-segment funnel-tofu w-full">
+                            <h4 class="font-bold">ĐỈNH PHỄU (Awareness)</h4>
+                        </div>
+                        <div id="funnel-mofu" data-id="mofu" class="funnel-segment funnel-mofu w-4/5">
+                            <h4 class="font-bold">GIỮA PHỄU (Engagement)</h4>
+                        </div>
+                        <div id="funnel-bofu" data-id="bofu" class="funnel-segment funnel-bofu w-3/5">
+                            <h4 class="font-bold">ĐÁY PHỄU (Monetization)</h4>
+                        </div>
+                    </div>
+                </div>
+                 <div class="mt-8 lg:mt-0 p-6 bg-gray-50 rounded-lg min-h-[250px]">
+                    <div id="funnel-details">
+                        <div id="detail-tofu" class="funnel-detail-content">
+                            <h4 class="font-bold text-xl text-[#00b4d8] mb-2">Đỉnh phễu: Xây dựng Nhận thức</h4>
+                            <p class="font-semibold mb-2">Nền tảng chính: YouTube</p>
+                            <p class="text-gray-700">Mục tiêu là thu hút lượng khán giả lớn nhất có thể thông qua các video giáo dục miễn phí, chất lượng cao. Tối ưu hóa SEO và thời gian xem với các video tổng hợp dài.</p>
+                             <p class="mt-3 text-sm"><span class="font-bold">Nguồn thu:</span> Doanh thu quảng cáo (cơ bản).</p>
+                        </div>
+                        <div id="detail-mofu" class="hidden funnel-detail-content">
+                             <h4 class="font-bold text-xl text-[#0077b6] mb-2">Giữa phễu: Xây dựng Quan hệ</h4>
+                            <p class="font-semibold mb-2">Nền tảng chính: Website & Email</p>
+                            <p class="text-gray-700">Chuyển đổi phụ huynh từ người xem thành người đăng ký email bằng các "mồi câu" giá trị (tài liệu in miễn phí, sách tô màu). Xây dựng một cộng đồng riêng.</p>
+                             <p class="mt-3 text-sm"><span class="font-bold">Nguồn thu:</span> Tiếp thị liên kết, tài trợ thương hiệu nhỏ.</p>
+                        </div>
+                        <div id="detail-bofu" class="hidden funnel-detail-content">
+                             <h4 class="font-bold text-xl text-[#023e8a] mb-2">Đáy phễu: Kiếm tiền Trực tiếp</h4>
+                            <p class="font-semibold mb-2">Nền tảng chính: Cửa hàng Online & Ứng dụng</p>
+                            <p class="text-gray-700">Bán các sản phẩm số (sách điện tử, khóa học), đảm bảo các hợp đồng tài trợ lớn, cấp phép nhân vật cho hàng hóa, và cuối cùng là ra mắt ứng dụng đăng ký độc quyền.</p>
+                             <p class="mt-3 text-sm"><span class="font-bold">Nguồn thu:</span> Sản phẩm số, tài trợ lớn, cấp phép IP, đăng ký (subscription).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="growth" class="py-12 md:py-16">
+            <h2 class="section-title">Phần 5: Tăng Trưởng & Địa Phương Hóa</h2>
+            <p class="section-subtitle">Thành công không chỉ đến từ nội dung hay mà còn từ chiến lược tiếp thị thông minh và sự thấu hiểu sâu sắc thị trường mục tiêu, đặc biệt là Việt Nam.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="kpi-card">
+                    <span class="text-4xl">🎯</span>
+                    <h3 class="font-bold mt-2">Tiếp thị cho Phụ huynh</h3>
+                    <p class="text-sm text-gray-600">Tạo nội dung riêng cho Instagram & TikTok để tiếp cận phụ huynh thế hệ Millennial/Gen Z, tập trung vào giá trị giáo dục và mẹo nuôi dạy con.</p>
+                </div>
+                <div class="kpi-card">
+                     <span class="text-4xl">🔍</span>
+                    <h3 class="font-bold mt-2">Tối ưu hóa YouTube</h3>
+                    <p class="text-sm text-gray-600">Sử dụng SEO nâng cao, thử nghiệm A/B hình thu nhỏ và tạo danh sách phát theo chủ đề để tăng trưởng tự nhiên và giữ chân người xem.</p>
+                </div>
+                <div class="kpi-card">
+                    <span class="text-4xl">🇻🇳</span>
+                    <h3 class="font-bold mt-2">Địa phương hóa Sâu sắc</h3>
+                    <p class="text-sm text-gray-600">Thích ứng văn hóa, ngôn ngữ (đại từ, dấu câu), hình ảnh và các ngày lễ (Tết Trung Thu) để tạo kết nối thực sự với gia đình Việt.</p>
+                </div>
+                 <div class="kpi-card">
+                    <span class="text-4xl">🤝</span>
+                    <h3 class="font-bold mt-2">Xây dựng Cộng đồng</h3>
+                    <p class="text-sm text-gray-600">Tạo một nhóm riêng (Facebook/Circle) cho phụ huynh để nhận phản hồi, xây dựng lòng trung thành và thử nghiệm ý tưởng mới.</p>
+                </div>
+            </div>
+        </section>
+        
+    </main>
+    
+    <footer class="text-center py-8 bg-gray-100 mt-12">
+        <p class="text-gray-600">Một ứng dụng web tương tác dựa trên báo cáo chiến lược toàn diện.</p>
+    </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const wrapLabel = (label, maxLength = 16) => {
+            if (typeof label !== 'string' || label.length <= maxLength) return label;
+            const words = label.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        const chartJsOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#4a4a4a' } },
+                tooltip: {
+                    callbacks: { title: tooltipTitleCallback },
+                    backgroundColor: '#023e8a',
+                    titleFont: { size: 14, weight: 'bold' },
+                    bodyFont: { size: 12 },
+                    padding: 12,
+                    cornerRadius: 8,
+                    displayColors: false,
+                }
+            }
+        };
+        
+        // Market Share Donut Chart
+        const ctxMarketShare = document.getElementById('marketShareChart');
+        if (ctxMarketShare) {
+            new Chart(ctxMarketShare, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Châu Á - TBD', 'Phần còn lại'],
+                    datasets: [{
+                        data: [56, 44],
+                        backgroundColor: ['#0077b6', '#caf0f8'],
+                        borderColor: '#fdfdfd',
+                        borderWidth: 4,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    cutout: '70%',
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: { ...chartJsOptions.plugins.tooltip }
+                    }
+                }
+            });
+        }
+        
+        // Genre Comparison Radar Chart
+        const ctxGenreComparison = document.getElementById('genreComparisonChart');
+        if (ctxGenreComparison) {
+            new Chart(ctxGenreComparison, {
+                type: 'radar',
+                data: {
+                    labels: ['Giá trị GD', 'Tiềm năng $', 'Khác biệt hóa', 'Tương tác', 'Rào cản thấp'],
+                    datasets: [
+                        {
+                            label: 'SEL',
+                            data: [10, 8, 9, 7, 7],
+                            fill: true,
+                            backgroundColor: 'rgba(255, 153, 0, 0.2)',
+                            borderColor: 'rgb(255, 153, 0)',
+                            pointBackgroundColor: 'rgb(255, 153, 0)',
+                        }, {
+                            label: 'STEM',
+                            data: [9, 10, 8, 6, 6],
+                            fill: true,
+                            backgroundColor: 'rgba(0, 119, 182, 0.2)',
+                            borderColor: 'rgb(0, 119, 182)',
+                            pointBackgroundColor: 'rgb(0, 119, 182)',
+                        }, {
+                            label: 'Nhạc truyền thống',
+                            data: [4, 3, 2, 9, 3],
+                            fill: true,
+                            backgroundColor: 'rgba(173, 216, 230, 0.2)',
+                            borderColor: 'rgb(173, 216, 230)',
+                            pointBackgroundColor: 'rgb(173, 216, 230)',
+                        }
+                    ]
+                },
+                options: { ...chartJsOptions,
+                     scales: {
+                        r: {
+                            angleLines: { color: '#e0e0e0' },
+                            grid: { color: '#e0e0e0' },
+                            pointLabels: { font: { size: 12, weight: '500' }, color: '#333' },
+                            ticks: {
+                                backdropColor: '#fdfdfd',
+                                color: '#777'
+                            },
+                             suggestedMin: 0,
+                             suggestedMax: 10
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Cost Comparison Bar Chart
+        const ctxCostComparison = document.getElementById('costComparisonChart');
+        if(ctxCostComparison) {
+            const rawLabels = ['Hoạt hình 2D (Chiến lược)', 'Hoạt hình 3D (Cạnh tranh)'];
+            new Chart(ctxCostComparison, {
+                type: 'bar',
+                data: {
+                    labels: rawLabels.map(l => wrapLabel(l)),
+                    datasets: [{
+                        label: 'Chi phí/phút ($)',
+                        data: [4000, 20000],
+                        backgroundColor: ['#00b4d8', '#023e8a'],
+                        borderRadius: 8,
+                        borderWidth: 0,
+                    }]
+                },
+                options: { ...chartJsOptions, 
+                    plugins: { legend: { display: false }, tooltip: chartJsOptions.plugins.tooltip },
+                    scales: {
+                        y: {
+                            ticks: {
+                                callback: function(value) { return '$' + value / 1000 + 'k'; },
+                                color: '#4a4a4a'
+                            },
+                             grid: { color: '#f0f0f0'}
+                        },
+                        x: { ticks: { color: '#4a4a4a'}, grid: {display: false} }
+                    }
+                }
+            });
+        }
+
+        // Strategy Tabs
+        const btnCompare = document.getElementById('btn-compare');
+        const btnPillars = document.getElementById('btn-pillars');
+        const compareView = document.getElementById('compare-view');
+        const pillarsView = document.getElementById('pillars-view');
+
+        btnCompare.addEventListener('click', () => {
+            compareView.style.display = 'block';
+            pillarsView.style.display = 'none';
+            btnCompare.classList.add('active');
+            btnPillars.classList.remove('active');
+        });
+
+        btnPillars.addEventListener('click', () => {
+            compareView.style.display = 'none';
+            pillarsView.style.display = 'block';
+            btnPillars.classList.add('active');
+            btnCompare.classList.remove('active');
+        });
+
+        // Funnel Interaction
+        const funnelSegments = document.querySelectorAll('.funnel-segment');
+        const detailContents = document.querySelectorAll('.funnel-detail-content');
+
+        funnelSegments.forEach(segment => {
+            segment.addEventListener('click', () => {
+                const targetId = 'detail-' + segment.dataset.id;
+                
+                detailContents.forEach(content => {
+                    if (content.id === targetId) {
+                        content.classList.remove('hidden');
+                    } else {
+                        content.classList.add('hidden');
+                    }
+                });
+
+                funnelSegments.forEach(s => s.classList.remove('ring-2', 'ring-offset-2', 'ring-[#ff9900]'));
+                segment.classList.add('ring-2', 'ring-offset-2', 'ring-[#ff9900]');
+            });
+        });
+        
+        document.getElementById('funnel-tofu').click();
+
+        // Nav smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+</script>
+
+</body>
+</html>
