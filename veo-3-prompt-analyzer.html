@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veo 3 Prompt Analyzer - Phân Tích & Xây Dựng Prompt Chuyên Nghiệp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f8fafc;
+        }
+       .gradient-text {
+            background: linear-gradient(90deg, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+       .nav-link {
+            position: relative;
+            transition: color 0.3s;
+        }
+       .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6;
+            transition: width 0.3s;
+        }
+       .nav-link:hover::after,.nav-link.active::after {
+            width: 100%;
+        }
+       .tab-button.active {
+            background-color: #3b82f6;
+            color: white;
+        }
+       .analysis-card.present {
+            border-left-color: #22c55e; /* green-500 */
+        }
+       .analysis-card.missing {
+            border-left-color: #f97316; /* orange-500 */
+        }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <nav class="bg-white/90 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <div class="container mx-auto px-6">
+            <div class="flex justify-between items-center py-4">
+                <a href="#" class="font-bold text-xl gradient-text">PromptCraft AI</a>
+                <div class="hidden md:flex items-center space-x-8 text-sm font-medium">
+                    <a href="#analyzer" class="nav-link text-slate-600 hover:text-slate-900">Phân Tích</a>
+                    <a href="#builder" class="nav-link text-slate-600 hover:text-slate-900">Xây Dựng</a>
+                    <a href="#toolkit" class="nav-link text-slate-600 hover:text-slate-900">Bộ Công Cụ</a>
+                    <a href="#examples" class="nav-link text-slate-600 hover:text-slate-900">Ví Dụ</a>
+                </div>
+                <div class="md:hidden">
+                    <button id="menu-btn" class="text-slate-600 focus:outline-none">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                    </button>
+                </div>
+            </div>
+            <div id="mobile-menu" class="hidden md:hidden flex-col space-y-2 pb-4">
+                 <a href="#analyzer" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Phân Tích</a>
+                 <a href="#builder" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Xây Dựng</a>
+                 <a href="#toolkit" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Bộ Công Cụ</a>
+                 <a href="#examples" class="block py-2 px-4 text-sm text-slate-600 hover:bg-slate-100 rounded">Ví Dụ</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-6 py-12">
+        
+        <header class="text-center mb-20">
+            <h1 class="text-4xl md:text-6xl font-black mb-4">
+                <span class="gradient-text">Veo 3 Prompt Analyzer</span>
+            </h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto text-slate-600">
+                Công cụ chuyên nghiệp giúp bạn phân tích, xây dựng và tối ưu hóa prompt cho Veo 3. Biến ý tưởng thành những thước phim điện ảnh bằng cách giao tiếp với AI như một đạo diễn thực thụ.
+            </p>
+        </header>
+
+        <section id="analyzer" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Trình Phân Tích Prompt</h2>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Dán prompt của bạn vào đây. Công cụ sẽ tự động phân tích và chỉ ra các thành phần điện ảnh đã có và còn thiếu.</p>
+            
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="mb-4">
+                    <label for="prompt-input" class="block text-sm font-medium text-slate-700 mb-2">Prompt của bạn:</label>
+                    <textarea id="prompt-input" rows="4" class="w-full p-4 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition" placeholder="Ví dụ: Cận cảnh một thám tử mệt mỏi đang châm thuốc trong con hẻm tối..."></textarea>
+                </div>
+                <button id="analyze-btn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105">
+                    Phân Tích Prompt
+                </button>
+
+                <div id="analysis-results" class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                    </div>
+            </div>
+        </section>
+
+        <section id="builder" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Trình Xây Dựng Prompt</h2>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Sử dụng khuôn khổ 8 thành phần để xây dựng một prompt hoàn chỉnh từ đầu. Prompt của bạn sẽ được tự động tạo ra ở bên dưới.</p>
+
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white p-8 rounded-2xl shadow-lg space-y-4">
+                    <h3 class="text-xl font-bold mb-2">Nhập các thành phần:</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="builder-style" class="text-sm font-medium">1. Phong Cách</label>
+                            <input type="text" id="builder-style" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., Film Noir, hoạt hình...">
+                        </div>
+                        <div>
+                            <label for="builder-composition" class="text-sm font-medium">2. Bố Cục</label>
+                            <input type="text" id="builder-composition" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., cận cảnh, toàn cảnh...">
+                        </div>
+                        <div>
+                            <label for="builder-subject" class="text-sm font-medium">3. Chủ Thể</label>
+                            <input type="text" id="builder-subject" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., một thám tử mệt mỏi...">
+                        </div>
+                        <div>
+                            <label for="builder-action" class="text-sm font-medium">4. Hành Động</label>
+                            <input type="text" id="builder-action" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., đang châm một điếu thuốc...">
+                        </div>
+                        <div>
+                            <label for="builder-context" class="text-sm font-medium">5. Bối Cảnh</label>
+                            <input type="text" id="builder-context" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., trong con hẻm tối...">
+                        </div>
+                        <div>
+                            <label for="builder-ambiance" class="text-sm font-medium">6. Không Khí</label>
+                            <input type="text" id="builder-ambiance" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., ánh sáng tương phản cao...">
+                        </div>
+                        <div>
+                            <label for="builder-camera" class="text-sm font-medium">7. Máy Quay</label>
+                            <input type="text" id="builder-camera" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., dolly-in chậm, ống kính 50mm...">
+                        </div>
+                        <div>
+                            <label for="builder-audio" class="text-sm font-medium">8. Âm Thanh</label>
+                            <input type="text" id="builder-audio" class="builder-input w-full mt-1 p-2 border rounded-md" placeholder="e.g., tiếng mưa rơi, nhạc jazz...">
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-slate-800 text-white p-8 rounded-2xl shadow-lg flex flex-col">
+                    <h3 class="text-xl font-bold mb-4 text-blue-300">Prompt Hoàn Chỉnh (Live Preview):</h3>
+                    <div id="builder-output" class="flex-grow bg-slate-900 p-4 rounded-lg font-mono text-sm text-slate-300 whitespace-pre-wrap">Hãy bắt đầu nhập vào các ô bên trái...</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="toolkit" class="mb-20">
+            <h2 class="text-3xl font-bold text-center mb-4">Từ Điển Điện Ảnh</h2>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Tra cứu các từ khóa chuyên ngành để nâng cao khả năng kiểm soát và sáng tạo của bạn.</p>
+            <div class="bg-white p-8 rounded-2xl shadow-lg">
+                <div class="mb-6 border-b border-slate-200">
+                    <nav class="-mb-px flex space-x-4" aria-label="Tabs">
+                        <button class="tab-button active whitespace-nowrap py-3 px-4 border-b-2 border-transparent font-medium text-sm rounded-t-lg" data-tab="camera">🎥 Máy Quay</button>
+                        <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 border-transparent font-medium text-sm rounded-t-lg" data-tab="lighting">💡 Ánh Sáng & Màu Sắc</button>
+                        <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 border-transparent font-medium text-sm rounded-t-lg" data-tab="audio">🔊 Âm Thanh</button>
+                        <button class="tab-button whitespace-nowrap py-3 px-4 border-b-2 border-transparent font-medium text-sm rounded-t-lg" data-tab="style">🎨 Phong Cách</button>
+                    </nav>
+                </div>
+                <div id="toolkit-content">
+                    </div>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2 class="text-3xl font-bold text-center mb-4">Ví Dụ Thực Tế</h2>
+            <p class="text-center text-slate-500 mb-8 max-w-2xl mx-auto">Xem sự khác biệt giữa một prompt cơ bản và một prompt chuyên nghiệp. Nhấn "Phân tích prompt này" để xem cách công cụ hoạt động.</p>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-orange-400">
+                    <h3 class="text-xl font-bold mb-2">Prompt Cơ Bản 😟</h3>
+                    <p id="example-basic" class="text-slate-600 mb-4 font-mono text-sm">Một người đàn ông trong rừng.</p>
+                    <button class="use-example-btn w-full bg-orange-500 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-orange-600 transition">Phân tích prompt này</button>
+                </div>
+                <div class="bg-white p-6 rounded-2xl shadow-lg border-t-4 border-green-500">
+                    <h3 class="text-xl font-bold mb-2">Prompt Chuyên Nghiệp 😎</h3>
+                    <p id="example-pro" class="text-slate-600 mb-4 font-mono text-sm">Phong cách phim tài liệu. Toàn cảnh một nhà sinh vật học lớn tuổi, mặc áo khoác kaki, đang đi bộ xuyên qua một khu rừng thông phủ đầy sương mù vào lúc bình minh. Không khí huyền ảo với những tia nắng lốm đốm xuyên qua màn sương. Máy quay tracking shot theo sau nhân vật, sử dụng ống kính 35mm. Âm thanh bao gồm tiếng chim hót xa xăm và tiếng cành cây gãy lạo xạo dưới chân.</p>
+                    <button class="use-example-btn w-full bg-green-600 text-white text-sm font-bold py-2 px-4 rounded-lg hover:bg-green-700 transition">Phân tích prompt này</button>
+                </div>
+            </div>
+        </section>
+
+    </div>
+    
+    <footer class="text-center py-8 mt-12 border-t bg-slate-50">
+        <p class="text-slate-500 text-sm">Một công cụ được xây dựng bởi chuyên gia AI để giúp bạn làm chủ Veo 3.</p>
+        <p class="text-slate-400 text-xs mt-1">© 2025 PromptCraft AI</p>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Mobile Menu
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Keywords for analysis
+    const pillarKeywords = {
+        style: ['phong cách', 'style', 'cinematic', 'hoạt hình', 'animated', 'stop-motion', 'comic', 'film noir', 'documentary', 'commercial', 'photorealistic', 'watercolor', 'surreal', '16mm', '35mm', 'kodak', 'fujifilm'],
+        composition: ['bố cục', 'composition', 'cận cảnh', 'close-up', 'trung cảnh', 'medium shot', 'toàn cảnh', 'wide shot', 'qua vai', 'over-the-shoulder', 'góc máy', 'angle'],
+        subject: ['chủ thể', 'subject', 'người đàn ông', 'man', 'phụ nữ', 'woman', 'cô gái', 'girl', 'chàng trai', 'boy', 'thám tử', 'detective', 'phi hành gia', 'astronaut', 'động vật', 'animal', 'con cáo', 'fox', 'con mèo', 'cat', 'vật thể', 'object', 'xe', 'car'],
+        action: ['hành động', 'action', 'đang', 'is', 'chạy', 'running', 'đi bộ', 'walking', 'nói', 'talking', 'nhìn', 'looking', 'cười', 'laughing', 'châm thuốc', 'lighting a cigarette'],
+        context: ['bối cảnh', 'context', 'trong', 'in', 'trên', 'on', 'tại', 'at', 'rừng', 'forest', 'thành phố', 'city', 'hẻm', 'alley', 'phòng', 'room', 'bãi biển', 'beach', 'không gian', 'space'],
+        ambiance: ['không khí', 'ambiance', 'ánh sáng', 'lighting', 'màu sắc', 'color', 'tâm trạng', 'mood', 'giờ vàng', 'golden hour', 'chiaroscuro', 'tương phản', 'neon', 'ấm', 'warm', 'lạnh', 'cool', 'đơn sắc', 'monochrome'],
+        camera: ['máy quay', 'camera', 'dolly', 'pan', 'tilt', 'zoom', 'crane', 'aerial', 'tracking', 'handheld', 'tripod', 'ống kính', 'lens', 'mm'],
+        audio: ['âm thanh', 'audio', 'nhạc', 'music', 'lời thoại', 'dialogue', 'giọng nói', 'voice', 'tiếng', 'sound', 'sfx', 'nền', 'background']
+    };
+
+    const pillarInfo = {
+        style: { name: 'Phong Cách', icon: '🎨' },
+        composition: { name: 'Bố Cục', icon: '🖼️' },
+        subject: { name: 'Chủ Thể', icon: '🎯' },
+        action: { name: 'Hành Động', icon: '🏃' },
+        context: { name: 'Bối Cảnh', icon: '🗺️' },
+        ambiance: { name: 'Không Khí', icon: '💡' },
+        camera: { name: 'Máy Quay', icon: '🎥' },
+        audio: { name: 'Âm Thanh', icon: '🔊' }
+    };
+
+    // Prompt Analyzer Logic
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const promptInput = document.getElementById('prompt-input');
+    const analysisResults = document.getElementById('analysis-results');
+
+    function performAnalysis() {
+        const promptText = promptInput.value.toLowerCase();
+        analysisResults.innerHTML = '';
+
+        if (promptText.trim() === '') {
+            analysisResults.innerHTML = '<p class="col-span-full text-center text-slate-500">Vui lòng nhập prompt để phân tích.</p>';
+            return;
+        }
+
+        for (const pillar in pillarKeywords) {
+            const keywords = pillarKeywords[pillar];
+            const foundKeywords = keywords.filter(kw => promptText.includes(kw));
+            
+            const card = document.createElement('div');
+            card.className = `analysis-card bg-white p-4 rounded-lg shadow-sm border-l-4`;
+            
+            let content = `<div class="flex items-center mb-2"><span class="text-2xl mr-2">${pillarInfo[pillar].icon}</span><h4 class="font-bold text-slate-800">${pillarInfo[pillar].name}</h4></div>`;
+
+            if (foundKeywords.length > 0) {
+                card.classList.add('present');
+                content += `<p class="text-sm text-green-700 font-medium">Đã phát hiện!</p>`;
+                content += `<p class="text-xs text-slate-500 mt-1">Từ khóa: ${.slice(0, 3).join(', ')}</p>`;
+            } else {
+                card.classList.add('missing');
+                content += `<p class="text-sm text-orange-600 font-medium">Còn thiếu!</p>`;
+                content += `<p class="text-xs text-slate-500 mt-1">Gợi ý: Thêm mô tả về ${pillarInfo[pillar].name.toLowerCase()} để prompt rõ ràng hơn.</p>`;
+            }
+            card.innerHTML = content;
+            analysisResults.appendChild(card);
+        }
+    }
+
+    analyzeBtn.addEventListener('click', performAnalysis);
+
+    // Prompt Builder Logic
+    const builderInputs = document.querySelectorAll('.builder-input');
+    const builderOutput = document.getElementById('builder-output');
+
+    function updateBuilderOutput() {
+        const parts =;
+        builderInputs.forEach(input => {
+            if (input.value.trim()!== '') {
+                parts.push(input.value.trim());
+            }
+        });
+        const fullPrompt = parts.join('. ') + (parts.length > 0? '.' : '');
+        builderOutput.textContent = fullPrompt |
+| 'Hãy bắt đầu nhập vào các ô bên trái...';
+    }
+
+    builderInputs.forEach(input => {
+        input.addEventListener('input', updateBuilderOutput);
+    });
+
+    // Toolkit Logic
+    const toolkitTabs = {
+        camera: {
+            title: 'Máy Quay: Chuyển Động & Ống Kính',
+            content:
+        },
+        lighting: {
+            title: 'Ánh Sáng & Màu Sắc: Tạo Tâm Trạng',
+            content:
+        },
+        audio: {
+            title: 'Âm Thanh: Xây Dựng Thế Giới Sống Động',
+            content:: [lời thoại]`. Ví dụ: `giọng nam trầm khàn: Chạy đi.`' },
+                { term: 'Hiệu ứng âm thanh (SFX)', desc: 'Các âm thanh cụ thể đồng bộ với hành động. Ví dụ: `tiếng cành cây gãy dưới chân`.' },
+                { term: 'Âm thanh môi trường (Ambient)', desc: 'Âm thanh nền của bối cảnh. Ví dụ: `tiếng mưa rơi nhẹ`, `giao thông thành phố ồn ào`.' },
+                { term: 'Nhạc nền (Music)', desc: 'Chỉ định thể loại và tâm trạng. Ví dụ: `nhạc giao hưởng hoành tráng`, `nhạc jazz nhẹ nhàng`.' },
+                { term: 'Mẹo quan trọng', desc: 'Thêm `(no subtitles)` vào cuối prompt để tránh phụ đề bị "nướng" vào video.' }
+            ]
+        },
+        style: {
+            title: 'Phong Cách: Định Hình Thẩm Mỹ',
+            content:
+        }
+    };
+
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const toolkitContent = document.getElementById('toolkit-content');
+
+    function renderToolkitContent(tab) {
+        const data = toolkitTabs[tab];
+        let html = `<h3 class="text-xl font-bold mb-4">${data.title}</h3><div class="space-y-3">`;
+        data.content.forEach(item => {
+            html += `
+                <div class="p-3 bg-slate-50 rounded-md">
+                    <p class="font-semibold text-blue-700">${item.term}</p>
+                    <p class="text-sm text-slate-600">${item.desc}</p>
+                </div>
+            `;
+        });
+        html += `</div>`;
+        toolkitContent.innerHTML = html;
+    }
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            renderToolkitContent(button.dataset.tab);
+        });
+    });
+
+    // Initial render for toolkit
+    renderToolkitContent('camera');
+
+    // Example buttons
+    const useExampleBtns = document.querySelectorAll('.use-example-btn');
+    useExampleBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const promptText = e.target.previousElementSibling.textContent;
+            promptInput.value = promptText;
+            performAnalysis();
+            // Scroll to analyzer
+            document.getElementById('analyzer').scrollIntoView({ behavior: 'smooth' });
+        });
+    });
+});
+</script>
+
+</body>
+</html>
