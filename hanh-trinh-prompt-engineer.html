@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hành trình Prompt Engineer: Từ Zero đến Expert</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Harmony Neutrals -->
+    <!-- Application Structure Plan: A tab-based dashboard SPA. The structure is designed for task-oriented exploration rather than linear reading. 
+        1. 'Tổng quan' Tab: Presents a high-level visual timeline (Chart.js) and introductory text to motivate and orient the user.
+        2. 'Lộ trình chi tiết' Tab: The core interactive element. Users can filter the 9-month plan by phase and month. This breaks down the overwhelming master table into manageable, context-specific weekly cards, facilitating focus on current tasks. This is superior to a long scrollable page for a learning plan.
+        3. 'Bộ công cụ' Tab: Uses an accordion to neatly organize supplementary resources (English plan, portfolio guide, tools).
+        This user flow (Overview -> Detailed Exploration -> Resource Reference) is more intuitive and functional for a long-term learning journey. -->
+    <!-- Visualization & Content Choices:
+        - Report Info: 9-month timeline structure -> Goal: Show progress/journey -> Viz: Horizontal Bar Chart (as a timeline) -> Interaction: Visual segmentation by phase, tooltip for info -> Justification: More engaging and provides a better sense of scale than a list -> Library: Chart.js (Canvas).
+        - Report Info: Detailed weekly tasks from the main table -> Goal: Organize and explore -> Presentation: Interactive filters (buttons/select) and dynamic content cards -> Interaction: User filters by phase/month to view specific weekly tasks -> Justification: Prevents information overload, allows user to focus on their current learning stage -> Library/Method: Vanilla JS DOM manipulation, Tailwind CSS.
+        - Report Info: Appendices (English, Portfolio, Tools) -> Goal: Inform/Organize -> Presentation: Collapsible accordion -> Interaction: Click to expand/collapse -> Justification: Hides secondary information cleanly, reducing initial clutter -> Library/Method: Vanilla JS, Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .chart-container { position: relative; width: 100%; max-width: 900px; margin-left: auto; margin-right: auto; height: 180px; max-height: 250px; }
+        @media (min-width: 768px) { .chart-container { height: 220px; } }
+        .tab-btn { transition: all 0.3s ease; }
+        .tab-btn.active { border-color: #0d9488; color: #0d9488; background-color: #f0fdfa; }
+        .tab-btn:not(.active) { border-color: transparent; }
+        .phase-btn.active { background-color: #0d9488; color: white; }
+        .phase-btn:not(.active) { background-color: #f1f5f9; color: #334155; }
+        .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out; }
+        .accordion-header.active + .accordion-content { max-height: 1000px; }
+    </style>
+</head>
+<body class="bg-stone-50 text-stone-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-800">Hành trình Prompt Engineer</h1>
+            <p class="text-stone-600 mt-2">Lộ trình 9 tháng từ Zero đến Chuyên gia</p>
+        </header>
+
+        <nav class="mb-8">
+            <div class="flex justify-center border-b border-stone-200">
+                <button id="tab-overview" class="tab-btn active text-sm md:text-base font-medium py-3 px-4 md:px-6 border-b-2">
+                    <span class="mr-2">🚀</span>Tổng quan
+                </button>
+                <button id="tab-roadmap" class="tab-btn text-sm md:text-base font-medium py-3 px-4 md:px-6 border-b-2">
+                    <span class="mr-2">🗺️</span>Lộ trình chi tiết
+                </button>
+                <button id="tab-toolkit" class="tab-btn text-sm md:text-base font-medium py-3 px-4 md:px-6 border-b-2">
+                    <span class="mr-2">🧰</span>Bộ công cụ
+                </button>
+            </div>
+        </nav>
+
+        <main>
+            <div id="content-overview" class="space-y-8">
+                <section class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-2xl font-bold text-teal-700 mb-4">Chào mừng đến với Hành trình của bạn!</h2>
+                    <p class="mb-4">Prompt Engineering không chỉ là "viết câu lệnh hay", mà là nghệ thuật và khoa học về việc thiết kế chỉ dẫn để khai thác tối đa tiềm năng của các mô hình ngôn ngữ lớn (LLM). Lộ trình này được xây dựng để đưa bạn đi từ những khái niệm cơ bản nhất đến việc có thể tự tin thiết kế các hệ thống AI phức tạp.</p>
+                    <p>Ứng dụng này sẽ là người bạn đồng hành của bạn. Hãy sử dụng nó để theo dõi tiến độ, khám phá các nhiệm vụ hàng tuần và truy cập các tài nguyên cần thiết. Chúc bạn thành công!</p>
+                </section>
+                
+                <section class="bg-white p-6 rounded-lg shadow-sm">
+                     <h2 class="text-2xl font-bold text-teal-700 mb-4">Tổng quan Lộ trình 9 Tháng</h2>
+                     <p class="text-stone-600 mb-6 text-center">Đây là bức tranh toàn cảnh về hành trình của bạn, được chia thành 4 giai đoạn chính. Mỗi cột đại diện cho một tháng học tập.</p>
+                    <div class="chart-container">
+                        <canvas id="timelineChart"></canvas>
+                    </div>
+                </section>
+            </div>
+
+            <div id="content-roadmap" class="hidden space-y-8">
+                <section class="bg-white p-6 rounded-lg shadow-sm">
+                    <h2 class="text-2xl font-bold text-teal-700 mb-4">Khám phá Lộ trình chi tiết</h2>
+                    <p class="mb-6 text-stone-600">Chọn một giai đoạn và tháng để xem các mục tiêu, kỹ năng cần học, và các dự án portfolio bạn cần hoàn thành. Đây là kim chỉ nam cho việc học tập hàng tuần của bạn.</p>
+                    <div class="flex flex-col md:flex-row md:items-center gap-4 mb-6">
+                        <div id="phase-filters" class="flex flex-wrap gap-2">
+                        </div>
+                        <select id="month-filter" class="p-2 border border-stone-300 rounded-md bg-white w-full md:w-auto">
+                        </select>
+                    </div>
+                </section>
+
+                <div id="roadmap-details" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                </div>
+            </div>
+
+            <div id="content-toolkit" class="hidden space-y-4">
+                 <section class="bg-white p-6 rounded-lg shadow-sm text-center">
+                    <h2 class="text-2xl font-bold text-teal-700 mb-2">Bộ công cụ và Tài nguyên</h2>
+                    <p class="text-stone-600 max-w-3xl mx-auto">Đây là nơi tập hợp các tài nguyên bổ sung quan trọng, từ kế hoạch học tiếng Anh, hướng dẫn xây dựng portfolio ấn tượng, đến danh sách các công cụ và cộng đồng thiết yếu.</p>
+                </section>
+                <div id="accordion-container" class="space-y-4">
+                </div>
+            </div>
+        </main>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            const roadmapData = [
+                { phase: 1, month: 1, week: '1-2', level: 'Level 1: Tourist', goal: 'Hiểu khái niệm nền tảng về AI, LLM.', skill: 'AI, Generative AI, LLM, NLP, Prompt. Các mô hình phổ biến.', project: 'Thực hành các prompt đơn giản: hỏi đáp, tóm tắt, dịch thuật.', blog: "Hành trình của tôi với Prompt Engineering bắt đầu." },
+                { phase: 1, month: 1, week: '3-4', level: 'Level 1 → 2', goal: 'Nắm vững nguyên tắc cốt lõi của prompt.', skill: 'Các nguyên tắc vàng: Clarity, Context, Precision, Role-play. Cấu trúc prompt.', project: 'Portfolio #1: Bộ Prompt Tạo Email Chuyên nghiệp.', blog: "4 Nguyên tắc Vàng để \'ra lệnh\' cho AI hiệu quả." },
+                { phase: 1, month: 2, week: '5-6', level: 'Level 2: Template User', goal: 'Thực hành kỹ thuật prompting cơ bản.', skill: 'Zero-shot vs. Few-shot prompting. Delimiters (dấu phân cách).', project: 'Portfolio #2: Công cụ Phân loại Cảm xúc.', blog: "Zero-shot vs. Few-shot: Khi nào nên \'dạy\' AI?" },
+                { phase: 1, month: 2, week: '7-8', level: 'Level 2: Template User', goal: 'Làm chủ định dạng đầu ra.', skill: 'Output Formatting (JSON, Markdown). Xây dựng thư viện prompt cá nhân.', project: 'Portfolio #3: Trình tạo Kế hoạch Nội dung MXH.', blog: "Từ văn bản hỗn loạn đến dữ liệu có cấu trúc." },
+                { phase: 2, month: 3, week: '9-10', level: 'Level 2 → 3', goal: 'Áp dụng kỹ thuật lý luận phức tạp.', skill: 'Chain-of-Thought (CoT) Prompting. Zero-shot CoT.', project: 'Portfolio #4: Công cụ Giải toán có lời văn.', blog: "Chain-of-Thought: Dạy AI \'suy nghĩ\'." },
+                { phase: 2, month: 3, week: '11-12', level: 'Level 3: Early Engineer', goal: 'Dùng AI để tự cải thiện prompt.', skill: 'Meta-Prompting. Self-Consistency.', project: 'Cải thiện công cụ giải toán bằng Meta-Prompting và Self-Consistency.', blog: "Khi AI trở thành thầy của bạn: Sử dụng Meta-Prompting." },
+                { phase: 2, month: 4, week: '13-14', level: 'Level 3: Early Engineer', goal: 'Phân rã các nhiệm vụ lớn.', skill: 'Prompt Chaining. Step-back & Self-Ask.', project: 'Portfolio #5: Quy trình Tóm tắt & Phân tích Bài báo.', blog: "Prompt Chaining: Sức mạnh của việc chia nhỏ vấn đề." },
+                { phase: 2, month: 4, week: '15-16', level: 'Level 3: Early Engineer', goal: 'Học cách đánh giá chất lượng prompt.', skill: 'Evaluation Basics. Tiêu chí: Accuracy, Relevance, Fluency, etc. A/B Testing.', project: 'Tạo rubric đánh giá và thực hiện A/B testing cho một prompt.', blog: "Một prompt \'tốt\' thực sự là gì?" },
+                { phase: 3, month: 5, week: '17-18', level: 'Level 3: Engineer', goal: 'Tương tác với LLM qua code.', skill: 'Python Basics. API Integration (gọi API).', project: 'Viết script Python gửi prompt đến API và in kết quả.', blog: "Từ giao diện chat đến dòng lệnh với Python." },
+                { phase: 3, month: 5, week: '19-20', level: 'Level 3: Engineer', goal: 'Xây dựng ứng dụng web LLM.', skill: 'Học FastAPI để xây dựng API endpoint.', project: 'Portfolio #6: API Dịch thuật Cá nhân.', blog: "Biến ứng dụng LLM thành dịch vụ web với FastAPI." },
+                { phase: 3, month: 6, week: '21-22', level: 'Level 3: Engineer', goal: 'Giảm thiểu "ảo giác" của AI.', skill: 'Retrieval-Augmented Generation (RAG): chunking, embedding, vector store.', project: 'Portfolio #7: Chatbot Hỏi-Đáp tài liệu cá nhân (PDF).', blog: "RAG - \'Bộ não mở rộng\' cho LLM." },
+                { phase: 3, month: 6, week: '23-24', level: 'Level 3: Engineer', goal: 'Sử dụng phương pháp định lượng.', skill: 'Quantitative Metrics: BLEU, ROUGE, BERTScore. LLM-as-a-judge.', project: 'Dùng thư viện Python để đánh giá dự án cũ. Thử nghiệm LLM-as-a-judge.', blog: "Đo lường chất lượng AI: Từ BLEU đến LLM-as-a-judge." },
+                { phase: 3, month: 7, week: '25-26', level: 'Level 3: Engineer', goal: 'Sử dụng framework phát triển AI.', skill: 'LangChain: Chains, Agents, Tools.', project: 'Xây dựng lại Portfolio #5 bằng LangChain để so sánh.', blog: "LangChain là gì và tại sao nó thay đổi cuộc chơi?" },
+                { phase: 3, month: 7, week: '27-28', level: 'Level 3: Engineer', goal: 'Cho phép AI tương tác với công cụ.', skill: 'ReAct (Reason + Act).', project: 'Xây dựng agent LangChain có khả năng tìm kiếm web.', blog: "ReAct: Khi AI biết \'hành động\' để tìm thông tin." },
+                { phase: 4, month: 8, week: '29-30', level: 'Level 3 → 4', goal: 'Hiểu kiến trúc hệ thống đa tác nhân.', skill: 'Multi-Agent Systems (MAS): agent, role, goal, phối hợp.', project: 'Thiết kế trên giấy một hệ thống MAS cho việc lên kế hoạch du lịch.', blog: "Sức mạnh của tập thể: Giới thiệu về Multi-Agent Systems." },
+                { phase: 4, month: 8, week: '31-32', level: 'Level 4: Architect', goal: 'Xây dựng hệ thống MAS thực tế.', skill: 'Sử dụng framework CrewAI: agents, tasks, crew.', project: 'Portfolio #8: Đội ngũ Sáng tạo Nội dung AI (Research, Writer, Editor).', blog: "Xây dựng \'biệt đội\' AI đầu tiên với CrewAI." },
+                { phase: 4, month: 9, week: '33-35', level: 'Level 4: Architect', goal: 'Xây dựng dự án tốt nghiệp.', skill: 'Tích hợp tất cả kỹ năng: RAG, MAS, API, Evaluation.', project: 'Dự án Capstone: Trợ lý Nghiên cứu hoặc Phân tích Báo cáo Tài chính.', blog: "Nhật ký xây dựng Capstone: Thách thức và Bài học." },
+                { phase: 4, month: 9, week: '36', level: 'Level 4: Expert', goal: 'Hoàn thiện tư duy chuyên gia.', skill: 'Mitigating AI Risks (bias, hallucination). Guardrails. Hoàn thiện portfolio.', project: 'Rà soát dự án Capstone, thêm cơ chế bảo vệ. Hoàn thiện portfolio.', blog: "Trở thành Prompt Engineer có trách nhiệm & Tổng kết." },
+            ];
+            
+            const toolkitData = [
+                 { title: 'Phụ lục A: Lộ trình học Tiếng Anh chuyên ngành (15-30 phút/ngày)', content: `
+                    <p class="mb-4">Việc thành thạo tiếng Anh chuyên ngành là tối quan trọng. Hãy dành thời gian mỗi ngày để tiếp xúc với các thuật ngữ và cách diễn đạt trong lĩnh vực AI.</p>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead><tr class="bg-slate-100"><th class="p-2 border">Tuần</th><th class="p-2 border">Chủ đề từ vựng</th><th class="p-2 border">Nguồn đề xuất</th></tr></thead>
+                            <tbody>
+                                <tr class="border-t"><td class="p-2 border">1-8</td><td class="p-2 border"><b>Thuật ngữ cơ bản:</b> Algorithm, API, LLM, NLP, Neural Network, Prompt, Token, Hallucination...</td><td class="p-2 border">Đọc và ghi chú từ vựng từ các khóa học cơ bản.</td></tr>
+                                <tr class="border-t"><td class="p-2 border">9-20</td><td class="p-2 border"><b>Thuật ngữ kỹ thuật:</b> Chain-of-Thought, RAG, Embeddings, Vector Store, Few-shot...</td><td class="p-2 border">Đọc bài viết từ Prompting Guide, blog của OpenAI, Google AI.</td></tr>
+                                <tr class="border-t"><td class="p-2 border">21-28</td><td class="p-2 border"><b>Thuật ngữ Framework & Lập trình:</b> LangChain, FastAPI, API Endpoint, JSON, Python libraries...</td><td class="p-2 border">Đọc tài liệu của LangChain, FastAPI; xem video hướng dẫn.</td></tr>
+                                <tr class="border-t"><td class="p-2 border">29-36</td><td class="p-2 border"><b>Thuật ngữ nâng cao & Học thuật:</b> Multi-Agent System (MAS), Agent, Emergent Behavior...</td><td class="p-2 border">Nghe YouTube chuyên sâu; đọc tóm tắt bài báo trên ArXiv.</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                `},
+                { title: 'Phụ lục B: Hướng dẫn xây dựng Portfolio', content: `
+                    <p class="mb-4">Portfolio của bạn là bằng chứng thuyết phục nhất về năng lực. Đừng chỉ liệt kê các dự án, hãy kể câu chuyện đằng sau chúng. Sử dụng GitHub để lưu trữ code và blog của bạn để trình bày chi tiết.</p>
+                    <ul class="list-disc list-inside space-y-2">
+                        <li><b>Mô tả Vấn đề (The Challenge):</b> Bạn đang cố gắng giải quyết vấn đề gì?</li>
+                        <li><b>Prompt (Phiên bản cuối):</b> Trình bày prompt cuối cùng.</li>
+                        <li><b>Giải thích Logic Thiết kế (The Rationale):</b> Tại sao bạn cấu trúc prompt như vậy?</li>
+                        <li><b>So sánh Kết quả (Before & After):</b> Cho thấy sự cải thiện rõ rệt.</li>
+                        <li><b>Code và Tài nguyên (Code & Assets):</b> Liên kết đến GitHub.</li>
+                        <li><b>Bài học Rút ra (Key Learnings):</b> Bạn đã học được gì?</li>
+                    </ul>
+                `},
+                { title: 'Phụ lục C: Các Công cụ và Cộng đồng Thiết yếu', content: `
+                    <p class="mb-4">Đây là danh sách các tài nguyên bạn nên đánh dấu lại và sử dụng thường xuyên.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div><h4 class="font-bold">Playgrounds & APIs</h4><ul><li>OpenAI Playground</li><li>Anthropic Console</li><li>Google AI Studio</li></ul></div>
+                        <div><h4 class="font-bold">Frameworks</h4><ul><li>LangChain</li><li>CrewAI</li><li>FastAPI</li></ul></div>
+                        <div><h4 class="font-bold">Nền tảng học tập</h4><ul><li>LearnPrompting.org</li><li>Prompting Guide</li><li>Coursera / edX</li></ul></div>
+                        <div class="md:col-span-3"><h4 class="font-bold">Cộng đồng</h4><ul><li>Reddit: r/PromptEngineering, r/AI_Agents</li><li>Các server Discord của Learn Prompting, LangChain.</li></ul></div>
+                    </div>
+                `},
+            ];
+
+
+            const tabs = ['overview', 'roadmap', 'toolkit'];
+            const contents = {
+                overview: document.getElementById('content-overview'),
+                roadmap: document.getElementById('content-roadmap'),
+                toolkit: document.getElementById('content-toolkit'),
+            };
+            const tabButtons = {
+                overview: document.getElementById('tab-overview'),
+                roadmap: document.getElementById('tab-roadmap'),
+                toolkit: document.getElementById('tab-toolkit'),
+            };
+
+            const phaseFiltersContainer = document.getElementById('phase-filters');
+            const monthFilter = document.getElementById('month-filter');
+            const roadmapDetailsContainer = document.getElementById('roadmap-details');
+            const accordionContainer = document.getElementById('accordion-container');
+
+            let state = {
+                activeTab: 'overview',
+                selectedPhase: 1,
+                selectedMonth: 1,
+            };
+
+            function switchTab(tabId) {
+                state.activeTab = tabId;
+                tabs.forEach(id => {
+                    contents[id].classList.toggle('hidden', id !== tabId);
+                    tabButtons[id].classList.toggle('active', id === tabId);
+                });
+            }
+
+            function renderRoadmap() {
+                roadmapDetailsContainer.innerHTML = '';
+                const filteredData = roadmapData.filter(item => item.phase == state.selectedPhase && item.month == state.selectedMonth);
+                
+                if(filteredData.length === 0) {
+                     roadmapDetailsContainer.innerHTML = `<p class="text-stone-500 col-span-full text-center">Không có dữ liệu cho lựa chọn này.</p>`;
+                     return;
+                }
+                
+                filteredData.forEach(item => {
+                    const card = document.createElement('div');
+                    card.className = 'bg-white p-5 rounded-lg shadow-sm border border-stone-200 flex flex-col';
+                    card.innerHTML = `
+                        <div class="mb-4">
+                            <p class="text-sm font-semibold text-teal-600">Tháng ${item.month} / Tuần ${item.week}</p>
+                            <p class="text-xs text-stone-500">${item.level}</p>
+                        </div>
+                        <div class="space-y-3 flex-grow">
+                            <p><b class="font-semibold">🎯 Mục tiêu:</b> ${item.goal}</p>
+                            <p><b class="font-semibold">💡 Kỹ năng:</b> ${item.skill}</p>
+                            <p><b class="font-semibold">🏆 Dự án:</b> ${item.project}</p>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-stone-200">
+                             <p class="text-sm"><b class="font-semibold">✍️ Gợi ý Blog:</b> <em>"${item.blog}"</em></p>
+                        </div>
+                    `;
+                    roadmapDetailsContainer.appendChild(card);
+                });
+            }
+
+            function updateMonthOptions() {
+                const monthsInPhase = [...new Set(roadmapData.filter(item => item.phase == state.selectedPhase).map(item => item.month))];
+                monthFilter.innerHTML = '';
+                monthsInPhase.forEach(month => {
+                    const option = document.createElement('option');
+                    option.value = month;
+                    option.textContent = `Tháng ${month}`;
+                    monthFilter.appendChild(option);
+                });
+                if (monthsInPhase.length > 0) {
+                    state.selectedMonth = monthsInPhase[0];
+                    monthFilter.value = state.selectedMonth;
+                }
+                 renderRoadmap();
+            }
+
+            function setupFilters() {
+                const phases = [...new Set(roadmapData.map(item => item.phase))];
+                phaseFiltersContainer.innerHTML = '';
+                 const phaseNames = ["1: Foundation", "2: Apprentice", "3: Engineer", "4: Architect"];
+                phases.forEach(phase => {
+                    const button = document.createElement('button');
+                    button.className = 'phase-btn py-2 px-4 rounded-md text-sm font-medium transition-colors';
+                    button.textContent = `GĐ ${phase}: ${phaseNames[phase-1]}`;
+                    button.dataset.phase = phase;
+                    if (phase == state.selectedPhase) button.classList.add('active');
+                    button.addEventListener('click', () => {
+                        state.selectedPhase = phase;
+                        document.querySelectorAll('.phase-btn').forEach(btn => btn.classList.remove('active'));
+                        button.classList.add('active');
+                        updateMonthOptions();
+                    });
+                    phaseFiltersContainer.appendChild(button);
+                });
+
+                monthFilter.addEventListener('change', (e) => {
+                    state.selectedMonth = e.target.value;
+                    renderRoadmap();
+                });
+            }
+            
+            function setupAccordions(){
+                toolkitData.forEach((item, index) => {
+                    const wrapper = document.createElement('div');
+                    wrapper.className = 'bg-white rounded-lg shadow-sm border border-stone-200';
+                    wrapper.innerHTML = `
+                        <button class="accordion-header w-full text-left p-4 font-semibold text-teal-800 flex justify-between items-center">
+                            ${item.title}
+                            <span class="transform transition-transform duration-300">▼</span>
+                        </button>
+                        <div class="accordion-content px-4 pb-4 text-stone-700">
+                           <div class="pt-2 border-t border-stone-200">${item.content}</div>
+                        </div>
+                    `;
+                    accordionContainer.appendChild(wrapper);
+                });
+                
+                document.querySelectorAll('.accordion-header').forEach(header => {
+                    header.addEventListener('click', () => {
+                        header.classList.toggle('active');
+                        const icon = header.querySelector('span');
+                        icon.classList.toggle('rotate-180');
+                    });
+                });
+            }
+
+            function initTimelineChart() {
+                const ctx = document.getElementById('timelineChart').getContext('2d');
+                const phaseColors = {
+                    1: 'rgba(192, 222, 219, 0.7)', 
+                    2: 'rgba(163, 209, 205, 0.7)', 
+                    3: 'rgba(108, 178, 173, 0.7)',
+                    4: 'rgba(54, 148, 142, 0.7)'  
+                };
+                 const phaseBorderColors = {
+                    1: 'rgb(192, 222, 219)',
+                    2: 'rgb(163, 209, 205)',
+                    3: 'rgb(108, 178, 173)',
+                    4: 'rgb(54, 148, 142)'
+                };
+                
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Array.from({length: 9}, (_, i) => `Tháng ${i + 1}`),
+                        datasets: [{
+                            label: 'Giai đoạn',
+                            data: [1, 1, 2, 2, 3, 3, 3, 4, 4],
+                            backgroundColor: context => phaseColors[context.raw],
+                            borderColor: context => phaseBorderColors[context.raw],
+                            borderWidth: 1,
+                            barPercentage: 1.0,
+                            categoryPercentage: 0.9,
+                        }]
+                    },
+                    options: {
+                        indexAxis: 'y',
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                         const phaseNames = ["Foundation", "Apprentice", "Engineer", "Architect"];
+                                         const phaseIndex = context.raw - 1;
+                                         return `Giai đoạn ${context.raw}: ${phaseNames[phaseIndex]}`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: { display: false, stacked: true },
+                            y: { stacked: true, ticks: { font: { size: 10 }}}
+                        }
+                    }
+                });
+            }
+
+            tabs.forEach(id => {
+                tabButtons[id].addEventListener('click', () => switchTab(id));
+            });
+            
+            initTimelineChart();
+            setupFilters();
+            updateMonthOptions();
+            setupAccordions();
+        });
+    </script>
+</body>
+</html>
