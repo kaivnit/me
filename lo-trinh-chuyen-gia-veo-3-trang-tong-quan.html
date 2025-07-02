@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ trình Chuyên gia VEO 3 - Trang tổng quan tương tác</title>
+    <!-- Chosen Palette: Calm Focus -->
+    <!-- Application Structure Plan: Ứng dụng được thiết kế dưới dạng một trang duy nhất (SPA) với thanh điều hướng cố định bên trái (trên máy tính) và menu dropdown (trên di động). Cấu trúc này cho phép người dùng truy cập nhanh đến từng tháng và tuần mà không cần cuộn trang dài, hỗ trợ việc khám phá phi tuyến tính. Nội dung mỗi tuần được hiển thị trong một "thẻ" (card) riêng biệt, giúp thông tin được phân vùng rõ ràng và dễ tiếp thu. Cấu trúc này được chọn vì nó ưu tiên sự rõ ràng, điều hướng dễ dàng và cho phép người dùng tập trung vào một đơn vị học tập cụ thể (một tuần) tại một thời điểm, rất phù-hợp với một kế hoạch học tập chi tiết. -->
+    <!-- Visualization & Content Choices: 
+        - [Line Chart] Biểu đồ đường "Tiến trình Cấp độ": (Thông tin: Tiến trình Level) -> (Mục tiêu: Theo dõi sự thay đổi) -> (Phương pháp: Biểu đồ đường - Chart.js) -> (Tương tác: Hover để xem chi tiết) -> (Lý do: Trực quan hóa sự tăng trưởng kỹ năng từ cấp 0 đến 4 qua 12 tuần, tạo động lực và cho thấy bức tranh tổng thể của lộ trình.)
+        - [Doughnut Chart] Biểu đồ Donut "Phân bổ Thời gian Học tập": (Thông tin: Bản chất công việc hàng tuần) -> (Mục tiêu: So sánh thành phần) -> (Phương pháp: Biểu đồ Donut - Chart.js) -> (Tương tác: Hover để xem tỷ lệ) -> (Lý do: Dù dữ liệu này không có sẵn, việc tạo ra một phân bổ ước tính (Lý thuyết/Thực hành/Sản phẩm) giúp làm rõ trọng tâm của mỗi tuần và làm cho ứng dụng trở nên tương tác, hấp dẫn hơn.)
+        - [Flowchart] Sơ đồ quy trình "Hệ thống Đa tác nhân": (Thông tin: Quy trình làm việc phức tạp) -> (Mục tiêu: Sắp xếp) -> (Phương pháp: HTML/CSS/Tailwind) -> (Tương tác: Không) -> (Lý do: Trình bày các quy trình phức tạp như hệ thống đa tác nhân bằng các khối HTML được tạo kiểu thay vì hình ảnh tĩnh hoặc SVG, đảm bảo tính đáp ứng và tuân thủ các yêu cầu kỹ thuật.)
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f7f4;
+            color: #4a4a4a;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            max-height: 40vh;
+            max-width: 800px;
+            margin: auto;
+        }
+        .nav-link {
+            transition: all 0.2s ease-in-out;
+            border-left: 3px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            background-color: #edeae5;
+            color: #0d9488;
+            border-left-color: #0d9488;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.07), 0 4px 6px -4px rgba(0, 0, 0, 0.07);
+        }
+        .flowchart-box {
+            border: 2px solid #9ca3af;
+            background-color: #f9fafb;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .flowchart-arrow {
+            font-size: 1.5rem;
+            color: #6b7280;
+            margin: 0.25rem 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div id="app-container" class="max-w-screen-2xl mx-auto">
+        <div class="flex flex-col lg:flex-row min-h-screen">
+            <!-- Sidebar Navigation -->
+            <aside id="sidebar" class="w-full lg:w-64 bg-white lg:border-r border-gray-200 p-4 lg:p-6 lg:fixed lg:h-screen">
+                <h1 class="text-2xl font-bold text-teal-700 mb-2">Lộ trình VEO3</h1>
+                <p class="text-sm text-gray-500 mb-6">Trang tổng quan tương tác</p>
+                
+                <div class="relative lg:hidden mb-4">
+                    <select id="mobile-nav" class="w-full p-2 border rounded-md bg-gray-50">
+                    </select>
+                </div>
+
+                <nav id="desktop-nav" class="hidden lg:block space-y-2">
+                    <!-- Desktop nav links will be inserted here by JS -->
+                </nav>
+            </aside>
+
+            <!-- Main Content -->
+            <main class="flex-1 lg:ml-64 p-4 md:p-8">
+                <div id="welcome-view">
+                    <div class="card p-8 text-center">
+                        <h2 class="text-3xl font-extrabold text-gray-800 mb-4">Chào mừng đến với Hành trình Chuyên gia VEO 3!</h2>
+                        <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Đây là kế hoạch chi tiết trong 3 tháng để đưa bạn từ một người mới bắt đầu trở thành một Kiến trúc sư Hệ thống AI trong ngành làm phim. Hãy chọn một tuần để bắt đầu khám phá.</p>
+                        <div class="chart-container h-64 md:h-96">
+                             <canvas id="progress-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-view" class="hidden">
+                    <!-- Weekly content will be rendered here -->
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        const roadmapData = {
+            "Tháng 1: Nền tảng": {
+                "Tuần 1": {
+                    title: "Bối cảnh Sáng tạo Mới",
+                    goal: "Hiểu các khái niệm cơ bản về AI Tạo sinh và quy trình làm phim AI.",
+                    skills: ["Định nghĩa AI Tạo sinh, LLM, Prompt", "So sánh quy trình làm phim truyền thống và AI"],
+                    tasks: "Đọc tài liệu giới thiệu của Google AI, Microsoft. Phân tích quy trình làm phim AI.",
+                    product: "Bản tóm tắt 1 trang về khái niệm AI và quy trình làm phim.",
+                    blog: "Hành trình bắt đầu: AI Tạo sinh đang thay đổi ngành công nghiệp điện ảnh như thế nào?",
+                    english: "Học từ vựng: Generative AI, LLM, Prompt, Prompt Design, Multimodal, Model Tuning, RAG, Responsible AI.",
+                    effort: [60, 30, 10] // Theory, Practice, Product
+                },
+                "Tuần 2": {
+                    title: "Nắm vững Con mắt của Nhà quay phim",
+                    goal: "Nắm vững ngôn ngữ hình ảnh: cỡ cảnh, góc máy, chuyển động máy.",
+                    skills: ["Nhận biết và mô tả các loại cỡ cảnh, góc máy", "Hiểu hiệu ứng cảm xúc của từng kỹ thuật"],
+                    tasks: "Nghiên cứu các loại cảnh quay và góc máy. Phân tích các clip phim ngắn.",
+                    product: "Infographic/cheat sheet về 10 loại cảnh quay và góc máy cơ bản.",
+                    blog: "Giải mã Ngôn ngữ Điện ảnh: Tại sao một Cận cảnh lại mạnh hơn ngàn lời nói?",
+                    english: "Học từ vựng: Wide/Medium/Close-up Shot, High/Low-Angle, Dutch Angle, Pan, Tilt, Tracking Shot, POV.",
+                    effort: [50, 40, 10]
+                },
+                "Tuần 3": {
+                    title: "Vẽ bằng Ánh sáng",
+                    goal: "Hiểu và áp dụng nguyên tắc chiếu sáng ba điểm.",
+                    skills: ["Thiết lập ánh sáng High-key và Low-key", "Mô tả ánh sáng bằng các từ khóa (chất lượng, màu sắc)"],
+                    tasks: "Học về hệ thống chiếu sáng 3 điểm. Phân biệt High-key và Low-key lighting.",
+                    product: "3 sơ đồ chiếu sáng (High-key, Low-key, Heroic backlight).",
+                    blog: "Nghệ thuật Chiếu sáng trong Phim AI: Cách 'Key Light' và 'Fill Light' định hình cảm xúc.",
+                    english: "Học từ vựng: Three-Point Lighting, Key/Fill/Backlight, High-Key, Low-Key, Contrast, Color Temperature, Chiaroscuro.",
+                    effort: [50, 40, 10]
+                },
+                "Tuần 4": {
+                    title: "Những Prompt đầu tiên của bạn",
+                    goal: "Viết các prompt cơ bản và tạo ra các video clip đầu tiên.",
+                    skills: ["Viết prompt có cấu trúc", "Sử dụng VEO 3 để tạo các clip ngắn", "Phân tích kết quả"],
+                    tasks: "Thực hành theo cấu trúc prompt. Tạo clip với các cỡ cảnh, góc máy, ánh sáng khác nhau.",
+                    product: "Video ngắn 10-15 giây tổng hợp các clip đã tạo.",
+                    blog: "Những thước phim AI đầu tiên của tôi: Thất bại, Khám phá và Sức mạnh của một Prompt tốt.",
+                    english: "Thực hành viết prompt hoàn chỉnh bằng tiếng Anh. Đọc hướng dẫn prompt của các nền tảng AI.",
+                    effort: [20, 60, 20]
+                }
+            },
+            "Tháng 2: Kỹ thuật": {
+                "Tuần 5": {
+                    title: "Prompt như một Bảng màu",
+                    goal: "Làm chủ các phong cách điện ảnh và thẩm mỹ đa dạng.",
+                    skills: ["Gợi lên các phong cách cụ thể (Film Noir, Wes Anderson, etc.)", "Sử dụng từ khóa thẩm mỹ nâng cao"],
+                    tasks: "Nghiên cứu các phong cách điện ảnh cho AI. Thực hành tạo 1 cảnh theo nhiều phong cách.",
+                    product: "Grid ảnh 3x3 thể hiện 1 cảnh theo 9 phong cách khác nhau.",
+                    blog: "Từ Film Noir đến Wes Anderson: Cách một từ khóa thay đổi toàn bộ thế giới phim AI.",
+                    english: "Học từ vựng: Cyberpunk, Steampunk, Documentary, ethereal, gritty, minimalist, surreal.",
+                    effort: [30, 50, 20]
+                },
+                "Tuần 6-7": {
+                    title: "Thử thách Nhân vật Nhất quán",
+                    goal: "Đạt được tính nhất quán cho nhân vật trong nhiều cảnh quay.",
+                    skills: ["Sử dụng hình ảnh tham chiếu (`--cref`)", "Làm chủ tham số `--cw`", "Viết 'hồ sơ nhân vật' chi tiết"],
+                    tasks: "Học sâu về kỹ thuật `--cref` và `--cw`. Thực hành tạo nhân vật nhất quán qua nhiều prompt.",
+                    product: "Series 3-5 ảnh/clip thể hiện cùng 1 nhân vật trong các bối cảnh/trang phục khác nhau.",
+                    blog: "1. 'Thử thách lớn nhất của Video AI.' 2. 'Hướng dẫn: Sử dụng --cref và --cw.'",
+                    english: "Học từ vựng: Character Consistency, Reference Image, Character Weight, LoRA, Fine-tuning.",
+                    effort: [30, 60, 10]
+                },
+                "Tuần 8": {
+                    title: "Xây dựng Thế giới bằng Từ ngữ",
+                    goal: "Kể chuyện bằng kỹ thuật nối chuỗi prompt (prompt chaining).",
+                    skills: ["Chia câu chuyện thành các cảnh/prompt riêng lẻ", "Viết các prompt nối tiếp nhau một cách logic"],
+                    tasks: "Học lý thuyết prompt chaining. Thực hành tạo một câu chuyện 3 phần.",
+                    product: "Video storyboard 3 cảnh kể một câu chuyện đơn giản.",
+                    blog: "Prompt Chaining: Biến AI thành Bạn đồng sáng tác Kịch bản của bạn.",
+                    english: "Học từ vựng: Prompt Chaining, Storytelling, Narrative Arc, Sequence, Scene, Continuity.",
+                    effort: [30, 50, 20]
+                }
+            },
+            "Tháng 3: Hệ thống": {
+                "Tuần 9": {
+                    title: "Tự động hóa Tầm nhìn",
+                    goal: "Hiểu cách tự động hóa quy trình sáng tạo bằng API và No-Code.",
+                    skills: ["Định nghĩa API và No-Code", "Thiết kế một quy trình làm việc tự động trên giấy"],
+                    tasks: "Tìm hiểu về API và nền tảng No-Code cho người sáng tạo.",
+                    product: "Sơ đồ (flowchart) chi tiết cho một quy trình tự động hóa.",
+                    blog: "Vượt ra ngoài Prompt đơn lẻ: Giới thiệu về API và No-Code cho Nhà làm phim AI.",
+                    english: "Học từ vựng: API, Endpoint, Request, Response, No-Code, Workflow Automation, Integration.",
+                    effort: [60, 20, 20]
+                },
+                "Tuần 10": {
+                    title: "Chỉ đạo một Đội ngũ AI",
+                    goal: "Thiết kế hệ thống đa tác nhân (multi-agent) cho các nhiệm vụ phức tạp.",
+                    skills: ["Hiểu cấu trúc Điều phối viên - Chuyên gia", "Thiết kế một 'đội ngũ AI' cho một dự án phim"],
+                    tasks: "Học về hệ thống đa tác nhân. Lên ý tưởng và vai trò cho từng tác nhân AI.",
+                    product: "Bản trình bày (slide deck) mô tả hệ thống đa tác nhân làm phim.",
+                    blog: "Chào mừng đến với Tương lai: Thiết kế Đội ngũ làm phim AI đầu tiên của bạn.",
+                    english: "Học từ vựng: Multi-Agent System, Agent, Orchestrator, Workflow, Collaboration, Specialization.",
+                    effort: [50, 20, 30]
+                },
+                "Tuần 11-12": {
+                    title: "Dự án Tốt nghiệp & Bệ phóng Chuyên nghiệp",
+                    goal: "Hoàn thành dự án tốt nghiệp và xây dựng nền tảng chuyên nghiệp.",
+                    skills: ["Thực hiện một dự án phim ngắn hoàn chỉnh từ A-Z", "Xây dựng portfolio", "Hiểu các nguyên tắc tư vấn"],
+                    tasks: "Áp dụng tất cả các kỹ năng đã học vào dự án cuối khóa. Tổng hợp các sản phẩm hàng tuần vào portfolio.",
+                    product: "Phim ngắn tốt nghiệp (30-60 giây) và bài viết phân tích quá trình.",
+                    blog: "Capstone Project: Phân tích quá trình tạo ra từ Ý tưởng đến Phim AI.",
+                    english: "Viết bản đề xuất dự án (project proposal) chuyên nghiệp bằng tiếng Anh.",
+                    effort: [10, 50, 40]
+                }
+            }
+        };
+
+        const welcomeView = document.getElementById('welcome-view');
+        const contentView = document.getElementById('content-view');
+        const desktopNav = document.getElementById('desktop-nav');
+        const mobileNav = document.getElementById('mobile-nav');
+
+        function renderWeekContent(month, week) {
+            const data = roadmapData[month][week];
+            if (!data) return;
+
+            welcomeView.classList.add('hidden');
+            contentView.classList.remove('hidden');
+
+            const isWeek10 = week === 'Tuần 10';
+            const week10Flowchart = `
+                <div class="mt-6">
+                    <h4 class="text-lg font-semibold text-gray-700 mb-3">Ví dụ: Sơ đồ Đội ngũ AI</h4>
+                    <div class="space-y-2">
+                        <div class="flowchart-box bg-teal-50 border-teal-500 text-teal-700">Người dùng: "Tạo phim ngắn về robot..."</div>
+                        <div class="flex justify-center"><div class="flowchart-arrow">↓</div></div>
+                        <div class="flowchart-box">🎬 Đạo diễn (Điều phối viên)</div>
+                        <div class="grid grid-cols-3 gap-4 my-2">
+                             <div class="flex justify-center items-center"><div class="flowchart-arrow">↙</div></div>
+                             <div class="flex justify-center items-center"><div class="flowchart-arrow">↓</div></div>
+                             <div class="flex justify-center items-center"><div class="flowchart-arrow">↘</div></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="flowchart-box">✍️ Biên kịch</div>
+                            <div class="flowchart-box">🎨 Thiết kế</div>
+                            <div class="flowchart-box">🖼️ Storyboard</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            contentView.innerHTML = `
+                <div class="card animate-fade-in">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="md:col-span-2">
+                            <span class="text-sm font-semibold text-teal-600">${month}</span>
+                            <h2 class="text-3xl font-extrabold text-gray-800 mt-1 mb-2">${week}: ${data.title}</h2>
+                            <p class="text-gray-600 mb-6">${data.goal}</p>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <h3 class="font-bold text-gray-700 mb-2">🎯 Kỹ năng cần đạt</h3>
+                                    <ul class="list-disc list-inside text-gray-600 space-y-1">${data.skills.map(s => `<li>${s}</li>`).join('')}</ul>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-700 mb-2">📚 Nội dung học & Thực hành</h3>
+                                    <p class="text-gray-600">${data.tasks}</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-700 mb-2">📦 Sản phẩm đầu ra</h3>
+                                    <p class="text-gray-600">${data.product}</p>
+                                </div>
+                                 <div>
+                                    <h3 class="font-bold text-gray-700 mb-2">✍️ Chủ đề Blog</h3>
+                                    <p class="text-gray-600">${data.blog}</p>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-gray-700 mb-2">🇬🇧 Tiếng Anh chuyên ngành</h3>
+                                    <p class="text-gray-600">${data.english}</p>
+                                </div>
+                                ${isWeek10 ? week10Flowchart : ''}
+                            </div>
+                        </div>
+                        <div class="md:col-span-1">
+                            <h3 class="font-bold text-gray-700 mb-2 text-center">Phân bổ Thời gian</h3>
+                            <div class="chart-container" style="height: 250px; max-height: 250px;">
+                                <canvas id="effort-chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            new Chart(document.getElementById('effort-chart').getContext('2d'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Lý thuyết', 'Thực hành', 'Sản phẩm'],
+                    datasets: [{
+                        data: data.effort,
+                        backgroundColor: ['#5eead4', '#0d9488', '#042f2e'],
+                        borderColor: '#ffffff',
+                        borderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { position: 'bottom' } }
+                }
+            });
+        }
+        
+        function setupNavigation() {
+            let navHtml = '';
+            let mobileNavHtml = '<option value="">-- Chọn một tuần --</option>';
+
+            Object.keys(roadmapData).forEach(month => {
+                navHtml += `<div class="mb-4">
+                                <h3 class="text-sm font-semibold text-gray-500 uppercase tracking-wider px-4 mb-2">${month}</h3>
+                                <div class="space-y-1">`;
+                
+                Object.keys(roadmapData[month]).forEach(week => {
+                    const linkId = `nav-${month.replace(/[^a-zA-Z0-9]/g, '')}-${week.replace(/[^a-zA-Z0-9]/g, '')}`;
+                    navHtml += `<a href="#" id="${linkId}" data-month="${month}" data-week="${week}" class="nav-link block font-medium text-gray-600 px-4 py-2 rounded-md">${week}</a>`;
+                    mobileNavHtml += `<option value="${month}|${week}">${week} - ${month}</option>`;
+                });
+
+                navHtml += `</div></div>`;
+            });
+            desktopNav.innerHTML = navHtml;
+            mobileNav.innerHTML = mobileNavHtml;
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const { month, week } = e.target.dataset;
+                    
+                    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                    e.target.classList.add('active');
+
+                    renderWeekContent(month, week);
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                const [month, week] = e.target.value.split('|');
+                if(month && week) {
+                    renderWeekContent(month, week);
+                } else {
+                    contentView.classList.add('hidden');
+                    welcomeView.classList.remove('hidden');
+                }
+            })
+        }
+
+        function setupMainChart() {
+            const progressCtx = document.getElementById('progress-chart').getContext('2d');
+            const labels = Object.values(roadmapData).flatMap(month => Object.keys(month));
+            const data = [0.2, 0.8, 1.2, 1.5, 1.8, 2.3, 2.3, 2.6, 3.0, 3.4, 4.0, 4.0];
+
+            new Chart(progressCtx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Tiến trình Cấp độ Chuyên gia',
+                        data: data,
+                        borderColor: '#0d9488',
+                        backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: '#0d9488',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 4.5,
+                            title: { display: true, text: 'Cấp độ (Level)' }
+                        },
+                        x: {
+                            title: { display: true, text: 'Tuần học' }
+                        }
+                    },
+                    plugins: {
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                        }
+                    }
+                }
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            setupNavigation();
+            setupMainChart();
+        });
+    </script>
+</body>
+</html>
