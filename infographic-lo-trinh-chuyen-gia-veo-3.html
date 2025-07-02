@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Lộ trình Chuyên gia VEO 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F3F4F6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .flowchart-node {
+            border: 2px solid;
+            padding: 0.75rem 1.25rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+        }
+        .flowchart-arrow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #6B7280;
+            margin: 0.5rem 0;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-[#FF5733] to-[#8E44AD]">Lộ trình Chuyên gia VEO 3</h1>
+            <p class="mt-4 text-lg md:text-xl text-gray-600">Từ Zero đến Expert trong 3 Tháng: Con đường trở thành Kiến trúc sư Phim AI</p>
+        </header>
+
+        <main class="space-y-12">
+
+            <section id="month-1">
+                <div class="card">
+                    <h2 class="text-3xl font-bold mb-2 text-[#FF5733]">Tháng 1: Nền Tảng (Level 0 → 1)</h2>
+                    <p class="mb-6 text-gray-600">Xây dựng nền móng vững chắc bằng cách song song học ngôn ngữ của AI Tạo sinh và Điện ảnh. Mục tiêu là viết được những prompt cơ bản nhưng có chủ đích và hiệu quả.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="order-2 lg:order-1">
+                            <h3 class="text-xl font-bold mb-4">Phân bổ trọng tâm học tập</h3>
+                            <p class="mb-4 text-gray-500">Trong tháng đầu tiên, bạn sẽ tập trung đồng đều vào việc hiểu công nghệ cốt lõi của AI và các nguyên tắc cơ bản của nghệ thuật kể chuyện bằng hình ảnh.</p>
+                            <div class="chart-container h-64 md:h-80">
+                                <canvas id="month1FocusChart"></canvas>
+                            </div>
+                        </div>
+                        <div class="order-1 lg:order-2 space-y-4">
+                            <h3 class="text-xl font-bold mb-4">Các Kỹ năng Chính</h3>
+                            <div class="flex items-start space-x-4">
+                                <span class="text-2xl text-[#FF5733]">🎬</span>
+                                <div>
+                                    <h4 class="font-bold">Ngôn ngữ Điện ảnh</h4>
+                                    <p class="text-gray-500">Nắm vững cỡ cảnh, góc máy, chuyển động và ánh sáng để chỉ đạo cảm xúc của người xem.</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start space-x-4">
+                                <span class="text-2xl text-[#33CFFF]">🧠</span>
+                                <div>
+                                    <h4 class="font-bold">Khái niệm AI Tạo sinh</h4>
+                                    <p class="text-gray-500">Hiểu rõ về LLM, Prompt, RAG và quy trình làm phim AI đã thay đổi như thế nào.</p>
+                                </div>
+                            </div>
+                             <div class="flex items-start space-x-4">
+                                <span class="text-2xl text-[#FFC700]">✍️</span>
+                                <div>
+                                    <h4 class="font-bold">Viết Prompt Cơ bản</h4>
+                                    <p class="text-gray-500">Tạo ra những thước phim AI đầu tiên bằng cách áp dụng kiến thức đã học vào các prompt có cấu trúc.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="month-2">
+                 <div class="card">
+                    <h2 class="text-3xl font-bold mb-2 text-[#33CFFF]">Tháng 2: Kỹ Thuật (Level 1 → 2)</h2>
+                    <p class="mb-6 text-gray-600">Vượt qua các cảnh quay đơn lẻ để làm chủ nghệ thuật kể chuyện phức tạp hơn, tập trung vào thẩm mỹ, tính nhất quán của nhân vật và xây dựng chuỗi câu chuyện.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                         <div>
+                            <h3 class="text-xl font-bold mb-4">Làm chủ các Phong cách Thẩm mỹ</h3>
+                            <p class="mb-4 text-gray-500">Học cách gợi lên các phong cách điện ảnh đa dạng, từ Film Noir u tối đến Wes Anderson đối xứng, bằng các từ khóa thẩm mỹ nâng cao.</p>
+                            <div class="chart-container h-80 md:h-96">
+                                <canvas id="month2StylesChart"></canvas>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold mb-4">Luồng kể chuyện: Prompt Chaining</h3>
+                             <p class="mb-4 text-gray-500">Chia một câu chuyện phức tạp thành một chuỗi các prompt liên kết, biến AI thành bạn đồng sáng tác kịch bản.</p>
+                            <div class="space-y-2">
+                                <div class="flowchart-node border-[#FF5733] text-[#FF5733] bg-[#FF5733]/10">Prompt Cảnh 1: Thiết lập bối cảnh</div>
+                                <div class="flowchart-arrow">↓</div>
+                                <div class="flowchart-node border-[#33CFFF] text-[#33CFFF] bg-[#33CFFF]/10">Prompt Cảnh 2: Tập trung chi tiết</div>
+                                 <div class="flowchart-arrow">↓</div>
+                                <div class="flowchart-node border-[#8E44AD] text-[#8E44AD] bg-[#8E44AD]/10">Prompt Cảnh 3: Thúc đẩy hành động</div>
+                            </div>
+                            <p class="mt-6 text-center font-semibold text-gray-700">Mục tiêu chính: Duy trì tính nhất quán của nhân vật bằng `--cref` và `--cw`.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="month-3">
+                <div class="card">
+                    <h2 class="text-3xl font-bold mb-2 text-[#8E44AD]">Tháng 3: Hệ Thống (Level 2 → 4)</h2>
+                    <p class="mb-6 text-gray-600">Chuyển đổi từ người tạo nội dung thành kiến trúc sư hệ thống. Học cách tự động hóa quy trình, thiết kế các đội ngũ AI và thực hiện dự án chuyên nghiệp.</p>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="order-2 lg:order-1">
+                            <h3 class="text-xl font-bold mb-4">Thiết kế Đội ngũ AI Đa tác nhân</h3>
+                             <p class="mb-4 text-gray-500">Kiến trúc một hệ thống gồm các AI chuyên biệt (Biên kịch, Thiết kế, Storyboard) hợp tác để tạo ra một bộ phim hoàn chỉnh, với bạn là Đạo diễn.</p>
+                            <div class="space-y-2">
+                                <div class="flowchart-node border-[#8E44AD] text-[#8E44AD] bg-[#8E44AD]/10">👤 Người dùng: "Tạo phim ngắn..."</div>
+                                <div class="flowchart-arrow">↓</div>
+                                <div class="flowchart-node border-gray-500 text-gray-700 bg-gray-100">🎬 Đạo diễn (Điều phối viên)</div>
+                                <div class="flex justify-around mt-2 text-center text-xs">
+                                    <div class="flowchart-arrow transform -rotate-45 -translate-y-2">↙</div>
+                                    <div class="flowchart-arrow transform translate-y-2">↓</div>
+                                    <div class="flowchart-arrow transform rotate-45 -translate-y-2">↘</div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-2">
+                                    <div class="flowchart-node text-xs p-2 border-[#FF5733] text-[#FF5733] bg-[#FF5733]/10">✍️<br>Biên kịch</div>
+                                    <div class="flowchart-node text-xs p-2 border-[#33CFFF] text-[#33CFFF] bg-[#33CFFF]/10">🎨<br>Thiết kế</div>
+                                    <div class="flowchart-node text-xs p-2 border-[#FFC700] text-[#FFC700] bg-[#FFC700]/10">🖼️<br>Storyboard</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="order-1 lg:order-2">
+                            <h3 class="text-xl font-bold mb-4">Sự tiến hóa kỹ năng qua 3 tháng</h3>
+                             <p class="mb-4 text-gray-500">Biểu đồ cho thấy sự chuyển dịch trọng tâm học tập, từ các kỹ năng nền tảng cơ bản đến kỹ năng kỹ thuật và cuối cùng là tư duy hệ thống ở cấp độ chuyên gia.</p>
+                            <div class="chart-container h-80 md:h-96">
+                                <canvas id="skillEvolutionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <footer class="text-center mt-12 py-8 border-t border-gray-200">
+                <h2 class="text-3xl font-bold text-gray-800">Bạn đã sẵn sàng trở thành Kiến trúc sư!</h2>
+                <p class="mt-2 text-gray-600">Hành trình này sẽ trang bị cho bạn tư duy và công cụ để dẫn đầu trong kỷ nguyên mới của ngành làm phim. Chúc bạn thành công!</p>
+            </footer>
+
+        </main>
+    </div>
+
+    <script>
+        const wrapLabel = (label, maxLength = 16) => {
+            if (label.length <= maxLength) return label;
+            const words = label.split(' ');
+            let lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            }
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+              return label.join(' ');
+            } else {
+              return label;
+            }
+        };
+        
+        const sharedChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                     labels: {
+                        font: {
+                            family: "'Be Vietnam Pro', sans-serif",
+                            size: 12
+                        }
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    titleFont: {
+                        family: "'Be Vietnam Pro', sans-serif",
+                    },
+                    bodyFont: {
+                        family: "'Be Vietnam Pro', sans-serif",
+                    }
+                }
+            }
+        };
+
+        const month1FocusCtx = document.getElementById('month1FocusChart').getContext('2d');
+        new Chart(month1FocusCtx, {
+            type: 'doughnut',
+            data: {
+                labels: [
+                    wrapLabel('Khái niệm AI Tạo sinh'), 
+                    wrapLabel('Ngôn ngữ Điện ảnh')
+                ],
+                datasets: [{
+                    label: 'Phân bổ học tập',
+                    data: [50, 50],
+                    backgroundColor: ['#33CFFF', '#FF5733'],
+                    borderColor: ['#FFFFFF'],
+                    borderWidth: 4
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                cutout: '70%',
+            }
+        });
+
+        const month2StylesCtx = document.getElementById('month2StylesChart').getContext('2d');
+        new Chart(month2StylesCtx, {
+            type: 'radar',
+            data: {
+                labels: ['Film Noir', 'Wes Anderson', 'Cyberpunk', 'Documentary', 'Surrealism'],
+                datasets: [{
+                    label: 'Mức độ làm chủ',
+                    data: [8, 7, 9, 6, 8],
+                    backgroundColor: 'rgba(51, 207, 255, 0.2)',
+                    borderColor: '#33CFFF',
+                    pointBackgroundColor: '#33CFFF',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: '#33CFFF'
+                }]
+            },
+            options: {
+                ...sharedChartOptions,
+                scales: {
+                    r: {
+                        angleLines: { color: '#e5e7eb' },
+                        grid: { color: '#e5e7eb' },
+                        pointLabels: { 
+                            font: { 
+                                family: "'Be Vietnam Pro', sans-serif",
+                                size: 12 
+                            } 
+                        },
+                        ticks: {
+                            backdropColor: 'transparent',
+                            color: '#6b7280'
+                        }
+                    }
+                }
+            }
+        });
+
+        const skillEvolutionCtx = document.getElementById('skillEvolutionChart').getContext('2d');
+        new Chart(skillEvolutionCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Tháng 1', 'Tháng 2', 'Tháng 3'],
+                datasets: [
+                    {
+                        label: 'Nền tảng',
+                        data: [100, 20, 10],
+                        backgroundColor: '#FF5733',
+                    },
+                    {
+                        label: 'Kỹ thuật',
+                        data: [0, 80, 30],
+                        backgroundColor: '#33CFFF',
+                    },
+                     {
+                        label: 'Hệ thống',
+                        data: [0, 0, 60],
+                        backgroundColor: '#8E44AD',
+                    }
+                ]
+            },
+            options: {
+                ...sharedChartOptions,
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: { display: false }
+                    },
+                    y: {
+                        stacked: true,
+                        ticks: {
+                            callback: function(value) { return value + "%" }
+                        }
+                    }
+                },
+                plugins: {
+                    ...sharedChartOptions.plugins,
+                    tooltip: {
+                        ...sharedChartOptions.plugins.tooltip,
+                        callbacks: {
+                            ...sharedChartOptions.plugins.tooltip.callbacks,
+                             label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += context.parsed.y + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
