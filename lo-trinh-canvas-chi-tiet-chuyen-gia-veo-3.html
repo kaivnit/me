@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ trình Canvas Chi tiết: Chuyên gia VEO 3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f4f5f7;
+        }
+     .canvas-container {
+            display: flex;
+            overflow-x: auto;
+            padding: 2rem 1rem;
+            gap: 1.5rem;
+            min-height: 100vh;
+            scrollbar-width: thin;
+            scrollbar-color: #a0aec0 #f4f5f7;
+        }
+     .month-column {
+            flex: 0 0 400px;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+     .week-card {
+            background-color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+     .card-section {
+            border-top: 1px solid #e5e7eb;
+            padding-top: 1rem;
+        }
+     .card-section h4 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+     .card-section.fa-icon {
+            color: #6b7280;
+            width: 20px;
+            text-align: center;
+        }
+     .card-section p,.card-section ul {
+            font-size: 0.9rem;
+            color: #4b5563;
+            line-height: 1.6;
+        }
+     .card-section ul {
+            list-style-position: inside;
+        }
+     .month-header {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 1.25rem;
+            font-weight: 800;
+            text-align: center;
+            color: white;
+            position: sticky;
+            top: 1rem;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+    <div class="canvas-container">
+        <div class="month-column">
+            <div class="month-header" style="background-color: #ef4444;">
+                Tháng 1: Nền tảng (Level 0 → 1)
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 1: Bối cảnh Sáng tạo Mới</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Giải thích rõ ràng các khái niệm: AI Tạo sinh, LLM, Prompt, Tinh chỉnh Mô hình, AI có trách nhiệm. [1, 2]</li>
+                        <li>Phân tích và chỉ ra sự khác biệt trong quy trình làm phim truyền thống (kịch bản, storyboard, casting) và quy trình có AI hỗ trợ (tạo kịch bản/storyboard tự động, avatar AI). [3, 4, 5, 6]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Nghiên cứu các khóa học nhập môn như "Generative AI for Beginners" của Microsoft [7, 2] hoặc Google. [1, 8, 9, 10] Đọc các bài viết về tác động của AI trong tiền kỳ sản xuất. [6, 11, 12] Vẽ hai sơ đồ quy trình song song để so sánh.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Bản tóm tắt khái niệm (1 trang):</strong> Tài liệu cá nhân giải thích các thuật ngữ AI bằng ngôn ngữ của riêng bạn. <br><strong>Sơ đồ so sánh:</strong> Flowchart trực quan so sánh hai quy trình làm phim.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Hành trình bắt đầu: AI Tạo sinh đang thay đổi ngành công nghiệp điện ảnh như thế nào?"</strong> Chia sẻ những khám phá ban đầu và sự thay đổi trong tư duy.</p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 2: Nắm vững Con mắt của Nhà quay phim</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Phân biệt và giải thích mục đích của Toàn cảnh (WS), Trung cảnh (MS), Cận cảnh (CU). [13, 14, 15, 16, 17, 18, 19]</li>
+                        <li>Giải thích tác động tâm lý của góc máy Cao, Thấp, và Ngang tầm mắt. [14, 16, 17, 20, 21, 18, 22]</li>
+                        <li>Hiểu công dụng của chuyển động máy quay cơ bản: Lia máy (Pan), Quét máy (Tilt), và Dolly/Tracking. [13, 17, 20, 21, 23, 24]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Xem các video phân tích phim trên YouTube. Chọn một bộ phim yêu thích và xác định 5 loại cảnh quay/góc máy khác nhau, ghi lại cảm giác chúng mang lại. Lập "từ điển" cá nhân, mỗi thuật ngữ đi kèm một từ khóa prompt.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Bảng cheat sheet trực quan:</strong> Infographic tóm tắt 10 kỹ thuật quay phim cơ bản, bao gồm: Tên, Mô tả, Mục đích/Hiệu ứng cảm xúc, và hình ảnh ví dụ.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Giải mã Ngôn ngữ Điện ảnh: Tại sao một Cận cảnh (Close-up) lại có sức mạnh hơn ngàn lời nói?"</strong> Phân tích sâu về 1-2 kỹ thuật tâm đắc nhất.</p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 3: Vẽ bằng Ánh sáng</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Mô tả vai trò của Key Light, Fill Light, và Backlight trong việc tạo hình khối và chiều sâu. [25, 26, 27, 28, 29, 30]</li>
+                        <li>Tạo ra phong cách chiếu sáng High-Key (tươi sáng) và Low-Key (kịch tính) bằng cách điều chỉnh tỷ lệ đèn. [25, 28]</li>
+                        <li>Sử dụng từ khóa ánh sáng (gắt/dịu, ấm/lạnh) trong prompt. [31, 32, 33]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Xem các video hướng dẫn về "three-point lighting". Phân tích ánh sáng trong các cảnh phim thuộc nhiều thể loại. Thực hành viết các prompt chỉ tập trung vào ánh sáng.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>3 sơ đồ chiếu sáng:</strong> Vẽ tay hoặc dùng công cụ đơn giản để tạo 3 sơ đồ cho 3 kịch bản: phỏng vấn (High-Key), thám tử (Low-Key), và anh hùng (đèn hậu mạnh).</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Nghệ thuật Chiếu sáng trong Phim AI: Cách 'Key Light' và 'Fill Light' định hình cảm xúc."</strong></p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 4: Những Prompt đầu tiên của bạn</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Áp dụng thành thạo cấu trúc prompt để tạo yêu cầu rõ ràng. [31]</li>
+                        <li>Sử dụng VEO 3 để tạo các video clip ngắn, có chủ đích. [34]</li>
+                        <li>Có khả năng xem xét kết quả, xác định điểm chưa đạt và tinh chỉnh prompt để cải thiện.</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Dành toàn bộ thời gian thực hành để viết prompt và tạo video. Thực hiện các bài tập so sánh A/B (cùng cảnh, khác cỡ cảnh/góc máy/ánh sáng). Ghi lại nhật ký thử nghiệm.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Video tổng hợp đầu tay (10-15 giây):</strong> Ghép 3-5 clip tốt nhất thành một chuỗi ngắn. <br><strong>Từ điển Prompt cá nhân:</strong> Bắt đầu xây dựng tài liệu tham khảo các từ khóa và prompt mẫu hiệu quả.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Những thước phim AI đầu tiên của tôi: Thất bại, Khám phá và Sức mạnh của một Prompt tốt."</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-column">
+            <div class="month-header" style="background-color: #3b82f6;">
+                Tháng 2: Kỹ thuật (Level 1 → 2)
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 5: Prompt như một Bảng màu</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Tạo ra các cảnh quay mang thẩm mỹ đặc trưng của các phong cách như `Film Noir`, `Wes Anderson`, `Cyberpunk`. [6, 35, 36]</li>
+                        <li>Làm chủ từ vựng thẩm mỹ nâng cao để kiểm soát không khí, kết cấu, ánh sáng, và màu sắc. [31, 32, 33]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Chọn 3 phong cách điện ảnh yêu thích, nghiên cứu đặc điểm chính của chúng. Tạo "Thư viện Phong cách" trong từ điển prompt. Thực hành tạo một chủ thể duy nhất theo nhiều phong cách khác nhau.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Grid ảnh 3x3:</strong> Một hình ảnh ghép 9 kết quả, thể hiện một cảnh đơn giản được tái tạo theo 9 phong cách nghệ thuật/điện ảnh khác nhau. Chú thích mỗi ảnh với từ khóa phong cách chính.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Từ Film Noir đến Wes Anderson: Cách một từ khóa thay đổi toàn bộ thế giới trong phim AI."</strong></p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 6-7: Thử thách Nhân vật Nhất quán</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Thành thạo việc sử dụng hình ảnh tham chiếu (ví dụ: `--cref`). [37]</li>
+                        <li>Hiểu và áp dụng tham số trọng số nhân vật (`--cw`) để điều chỉnh mức độ tương đồng, đặc biệt là dùng `--cw 0` để chỉ giữ lại khuôn mặt. [37]</li>
+                        <li>Tạo các mô tả nhân vật chi tiết, nhất quán để sử dụng lặp lại trong các prompt. [13, 38]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Tạo một nhân vật gốc bằng AI, lưu ảnh tham chiếu. Thực hành tạo lại nhân vật đó trong các bối cảnh, hành động, trang phục khác nhau. Thử nghiệm với các giá trị `--cw` khác nhau. Đọc tóm tắt các bài báo nghiên cứu về chủ đề này. [39, 11, 40, 41, 42, 43]</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Series nhân vật:</strong> Một chuỗi 3-5 hình ảnh hoặc clip ngắn, thể hiện cùng một nhân vật đang thực hiện các hành động khác nhau.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>Bài 1:</strong> "Thử thách lớn nhất của Video AI: Cuộc chiến vì một Nhân vật Nhất quán." <br><strong>Bài 2:</strong> "Hướng dẫn: Sử dụng --cref và --cw để tạo Dàn diễn viên Kỹ thuật số."</p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 8: Xây dựng Thế giới bằng Từ ngữ</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Tư duy theo chuỗi, chia một câu chuyện thành các bước logic, tuần tự. [12, 44]</li>
+                        <li>Viết các prompt nối tiếp nhau, nơi đầu ra của prompt trước là ngữ cảnh cho prompt sau. [45, 46, 47]</li>
+                        <li>Áp dụng cấu trúc tường thuật đơn giản như "Vấn đề -> Nỗ lực -> Giải pháp". [48]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Nghiên cứu các ví dụ về prompt chaining. Lên kế hoạch cho một câu chuyện 3 cảnh trên giấy trước khi viết prompt. Thực hành với một công cụ cho phép tạo storyboard hoặc mô phỏng nó. [46]</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Video storyboard 3 cảnh:</strong> Một video ngắn (hoặc chuỗi 3 ảnh tĩnh) kể một câu chuyện hoàn chỉnh, ví dụ: "Phi hành gia thấy bão -> Chạy về nơi trú ẩn -> Nhìn ra ngoài an toàn."</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Prompt Chaining: Biến AI thành Bạn đồng sáng tác Kịch bản của bạn."</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="month-column">
+            <div class="month-header" style="background-color: #8b5cf6;">
+                Tháng 3: Hệ thống (Level 2 → 4)
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 9: Tự động hóa Tầm nhìn</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Giải thích được API là gì và cách các nền tảng No-Code cho phép người không chuyên về lập trình xây dựng ứng dụng. [49, 50, 51, 52, 53, 54]</li>
+                        <li>Phác thảo một sơ đồ luồng (flowchart) cho một hệ thống tự động hóa, xác định đầu vào, các bước xử lý (gọi API), và đầu ra.</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Khám phá các nền tảng No-Code như Zapier, Make. [51, 53] Xem tài liệu API cơ bản của một công cụ AI để hiểu cấu trúc request/response. [50, 54] Thiết kế trên giấy một "mini tool" tự động.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Sơ đồ quy trình chi tiết:</strong> Một flowchart cho công cụ tự động hóa bạn đã thiết kế, chỉ rõ từng bước: (1) Nhập dữ liệu -> (2) Gửi đến API X -> (3) Kết quả từ X gửi đến API Y -> (4) Hiển thị kết quả.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Vượt ra ngoài Prompt đơn lẻ: Giới thiệu về API và No-Code cho các Nhà làm phim AI."</strong></p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 10: Chỉ đạo một Đội ngũ AI</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Giải thích mô hình hệ thống AI đa tác nhân (Expert Agents được điều phối bởi Orchestrator). [55, 56, 57, 58, 59, 60, 61]</li>
+                        <li>Phân rã một nhiệm vụ phức tạp (làm phim) thành các nhiệm vụ con và gán chúng cho các tác nhân AI chuyên biệt. [55, 56, 57, 58]</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Đọc các bài viết giới thiệu về framework đa tác nhân như AutoGen. [55] Lấy một ý tưởng phim đơn giản và "tuyển dụng" một đội ngũ AI trên giấy: Biên kịch, Họa sĩ, Đạo diễn hình ảnh, Dựng phim. Xác định nhiệm vụ và "prompt" cho từng tác nhân.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Bản trình bày (slide deck):</strong> Một bản trình bày ngắn (5-7 slide) mô tả "Đội ngũ làm phim AI" của bạn. Mỗi slide giới thiệu một tác nhân, vai trò, công cụ và cách tương tác.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Chào mừng đến với Tương lai: Thiết kế Đội ngũ làm phim AI đầu tiên của bạn."</strong></p>
+                </div>
+            </div>
+            <div class="week-card">
+                <h3 class="text-lg font-bold text-gray-800">Tuần 11-12: Dự án Tốt nghiệp & Bệ phóng Chuyên nghiệp</h3>
+                <div class="card-section">
+                    <h4><i class="fas fa-lightbulb fa-icon"></i>Kỹ năng cần đạt</h4>
+                    <ul class="list-disc list-inside space-y-1">
+                        <li>Quản lý dự án AI từ đầu đến cuối: lên kế hoạch, sản xuất và hoàn thiện một sản phẩm video.</li>
+                        <li>Tổng hợp và trình bày các sản phẩm đã tạo một cách chuyên nghiệp để xây dựng portfolio.</li>
+                        <li>Phác thảo các bước cơ bản để tiếp cận một dự án tư vấn cho khách hàng.</li>
+                    </ul>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-book-open fa-icon"></i>Nội dung học & Thực hành</h4>
+                    <p>Chọn một ý tưởng tâm đắc và dành trọn hai tuần để thực hiện. Thực hiện quy trình đa tác nhân đã thiết kế một cách thủ công (bạn là "Điều phối viên"). Sử dụng trình chỉnh sửa video, thêm âm thanh, nhạc nền. [34, 62] Tổ chức lại blog thành một portfolio.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-box-archive fa-icon"></i>Sản phẩm đầu ra</h4>
+                    <p><strong>Phim ngắn tốt nghiệp (30-60 giây):</strong> Một bộ phim ngắn hoàn chỉnh, có câu chuyện, nhân vật nhất quán, phong cách rõ ràng. <br><strong>Portfolio trực tuyến:</strong> Blog của bạn được cập nhật, sẵn sàng để chia sẻ.</p>
+                </div>
+                <div class="card-section">
+                    <h4><i class="fas fa-feather-alt fa-icon"></i>Chủ đề Blog</h4>
+                    <p><strong>"Capstone Project: Phân tích quá trình tạo ra từ Ý tưởng đến Phim AI Hoàn chỉnh."</strong></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
