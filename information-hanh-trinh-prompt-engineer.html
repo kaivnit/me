@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Hành trình 9 tháng trở thành Prompt Engineer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Brilliant Blues -->
+    <!-- Narrative Structure Plan: The infographic follows a top-to-bottom narrative, mirroring the user's learning journey. 
+        1. Hook: A strong title and intro with key stats (9 Months, 4 Levels) to grab attention.
+        2. The Journey Overview: A timeline chart visualizes the entire 9-month duration, segmented by the 4 main phases.
+        3. The 4 Levels of Mastery: A dedicated section using styled cards to explain the progression from Tourist to Architect, setting clear expectations.
+        4. Phase-by-Phase Breakdown (Sections 4-7): Each of the 4 phases gets its own section. Each section includes an intro, key skills/goals, and a highlight of a major portfolio project for that phase.
+        5. Core Concept Deep Dive: A visual diagram (HTML/CSS) explains a complex but crucial concept like RAG to solidify understanding.
+        6. The Result: A concluding section summarizing the outcome – an expert with a strong portfolio.
+        This structure tells a complete story from 'what' and 'why' to 'how' and 'what's next'. -->
+    <!-- Visualization & Content Choices:
+        - Data: 9-month plan structure -> Goal: Change -> Viz: Bar Chart as a timeline (Chart.js) -> Justification: Provides an immediate, high-level overview of the entire journey's length and structure.
+        - Data: 4 competency levels -> Goal: Organize -> Viz: HTML/CSS styled cards with icons -> Justification: Clearly defines the stages of mastery in a visually distinct and more intuitive format.
+        - Data: Skills development over time -> Goal: Compare/Change -> Viz: Radar Chart (Chart.js) -> Justification: Effectively shows how the focus of learning shifts from theory to practical application and systems design across the four phases.
+        - Data: RAG process flow -> Goal: Organize -> Viz: HTML/CSS Flowchart -> Justification: Demystifies a complex technical process using simple, accessible visual elements without relying on SVG or external libraries.
+        - Data: Portfolio Projects (8+) -> Goal: Inform -> Viz: Large number callout -> Justification: Emphasizes a key tangible outcome of the program.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Be Vietnam Pro', sans-serif; background-color: #f8fafc; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 350px; max-height: 400px; }
+        .timeline-chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 100px; max-height: 120px; }
+        .gradient-text { background: linear-gradient(to right, #00A5E3, #0d9488); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .flowchart { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .flowchart-step { background-color: white; border: 1px solid #e2e8f0; border-radius: 0.5rem; padding: 1rem; text-align: center; width: 80%; max-width: 300px; box-shadow: 0 1px 3px 0 rgba(0,0,0,0.1); }
+        .flowchart-arrow { color: #94a3b8; font-size: 1.5rem; line-height: 1; }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-5xl">
+
+        <!-- Section 1: Header -->
+        <header class="text-center my-8 md:my-12">
+            <h1 class="text-4xl md:text-6xl font-extrabold gradient-text">Hành Trình Prompt Engineer</h1>
+            <p class="mt-4 text-lg md:text-xl text-slate-600">Từ Zero đến Chuyên gia trong 9 tháng: Một lộ trình trực quan</p>
+        </header>
+
+        <!-- Section 2: Journey Overview -->
+        <section class="bg-white p-6 md:p-8 rounded-2xl shadow-lg mb-12">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-slate-800">Bức tranh toàn cảnh 9 tháng</h2>
+            <p class="text-center text-slate-500 mt-2 mb-6">Lộ trình được chia thành 4 giai đoạn chính, mỗi giai đoạn xây dựng nền tảng cho giai đoạn tiếp theo.</p>
+            <div class="timeline-chart-container">
+                <canvas id="timelineChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Section 3: The 4 Levels -->
+        <section class="my-12 md:my-16">
+            <h2 class="text-2xl md:text-3xl font-bold text-center text-slate-800 mb-8">4 Cấp độ Chuyên môn</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#00A5E3]">
+                    <p class="text-5xl mb-2">🧭</p>
+                    <h3 class="text-xl font-bold text-slate-800">1. The Tourist</h3>
+                    <p class="text-sm text-slate-500 mt-2">Sử dụng prompt đơn giản, kết quả chưa nhất quán.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#8DD7BF]">
+                    <p class="text-5xl mb-2">📄</p>
+                    <h3 class="text-xl font-bold text-slate-800">2. The Template User</h3>
+                    <p class="text-sm text-slate-500 mt-2">Dùng mẫu có sẵn để có kết quả dễ đoán hơn.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#FF96C5]">
+                    <p class="text-5xl mb-2">⚙️</p>
+                    <h3 class="text-xl font-bold text-slate-800">3. The Engineer</h3>
+                    <p class="text-sm text-slate-500 mt-2">Làm chủ kỹ thuật phức tạp, bắt đầu xây dựng chuỗi prompt.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md border-t-4 border-[#FF5768]">
+                    <p class="text-5xl mb-2">🏛️</p>
+                    <h3 class="text-xl font-bold text-slate-800">4. The Architect</h3>
+                    <p class="text-sm text-slate-500 mt-2">Thiết kế hệ thống prompt toàn diện, xây dựng sản phẩm AI.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Skill Progression -->
+        <section class="my-12 md:my-16 bg-white p-6 md:p-8 rounded-2xl shadow-lg">
+             <h2 class="text-2xl md:text-3xl font-bold text-center text-slate-800">Sự phát triển Kỹ năng qua các Giai đoạn</h2>
+             <p class="text-center text-slate-500 mt-2 mb-6">Biểu đồ cho thấy sự thay đổi trọng tâm học tập của bạn, từ việc nắm vững lý thuyết và các kỹ thuật prompt cơ bản, đến việc tập trung vào lập trình và thiết kế các hệ thống AI phức tạp.</p>
+            <div class="chart-container">
+                <canvas id="skillRadarChart"></canvas>
+            </div>
+        </section>
+
+        <!-- Section 5: Phase Details & Key Concepts -->
+        <section class="my-12 md:my-16 space-y-12">
+            <!-- Phase 1 -->
+            <div class="p-6 rounded-xl bg-gradient-to-br from-[#e0f2fe] to-white border border-slate-200">
+                <h3 class="text-2xl font-bold text-[#0369a1]">Giai đoạn 1: The Foundation (Tháng 1-2)</h3>
+                <p class="mt-2 text-slate-600">Bạn sẽ học các khái niệm AI cốt lõi và các nguyên tắc vàng để tạo ra những prompt hiệu quả đầu tiên. Đây là bước xây dựng nền móng vững chắc nhất.</p>
+                <div class="mt-4 p-4 bg-[#00A5E3]/10 rounded-lg">
+                    <p class="font-semibold text-[#075985]">Dự án nổi bật:</p>
+                    <p class="text-slate-700">Bộ Prompt Tạo Email Chuyên nghiệp & Công cụ Phân loại Cảm xúc.</p>
+                </div>
+            </div>
+            <!-- Phase 2 -->
+            <div class="p-6 rounded-xl bg-gradient-to-br from-[#f0fdfa] to-white border border-slate-200">
+                <h3 class="text-2xl font-bold text-[#0f766e]">Giai đoạn 2: The Apprentice (Tháng 3-4)</h3>
+                <p class="mt-2 text-slate-600">Trọng tâm là làm chủ các kỹ thuật nâng cao như Chain-of-Thought để giải quyết vấn đề phức tạp và bắt đầu xây dựng các quy trình tự động nhỏ.</p>
+                <div class="mt-4 p-4 bg-[#8DD7BF]/20 rounded-lg">
+                    <p class="font-semibold text-[#115e59]">Dự án nổi bật:</p>
+                    <p class="text-slate-700">Công cụ Giải toán có lời văn & Quy trình Tóm tắt Bài báo tự động.</p>
+                </div>
+            </div>
+             <!-- Deep Dive: RAG -->
+            <div class="p-6 md:p-8 rounded-2xl bg-slate-800 text-white">
+                 <h3 class="text-2xl font-bold text-center text-white">Khám phá Kỹ thuật Cốt lõi: RAG</h3>
+                 <p class="text-center text-slate-300 mt-2 mb-8">Trong giai đoạn 3, bạn sẽ học Retrieval-Augmented Generation (RAG) - một kỹ thuật mạnh mẽ giúp AI trả lời dựa trên tài liệu riêng của bạn, giảm thiểu "ảo giác" và tăng độ chính xác.</p>
+                 <div class="flowchart">
+                    <div class="flowchart-step text-slate-800">1. Tài liệu của bạn (PDF, text...)</div>
+                    <div class="flowchart-arrow">↓</div>
+                    <div class="flowchart-step text-slate-800">2. Chia nhỏ & Mã hóa (Chunking & Embedding)</div>
+                    <div class="flowchart-arrow">↓</div>
+                    <div class="flowchart-step text-slate-800">3. Lưu vào Cơ sở dữ liệu Vector</div>
+                    <div class="flowchart-arrow">↓</div>
+                    <div class="flowchart-step text-slate-800">4. Khi có câu hỏi, tìm kiếm thông tin liên quan</div>
+                    <div class="flowchart-arrow">↓</div>
+                    <div class="flowchart-step text-slate-800">5. AI tạo câu trả lời dựa trên thông tin đó</div>
+                 </div>
+            </div>
+            <!-- Phase 3 -->
+            <div class="p-6 rounded-xl bg-gradient-to-br from-[#fff1f2] to-white border border-slate-200">
+                <h3 class="text-2xl font-bold text-[#be123c]">Giai đoạn 3: The Engineer (Tháng 5-7)</h3>
+                <p class="mt-2 text-slate-600">Chuyển từ giao diện chat sang lập trình. Bạn sẽ học cách tương tác với LLM qua API, xây dựng ứng dụng web và làm chủ các framework như LangChain.</p>
+                 <div class="mt-4 p-4 bg-[#FF96C5]/20 rounded-lg">
+                    <p class="font-semibold text-[#9f1239]">Dự án nổi bật:</p>
+                    <p class="text-slate-700">Chatbot Hỏi-Đáp tài liệu cá nhân (RAG) & Agent tìm kiếm web.</p>
+                </div>
+            </div>
+            <!-- Phase 4 -->
+             <div class="p-6 rounded-xl bg-gradient-to-br from-[#fffbeb] to-white border border-slate-200">
+                <h3 class="text-2xl font-bold text-[#b45309]">Giai đoạn 4: The Architect (Tháng 8-9)</h3>
+                <p class="mt-2 text-slate-600">Đạt đến cấp độ cao nhất: thiết kế và xây dựng các hệ thống phức tạp nơi nhiều AI (agents) hợp tác để hoàn thành nhiệm vụ lớn.</p>
+                 <div class="mt-4 p-4 bg-[#FFBF65]/20 rounded-lg">
+                    <p class="font-semibold text-[#92400e]">Dự án nổi bật:</p>
+                    <p class="text-slate-700">Đội ngũ Sáng tạo Nội dung AI & Dự án Capstone tốt nghiệp.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Final Outcome -->
+        <section class="my-12 md:my-16 text-center">
+             <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg">
+                 <h2 class="text-2xl md:text-3xl font-bold text-slate-800">Kết quả cuối cùng</h2>
+                <p class="text-slate-600 mt-4 max-w-2xl mx-auto">Sau 9 tháng, bạn sẽ không chỉ là người biết cách viết prompt. Bạn sẽ là một Kiến trúc sư AI với một portfolio ấn tượng, sẵn sàng tư vấn hoặc xây dựng các sản phẩm AI thế hệ mới.</p>
+                <div class="mt-8">
+                    <span class="text-6xl md:text-8xl font-extrabold gradient-text">8+</span>
+                    <p class="text-xl md:text-2xl font-semibold text-slate-700 mt-2">Dự án Portfolio Thực chiến</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        const wrapLabel = (str) => {
+            const maxLength = 16;
+            if (str.length <= maxLength) return str;
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            words.forEach(word => {
+                if ((currentLine + ' ' + word).trim().length > maxLength) {
+                    lines.push(currentLine.trim());
+                    currentLine = word;
+                } else {
+                    currentLine = (currentLine + ' ' + word).trim();
+                }
+            });
+            if (currentLine) lines.push(currentLine.trim());
+            return lines;
+        };
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            return Array.isArray(label) ? label.join(' ') : label;
+        };
+
+        // Timeline Chart
+        const timelineCtx = document.getElementById('timelineChart').getContext('2d');
+        new Chart(timelineCtx, {
+            type: 'bar',
+            data: {
+                labels: Array.from({length: 9}, (_, i) => `Tháng ${i + 1}`),
+                datasets: [{
+                    data: [1, 1, 2, 2, 3, 3, 3, 4, 4],
+                    backgroundColor: (context) => {
+                        const phaseColors = { 1: '#00A5E3', 2: '#8DD7BF', 3: '#FF96C5', 4: '#FF5768' };
+                        return phaseColors[context.raw];
+                    },
+                    borderSkipped: false,
+                    borderRadius: 5,
+                }]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        enabled: true,
+                        callbacks: {
+                            title: (tooltipItems) => tooltipItems[0].label,
+                            label: (context) => {
+                                const phaseNames = {1: 'The Foundation', 2: 'The Apprentice', 3: 'The Engineer', 4: 'The Architect'};
+                                return `Giai đoạn ${context.raw}: ${phaseNames[context.raw]}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: { display: false, stacked: true },
+                    y: { display: false, stacked: true }
+                }
+            }
+        });
+
+        // Radar Chart
+        const radarCtx = document.getElementById('skillRadarChart').getContext('2d');
+        const radarLabels = ['Lý thuyết Cơ bản', 'Kỹ thuật Prompt', 'Lập trình & API', 'Đánh giá & Tối ưu', 'Thiết kế Hệ thống'];
+        new Chart(radarCtx, {
+            type: 'radar',
+            data: {
+                labels: radarLabels.map(wrapLabel),
+                datasets: [
+                    {
+                        label: 'GĐ 1: Foundation',
+                        data: [5, 4, 1, 2, 1],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 165, 227, 0.2)',
+                        borderColor: 'rgb(0, 165, 227)',
+                        pointBackgroundColor: 'rgb(0, 165, 227)',
+                    },
+                    {
+                        label: 'GĐ 2: Apprentice',
+                        data: [3, 5, 2, 4, 2],
+                        fill: true,
+                        backgroundColor: 'rgba(141, 215, 191, 0.2)',
+                        borderColor: 'rgb(141, 215, 191)',
+                        pointBackgroundColor: 'rgb(141, 215, 191)',
+                    },
+                    {
+                        label: 'GĐ 3: Engineer',
+                        data: [2, 4, 5, 4, 3],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 150, 197, 0.2)',
+                        borderColor: 'rgb(255, 150, 197)',
+                        pointBackgroundColor: 'rgb(255, 150, 197)',
+                    },
+                    {
+                        label: 'GĐ 4: Architect',
+                        data: [1, 3, 4, 5, 5],
+                        fill: true,
+                        backgroundColor: 'rgba(255, 87, 104, 0.2)',
+                        borderColor: 'rgb(255, 87, 104)',
+                        pointBackgroundColor: 'rgb(255, 87, 104)',
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: { callbacks: { title: tooltipTitleCallback } },
+                    legend: { position: 'bottom' }
+                },
+                scales: {
+                    r: {
+                        angleLines: { color: 'rgba(0, 0, 0, 0.1)' },
+                        grid: { color: 'rgba(0, 0, 0, 0.1)' },
+                        pointLabels: { font: { size: 12 } },
+                        suggestedMin: 0,
+                        suggestedMax: 5
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
