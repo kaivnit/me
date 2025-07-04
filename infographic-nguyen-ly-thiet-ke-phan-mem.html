@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infographic: Nguyên Lý Thiết Kế Phần Mềm</title>
+    <title>Cẩm Nang Tương Tác: Nguyên Lý Thiết Kế Phần Mềm</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,23 +46,27 @@
             width: 100%;
             max-width: 500px;
         }
-        .solid-card-details {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-        .solid-card.open .solid-card-details {
-            max-height: 500px;
-        }
-        .solid-card.open .arrow-icon {
-            transform: rotate(180deg);
-        }
         .arch-diagram {
             background-color: #0c121e;
             border: 1px solid #374151;
             padding: 1.5rem;
             border-radius: 0.75rem;
         }
+        .code-block {
+            background-color: #0c121e;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-family: monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            border: 1px solid #374151;
+        }
+        .code-block-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        .code-violation { color: #FCA5A5; } /* Red-300 */
+        .code-compliance { color: #6EE7B7; } /* Green-300 */
     </style>
 </head>
 <body class="antialiased">
@@ -112,11 +116,11 @@
             </div>
         </section>
 
-        <!-- Section 4: SOLID Principles -->
+        <!-- Section 4: SOLID Principles (REWORKED) -->
         <section class="mb-20 md:mb-32">
             <h2 class="text-3xl font-bold text-center mb-12">Bộ Công Cụ SOLID</h2>
-            <div class="space-y-4 max-w-4xl mx-auto">
-                <!-- SOLID cards will be injected here by JS -->
+            <div class="space-y-12 max-w-5xl mx-auto" id="solid-principles-container">
+                <!-- SOLID principles will be injected here by JS -->
             </div>
         </section>
         
@@ -201,52 +205,46 @@
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Data for the infographic
         const solidPrinciples = [
-            { letter: 'S', name: 'Single Responsibility Principle', color: 'green', description: 'Một lớp chỉ nên có một lý do duy nhất để thay đổi. Điều này làm tăng sự gắn kết (cohesion).', example: `Tách lớp "AllInOne" thành các lớp riêng biệt: InvoiceGenerator, InvoiceRepository, EmailSender.` },
-            { letter: 'O', name: 'Open/Closed Principle', color: 'blue', description: 'Mở cho việc mở rộng, nhưng đóng cho việc sửa đổi. Thêm chức năng mới mà không cần sửa code cũ.', example: `Sử dụng interface "IReport" thay vì câu lệnh if-else để thêm các loại báo cáo mới.` },
-            { letter: 'L', name: 'Liskov Substitution Principle', color: 'indigo', description: 'Đối tượng của lớp con phải thay thế được cho đối tượng của lớp cha mà không gây lỗi.', example: `Lớp "Square" không nên kế thừa từ "Rectangle" nếu nó thay đổi hành vi cơ bản (setWidth ảnh hưởng height).` },
-            { letter: 'I', name: 'Interface Segregation Principle', color: 'purple', description: 'Không bắt client phải phụ thuộc vào các phương thức mà nó không sử dụng. Chia nhỏ các interface "béo phì".', example: `Tách interface "IWorker" (work, eat) thành "IWorkable" và "IFeedable" cho Robot và Người.` },
-            { letter: 'D', name: 'Dependency Inversion Principle', color: 'pink', description: 'Module cấp cao không nên phụ thuộc vào module cấp thấp. Cả hai nên phụ thuộc vào sự trừu tượng.', example: `Lớp "Notification" nên phụ thuộc vào interface "IMessageSender" thay vì lớp cụ thể "EmailSender".` }
+            { letter: 'S', name: 'Single Responsibility Principle', color: 'green', description: 'Một lớp chỉ nên có một lý do duy nhất để thay đổi. Điều này làm tăng sự gắn kết (cohesion).', code: { violation: `// VI PHẠM: Lớp có quá nhiều trách nhiệm.\nclass Invoice {\n  generate() { /*...*/ }\n  saveToDb() { /*...*/ }\n  sendEmail() { /*...*/ }\n}`, compliance: `// TUÂN THỦ: Tách thành các lớp riêng biệt.\nclass InvoiceGenerator { /*...*/ }\nclass InvoiceRepository { /*...*/ }\nclass EmailSender { /*...*/ }` } },
+            { letter: 'O', name: 'Open/Closed Principle', color: 'blue', description: 'Mở cho việc mở rộng, nhưng đóng cho việc sửa đổi. Thêm chức năng mới mà không cần sửa code cũ.', code: { violation: `// VI PHẠM: Phải sửa đổi khi có loại mới.\nfunction calculateArea(shape) {\n  if (shape.type === 'rect') { /*...*/ }\n  if (shape.type === 'circle') { /*...*/ }\n}`, compliance: `// TUÂN THỦ: Mở rộng bằng cách thêm lớp mới.\ninterface Shape { area(); }\nclass Rectangle implements Shape { /*...*/ }\nclass Circle implements Shape { /*...*/ }` } },
+            { letter: 'L', name: 'Liskov Substitution Principle', color: 'indigo', description: 'Đối tượng của lớp con phải thay thế được cho đối tượng của lớp cha mà không gây lỗi.', code: { violation: `// VI PHẠM: Square thay đổi hành vi của Rectangle.\nclass Rectangle { setW(); setH(); }\nclass Square extends Rectangle {\n  // setW cũng thay đổi height\n}`, compliance: `// TUÂN THỦ: Không dùng kế thừa khi hợp đồng bị phá vỡ.\n// Sử dụng các lớp riêng biệt hoặc composition.` } },
+            { letter: 'I', name: 'Interface Segregation Principle', color: 'purple', description: 'Không bắt client phải phụ thuộc vào các phương thức mà nó không sử dụng. Chia nhỏ các interface "béo phì".', code: { violation: `// VI PHẠM: Robot bị buộc phải implement eat().\ninterface IWorker { work(); eat(); }\nclass Robot implements IWorker { /*...*/ }`, compliance: `// TUÂN THỦ: Tách thành các interface nhỏ.\ninterface IWorkable { work(); }\ninterface IFeedable { eat(); }\nclass Robot implements IWorkable {}` } },
+            { letter: 'D', name: 'Dependency Inversion Principle', color: 'pink', description: 'Module cấp cao không nên phụ thuộc vào module cấp thấp. Cả hai nên phụ thuộc vào sự trừu tượng.', code: { violation: `// VI PHẠM: Phụ thuộc vào lớp cụ thể.\nclass Notifier {\n  private sender = new EmailSender();\n  send() { this.sender.sendEmail(); }\n}`, compliance: `// TUÂN THỦ: Phụ thuộc vào interface.\ninterface ISender { send(); }\nclass Notifier {\n  constructor(private sender: ISender) {}\n}` } }
         ];
 
-        // 1. Inject SOLID principles cards
-        const solidContainer = document.querySelector('.space-y-4');
+        // 1. Inject SOLID principles cards (Reworked)
+        const solidContainer = document.getElementById('solid-principles-container');
         if (solidContainer) {
             solidPrinciples.forEach(p => {
                 const card = document.createElement('div');
-                card.className = 'solid-card card rounded-xl p-5 cursor-pointer';
+                card.className = 'card rounded-xl p-6';
                 card.innerHTML = `
-                    <div class="flex justify-between items-center">
-                        <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-${p.color}-500/20 flex items-center justify-center">
-                                <span class="text-2xl font-black text-${p.color}-300">${p.letter}</span>
-                            </div>
-                            <div>
-                                <h4 class="text-lg font-bold text-white">${p.name}</h4>
-                            </div>
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-${p.color}-500/20 flex items-center justify-center">
+                            <span class="text-2xl font-black text-${p.color}-300">${p.letter}</span>
                         </div>
-                        <div class="arrow-icon transition-transform duration-300">
-                            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        <div>
+                            <h4 class="text-xl font-bold text-white">${p.name}</h4>
+                            <p class="text-gray-400">${p.description}</p>
                         </div>
                     </div>
-                    <div class="solid-card-details text-gray-400 pl-16 pt-3">
-                        <p class="mb-2">${p.description}</p>
-                        <p class="text-sm bg-gray-800 p-3 rounded-lg border border-gray-700"><strong>Ví dụ:</strong> ${p.example}</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                        <div class="code-block">
+                            <div class="code-block-title code-violation">❌ Vi phạm</div>
+                            <code>${p.code.violation}</code>
+                        </div>
+                        <div class="code-block">
+                            <div class="code-block-title code-compliance">✅ Tuân thủ</div>
+                            <code>${p.code.compliance}</code>
+                        </div>
                     </div>
                 `;
                 solidContainer.appendChild(card);
             });
         }
         
-        // 2. Add click listener for SOLID cards
-        document.querySelectorAll('.solid-card').forEach(card => {
-            card.addEventListener('click', () => {
-                card.classList.toggle('open');
-            });
-        });
-
-        // 3. Render Cohesion vs Coupling Chart
+        // 2. Render Cohesion vs Coupling Chart
         const ctx = document.getElementById('cohesionCouplingChart');
         if (ctx) {
             new Chart(ctx, {
