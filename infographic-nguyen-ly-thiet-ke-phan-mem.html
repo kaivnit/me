@@ -168,32 +168,39 @@
             <h2 class="text-3xl font-bold text-center mb-4">Nghệ Thuật Của Sự Đánh Đổi</h2>
             <p class="max-w-2xl mx-auto text-center text-gray-400 mb-12">Nguyên lý là kim chỉ nam, không phải luật lệ cứng nhắc. Một kỹ sư giỏi biết khi nào cần tuân thủ và khi nào cần phá vỡ quy tắc một cách có chủ đích để tránh "thiết kế thừa".</p>
             <div class="card rounded-xl overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-gray-800">
-                        <tr>
-                            <th class="p-4 font-semibold">Nguyên lý</th>
-                            <th class="p-4 font-semibold">Cạm bẫy khi lạm dụng</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-700">
-                        <tr class="hover:bg-gray-800/50">
-                            <td class="p-4 font-bold text-green-400">SRP</td>
-                            <td class="p-4 text-gray-300">Phân rã quá mức: Quá nhiều lớp nhỏ gây phức tạp khi tương tác.</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/50">
-                            <td class="p-4 font-bold text-blue-400">OCP</td>
-                            <td class="p-4 text-gray-300">Trừu tượng hóa không cần thiết cho những phần ít thay đổi.</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/50">
-                            <td class="p-4 font-bold text-purple-400">DIP</td>
-                            <td class="p-4 text-gray-300">Đảo ngược quá mức, làm code khó theo dõi nếu không có framework DI.</td>
-                        </tr>
-                        <tr class="hover:bg-gray-800/50">
-                            <td class="p-4 font-bold text-yellow-400">DRY</td>
-                            <td class="p-4 text-gray-300">Trừu tượng hóa sai lầm: Gộp các đoạn code chỉ trông giống nhau.</td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-gray-800">
+                            <tr>
+                                <th class="p-4 font-semibold">Nguyên lý</th>
+                                <th class="p-4 font-semibold">Lợi Ích Chính</th>
+                                <th class="p-4 font-semibold">Cạm bẫy khi lạm dụng</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-700">
+                            <tr class="hover:bg-gray-800/50">
+                                <td class="p-4 font-bold text-green-400">SRP</td>
+                                <td class="p-4 text-gray-300">Tăng gắn kết, dễ hiểu và kiểm thử.</td>
+                                <td class="p-4 text-gray-300">Phân rã quá mức: Quá nhiều lớp nhỏ gây phức tạp khi tương tác.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-800/50">
+                                <td class="p-4 font-bold text-blue-400">OCP</td>
+                                <td class="p-4 text-gray-300">Cho phép mở rộng mà không gây rủi ro cho mã nguồn hiện có.</td>
+                                <td class="p-4 text-gray-300">Trừu tượng hóa không cần thiết cho những phần ít thay đổi.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-800/50">
+                                <td class="p-4 font-bold text-purple-400">DIP</td>
+                                <td class="p-4 text-gray-300">Giảm khớp nối, tăng tính linh hoạt và khả năng kiểm thử.</td>
+                                <td class="p-4 text-gray-300">Đảo ngược quá mức, làm code khó theo dõi nếu không có framework DI.</td>
+                            </tr>
+                            <tr class="hover:bg-gray-800/50">
+                                <td class="p-4 font-bold text-yellow-400">DRY</td>
+                                <td class="p-4 text-gray-300">Giảm chi phí bảo trì, đảm bảo tính nhất quán.</td>
+                                <td class="p-4 text-gray-300">Trừu tượng hóa sai lầm: Gộp các đoạn code chỉ trông giống nhau.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
