@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infographic: Nguyên Lý Thiết Kế Phần Mềm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Energetic & Playful -->
+    <!-- Application Structure Plan: A top-down narrative scrollable infographic. It starts with a hook (The "Why"), then introduces the core conflict (Cohesion vs. Coupling) with a radar chart. It then presents the solution toolkit (SOLID principles) as interactive cards. Following this, it shows these principles in action through architectural diagrams (Layered, Microservices, Clean Architecture). Finally, it concludes with the "art" of software design - the trade-offs. This structure guides the user from the problem to the solution and its real-world application, making it more engaging than a simple list. -->
+    <!-- Visualization & Content Choices: 
+        1. Key Quality Attributes (Maintainability, Flexibility, etc.) -> Goal: Inform -> Viz: Big number callouts with icons (Unicode) -> Justification: Quickly conveys the core benefits of good design. 
+        2. Cohesion vs. Coupling -> Goal: Compare/Relationships -> Viz: Radar Chart (Chart.js) -> Justification: The best way to visually represent the balance between two opposing, multi-level metrics. 
+        3. SOLID Principles -> Goal: Organize/Inform -> Viz: Interactive Cards -> Interaction: Click to expand -> Justification: Breaks down dense information into manageable, user-triggered chunks, preventing information overload.
+        4. Architectures (Layered, Clean) -> Goal: Organize/Show Relationships -> Viz: HTML/CSS Diagrams -> Justification: Creates clear, lightweight, SVG-free visualizations of system structures.
+        5. Trade-offs -> Goal: Compare -> Viz: Styled Table -> Justification: A clear and concise format for comparing the pros and cons of applying principles.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* Dark background */
+            color: #F9FAFB;
+        }
+        .gradient-text {
+            background: linear-gradient(to right, #6EE7B7, #3B82F6, #9333EA);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card {
+            background-color: #1F2937;
+            border: 1px solid #374151;
+            transition: all 0.3s ease-in-out;
+        }
+        .card:hover {
+            border-color: #6EE7B7;
+            transform: translateY(-4px);
+        }
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 350px;
+            width: 100%;
+            max-width: 500px;
+        }
+        .solid-card-details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+        .solid-card.open .solid-card-details {
+            max-height: 500px;
+        }
+        .solid-card.open .arrow-icon {
+            transform: rotate(180deg);
+        }
+        .arch-diagram {
+            background-color: #0c121e;
+            border: 1px solid #374151;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <main class="container mx-auto px-4 py-12 md:py-20">
+
+        <!-- Section 1: Introduction -->
+        <section class="text-center mb-20 md:mb-32">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tight leading-tight mb-4">
+                <span class="gradient-text">Nghệ Thuật & Khoa Học</span><br>Thiết Kế Phần Mềm
+            </h1>
+            <p class="max-w-3xl mx-auto text-lg md:text-xl text-gray-400">
+                Xây dựng hệ thống không chỉ hoạt động được, mà còn phải **phức tạp, đáng tin cậy và có thể phát triển** theo thời gian. Đây là cách biến mã nguồn thành những sản phẩm bền vững.
+            </p>
+        </section>
+
+        <!-- Section 2: Core Goals -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="text-3xl font-bold text-center mb-12">Tại Sao Thiết Kế Tốt Lại Quan Trọng?</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🔧</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Khả Năng Bảo Trì</h3>
+                    <p class="text-gray-400">Giảm chi phí sửa lỗi và nâng cấp, vốn chiếm phần lớn vòng đời sản phẩm.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🧩</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Tính Linh Hoạt</h3>
+                    <p class="text-gray-400">Dễ dàng thích ứng với các yêu cầu thay đổi của thị trường mà không cần viết lại từ đầu.</p>
+                </div>
+                <div class="card p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🚀</div>
+                    <h3 class="text-xl font-bold text-white mb-2">Khả Năng Mở Rộng</h3>
+                    <p class="text-gray-400">Thêm tính năng mới hoặc xử lý lượng người dùng lớn hơn một cách hiệu quả.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Cohesion vs Coupling -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="text-3xl font-bold text-center mb-4">Âm & Dương của Thiết Kế</h2>
+            <p class="max-w-2xl mx-auto text-center text-gray-400 mb-12">Mọi thiết kế tốt đều xoay quanh việc cân bằng hai lực lượng: **Gắn kết** (các thành phần bên trong liên quan chặt chẽ) và **Khớp nối** (các module độc lập với nhau). Mục tiêu vàng là: Gắn kết cao, Khớp nối thấp.</p>
+            <div class="card p-6 md:p-8 rounded-xl">
+                <div class="chart-container">
+                    <canvas id="cohesionCouplingChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: SOLID Principles -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="text-3xl font-bold text-center mb-12">Bộ Công Cụ SOLID</h2>
+            <div class="space-y-4 max-w-4xl mx-auto">
+                <!-- SOLID cards will be injected here by JS -->
+            </div>
+        </section>
+        
+        <!-- Section 5: Architectures -->
+        <section class="mb-20 md:mb-32">
+            <h2 class="text-3xl font-bold text-center mb-12">Nguyên Lý Trong Thực Tiễn</h2>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                <div class="space-y-8">
+                    <div class="card p-6 rounded-xl">
+                        <h3 class="text-2xl font-bold text-white mb-4">Kiến trúc Phân lớp</h3>
+                        <p class="text-gray-400 mb-6">Một ví dụ kinh điển của **Phân tách Mối quan tâm**, chia hệ thống thành các lớp chức năng độc lập.</p>
+                        <div class="arch-diagram space-y-2">
+                            <div class="bg-purple-600/50 p-4 rounded-lg text-center font-semibold text-white shadow-lg">Presentation Layer (UI)</div>
+                            <div class="text-center font-bold text-gray-500 text-2xl">&darr;</div>
+                            <div class="bg-blue-600/50 p-4 rounded-lg text-center font-semibold text-white shadow-lg">Business Logic Layer</div>
+                            <div class="text-center font-bold text-gray-500 text-2xl">&darr;</div>
+                            <div class="bg-green-600/50 p-4 rounded-lg text-center font-semibold text-white shadow-lg">Data Access Layer</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 rounded-xl">
+                    <h3 class="text-2xl font-bold text-white mb-4">Kiến trúc Sạch (Clean Architecture)</h3>
+                    <p class="text-gray-400 mb-6">Một triết lý thiết kế với quy tắc cốt lõi: các phụ thuộc chỉ được hướng vào trong, bảo vệ logic nghiệp vụ khỏi các thay đổi từ bên ngoài như UI hay Database.</p>
+                    <div class="arch-diagram flex items-center justify-center p-4">
+                        <div class="w-full h-auto max-w-md aspect-square rounded-full flex items-center justify-center border-2 border-purple-500/50 bg-purple-900/20 p-[12%]">
+                            <div class="w-full h-full rounded-full flex items-center justify-center border-2 border-blue-500/50 bg-blue-900/20 p-[12%]">
+                                <div class="w-full h-full rounded-full flex items-center justify-center border-2 border-teal-500/50 bg-teal-900/20 p-[12%]">
+                                    <div class="w-full h-full rounded-full flex items-center justify-center border-2 border-emerald-500 bg-emerald-900/20">
+                                        <span class="font-bold text-emerald-300">Entities</span>
+                                    </div>
+                                    <span class="absolute font-semibold text-teal-300 -translate-y-16">Use Cases</span>
+                                </div>
+                                <span class="absolute font-semibold text-blue-300 -translate-y-28 md:-translate-y-32">Adapters</span>
+                            </div>
+                            <span class="absolute font-semibold text-purple-300 -translate-y-40 md:-translate-y-48">Frameworks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 6: Trade-offs -->
+        <section>
+            <h2 class="text-3xl font-bold text-center mb-4">Nghệ Thuật Của Sự Đánh Đổi</h2>
+            <p class="max-w-2xl mx-auto text-center text-gray-400 mb-12">Nguyên lý là kim chỉ nam, không phải luật lệ cứng nhắc. Một kỹ sư giỏi biết khi nào cần tuân thủ và khi nào cần phá vỡ quy tắc một cách có chủ đích để tránh "thiết kế thừa".</p>
+            <div class="card rounded-xl overflow-hidden">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-800">
+                        <tr>
+                            <th class="p-4 font-semibold">Nguyên lý</th>
+                            <th class="p-4 font-semibold">Cạm bẫy khi lạm dụng</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-700">
+                        <tr class="hover:bg-gray-800/50">
+                            <td class="p-4 font-bold text-green-400">SRP</td>
+                            <td class="p-4 text-gray-300">Phân rã quá mức: Quá nhiều lớp nhỏ gây phức tạp khi tương tác.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50">
+                            <td class="p-4 font-bold text-blue-400">OCP</td>
+                            <td class="p-4 text-gray-300">Trừu tượng hóa không cần thiết cho những phần ít thay đổi.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50">
+                            <td class="p-4 font-bold text-purple-400">DIP</td>
+                            <td class="p-4 text-gray-300">Đảo ngược quá mức, làm code khó theo dõi nếu không có framework DI.</td>
+                        </tr>
+                        <tr class="hover:bg-gray-800/50">
+                            <td class="p-4 font-bold text-yellow-400">DRY</td>
+                            <td class="p-4 text-gray-300">Trừu tượng hóa sai lầm: Gộp các đoạn code chỉ trông giống nhau.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-10 mt-12 border-t border-gray-800">
+        <p class="text-gray-500">Được thiết kế để trực quan hóa sự phức tạp.</p>
+    </footer>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Data for the infographic
+        const solidPrinciples = [
+            { letter: 'S', name: 'Single Responsibility Principle', color: 'green', description: 'Một lớp chỉ nên có một lý do duy nhất để thay đổi. Điều này làm tăng sự gắn kết (cohesion).', example: `Tách lớp "AllInOne" thành các lớp riêng biệt: InvoiceGenerator, InvoiceRepository, EmailSender.` },
+            { letter: 'O', name: 'Open/Closed Principle', color: 'blue', description: 'Mở cho việc mở rộng, nhưng đóng cho việc sửa đổi. Thêm chức năng mới mà không cần sửa code cũ.', example: `Sử dụng interface "IReport" thay vì câu lệnh if-else để thêm các loại báo cáo mới.` },
+            { letter: 'L', name: 'Liskov Substitution Principle', color: 'indigo', description: 'Đối tượng của lớp con phải thay thế được cho đối tượng của lớp cha mà không gây lỗi.', example: `Lớp "Square" không nên kế thừa từ "Rectangle" nếu nó thay đổi hành vi cơ bản (setWidth ảnh hưởng height).` },
+            { letter: 'I', name: 'Interface Segregation Principle', color: 'purple', description: 'Không bắt client phải phụ thuộc vào các phương thức mà nó không sử dụng. Chia nhỏ các interface "béo phì".', example: `Tách interface "IWorker" (work, eat) thành "IWorkable" và "IFeedable" cho Robot và Người.` },
+            { letter: 'D', name: 'Dependency Inversion Principle', color: 'pink', description: 'Module cấp cao không nên phụ thuộc vào module cấp thấp. Cả hai nên phụ thuộc vào sự trừu tượng.', example: `Lớp "Notification" nên phụ thuộc vào interface "IMessageSender" thay vì lớp cụ thể "EmailSender".` }
+        ];
+
+        // 1. Inject SOLID principles cards
+        const solidContainer = document.querySelector('.space-y-4');
+        if (solidContainer) {
+            solidPrinciples.forEach(p => {
+                const card = document.createElement('div');
+                card.className = 'solid-card card rounded-xl p-5 cursor-pointer';
+                card.innerHTML = `
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center space-x-4">
+                            <div class="flex-shrink-0 w-12 h-12 rounded-full bg-${p.color}-500/20 flex items-center justify-center">
+                                <span class="text-2xl font-black text-${p.color}-300">${p.letter}</span>
+                            </div>
+                            <div>
+                                <h4 class="text-lg font-bold text-white">${p.name}</h4>
+                            </div>
+                        </div>
+                        <div class="arrow-icon transition-transform duration-300">
+                            <svg class="w-6 h-6 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                    </div>
+                    <div class="solid-card-details text-gray-400 pl-16 pt-3">
+                        <p class="mb-2">${p.description}</p>
+                        <p class="text-sm bg-gray-800 p-3 rounded-lg border border-gray-700"><strong>Ví dụ:</strong> ${p.example}</p>
+                    </div>
+                `;
+                solidContainer.appendChild(card);
+            });
+        }
+        
+        // 2. Add click listener for SOLID cards
+        document.querySelectorAll('.solid-card').forEach(card => {
+            card.addEventListener('click', () => {
+                card.classList.toggle('open');
+            });
+        });
+
+        // 3. Render Cohesion vs Coupling Chart
+        const ctx = document.getElementById('cohesionCouplingChart');
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: [
+                        ['Gắn kết', 'Chức năng'], 
+                        ['Gắn kết', 'Tuần tự'], 
+                        ['Gắn kết', 'Giao tiếp'], 
+                        ['Khớp nối', 'Nội dung'],
+                        ['Khớp nối', 'Chung'],
+                        ['Khớp nối', 'Điều khiển'],
+                    ],
+                    datasets: [{
+                        label: 'Thiết kế Tốt (Lý tưởng)',
+                        data: [7, 6, 5, 1, 2, 3],
+                        backgroundColor: 'rgba(110, 231, 183, 0.2)',
+                        borderColor: 'rgba(110, 231, 183, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(110, 231, 183, 1)',
+                    },
+                    {
+                        label: 'Thiết kế Tồi (Cần tránh)',
+                        data: [1, 2, 3, 7, 6, 5],
+                        backgroundColor: 'rgba(244, 114, 182, 0.2)',
+                        borderColor: 'rgba(244, 114, 182, 1)',
+                        borderWidth: 2,
+                        pointBackgroundColor: 'rgba(244, 114, 182, 1)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            labels: {
+                                color: '#D1D5DB'
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(tooltipItems) {
+                                    const item = tooltipItems[0];
+                                    let label = item.chart.data.labels[item.dataIndex];
+                                    if (Array.isArray(label)) {
+                                      return label.join(' ');
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#374151' },
+                            grid: { color: '#374151' },
+                            pointLabels: { 
+                                color: '#9CA3AF',
+                                font: {
+                                    size: 12
+                                }
+                            },
+                            ticks: {
+                                color: '#F9FAFB',
+                                backdropColor: '#1F2937',
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    });
+    </script>
+</body>
+</html>
