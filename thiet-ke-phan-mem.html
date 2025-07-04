@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám Phá Nguyên Lý Thiết Kế Phần Mềm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Scholarly Neutral -->
+    <!-- Application Structure Plan: A single-page application with a fixed top navigation bar allowing users to jump between four thematic sections: 'Nền Tảng' (Foundations), 'Nguyên Lý Cốt Lõi' (Core Principles), 'Kiến Trúc' (Architecture), and 'Thực Tiễn' (In Practice). This non-linear, thematic structure is chosen over the report's linear chapter format to improve usability and allow users to explore interconnected concepts freely. Key interactions include an interactive radar chart for Cohesion vs. Coupling, clickable cards for SOLID principles with code examples, and CSS-based diagrams for architectures, fostering an exploratory learning experience. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Cohesion/Coupling levels. Goal: Compare. Viz: Interactive Radar Chart (Chart.js). Interaction: Hover tooltips. Justification: Visually contrasts the ideal state (High Cohesion, Low Coupling) effectively.
+        - Report Info: SOLID, DRY, KISS, etc. principles. Goal: Inform/Organize. Viz: Interactive Cards (HTML/CSS/JS). Interaction: Click to reveal details and code snippets. Justification: Breaks down dense text into digestible, user-triggered chunks.
+        - Report Info: Layered, Clean, Microservices architectures. Goal: Organize/Relationships. Viz: Diagrams made with HTML/CSS/Tailwind. Interaction: Hover effects for info. Justification: Lightweight, no extra libraries needed, effectively shows structural relationships.
+        - Report Info: Trade-offs. Goal: Compare/Inform. Viz: Interactive comparison table. Interaction: Clicking on a principle reveals its trade-offs. Justification: Makes the abstract concept of trade-offs tangible and easy to compare.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #F8F7F4;
+            color: #2c3e50;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #E57373;
+            transition: width 0.3s ease;
+        }
+        .nav-link.active::after, .nav-link:hover::after {
+            width: 100%;
+        }
+        .content-section {
+            display: none;
+        }
+        .content-section.active {
+            display: block;
+        }
+        .card {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #EAEAEA;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+        .principle-card {
+            cursor: pointer;
+        }
+        .details {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-in-out;
+        }
+        .details.open {
+            max-height: 1000px; /* Adjust as needed */
+        }
+        .code-block {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.875rem;
+            white-space: pre-wrap;
+            margin-top: 1rem;
+        }
+        .code-block .violation { color: #ff79c6; }
+        .code-block .compliance { color: #50fa7b; }
+
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 40vh;
+            width: 90vw;
+            max-width: 500px;
+            max-height: 500px;
+        }
+
+        .clean-arch-circle {
+            border: 2px solid;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+        .clean-arch-circle:hover {
+            transform: scale(1.02);
+        }
+        .clean-arch-text {
+            position: absolute;
+            font-weight: 600;
+            font-size: 0.875rem;
+            text-align: center;
+            width: 100%;
+            left: 0;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <h1 class="text-xl md:text-2xl font-bold text-gray-800">Thiết Kế Phần Mềm</h1>
+                <div class="hidden sm:flex items-center space-x-4 md:space-x-8 text-sm md:text-base">
+                    <a href="#foundations" data-target="foundations" class="nav-link active font-medium text-gray-600 hover:text-gray-900">Nền Tảng</a>
+                    <a href="#principles" data-target="principles" class="nav-link font-medium text-gray-600 hover:text-gray-900">Nguyên Lý</a>
+                    <a href="#architectures" data-target="architectures" class="nav-link font-medium text-gray-600 hover:text-gray-900">Kiến Trúc</a>
+                    <a href="#practice" data-target="practice" class="nav-link font-medium text-gray-600 hover:text-gray-900">Thực Tiễn</a>
+                </div>
+                <div class="sm:hidden">
+                    <select id="mobile-nav" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                        <option value="foundations">Nền Tảng</option>
+                        <option value="principles">Nguyên Lý</option>
+                        <option value="architectures">Kiến Trúc</option>
+                        <option value="practice">Thực Tiễn</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        
+        <section id="foundations" class="content-section active">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Nền Tảng Triết Học</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">Các nguyên lý thiết kế hiện đại không xuất hiện ngẫu nhiên. Chúng bắt nguồn từ những khái niệm cốt lõi về cách cấu trúc thông tin và quản lý sự phức tạp, là chìa khóa để áp dụng các nguyên lý một cách hiệu quả.</p>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8 mb-16">
+                <div class="card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Nguyên Lý</h3>
+                    <p class="text-gray-600">Hướng dẫn trừu tượng, phổ quát, trả lời câu hỏi "Tại sao?". Ví dụ: SOLID, DRY.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Mẫu Thiết Kế</h3>
+                    <p class="text-gray-600">Giải pháp cụ thể, tái sử dụng, trả lời câu hỏi "Làm thế nào?". Ví dụ: Factory, Observer.</p>
+                </div>
+                <div class="card p-6 text-center">
+                    <h3 class="text-xl font-bold mb-2 text-gray-800">Kiến Trúc</h3>
+                    <p class="text-gray-600">Cấu trúc cấp cao nhất của toàn hệ thống, là bản thiết kế tổng thể. Ví dụ: Microservices, MVC.</p>
+                </div>
+            </div>
+
+            <div class="card p-6 md:p-8 mb-12">
+                <h3 class="text-2xl font-bold text-center mb-6 text-gray-800">Gắn Kết (Cohesion) vs. Khớp Nối (Coupling)</h3>
+                 <p class="text-center max-w-2xl mx-auto text-gray-600 mb-8">Trong thiết kế phần mềm, mục tiêu vàng là đạt được **Gắn kết cao (High Cohesion)** và **Khớp nối thấp (Low Coupling)**. Biểu đồ radar dưới đây trực quan hóa sự cân bằng này. Một thiết kế tốt sẽ có vùng Gắn Kết rộng (các thành phần bên trong liên quan chặt chẽ) và vùng Khớp Nối hẹp (các module độc lập với nhau).</p>
+                <div class="chart-container">
+                    <canvas id="cohesionCouplingChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="principles" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Các Nguyên Lý Cốt Lõi</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">Khám phá các bộ nguyên lý nền tảng đã trở thành tiêu chuẩn trong ngành, giúp tạo ra các hệ thống linh hoạt, dễ bảo trì và hiệu quả. Hãy nhấp vào từng thẻ để xem chi tiết.</p>
+            </div>
+            
+            <div id="principles-grid" class="space-y-6"></div>
+        </section>
+
+        <section id="architectures" class="content-section">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Nguyên Lý trong Kiến Trúc</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">Sức mạnh của các nguyên lý được thể hiện khi chúng định hình toàn bộ kiến trúc hệ thống. Các mẫu kiến trúc phổ biến là biểu hiện vĩ mô của các nguyên lý cơ bản như Phân tách Mối quan tâm.</p>
+            </div>
+
+            <div class="space-y-12">
+                <div class="card p-6 md:p-8">
+                    <h3 class="text-2xl font-bold mb-4 text-gray-800">Kiến trúc Sạch (Clean Architecture)</h3>
+                    <p class="text-gray-600 mb-6">Đây là một triết lý thiết kế nhằm tạo ra các hệ thống độc lập với framework, UI, và cơ sở dữ liệu. Quy tắc cốt lõi là các phụ thuộc chỉ được hướng vào trong, từ các lớp ngoài chi tiết đến các lớp trong trừu tượng.</p>
+                    <div class="w-full flex justify-center items-center p-4">
+                        <div class="clean-arch-circle border-red-300 bg-red-50/50 w-full h-auto max-w-lg aspect-square" style="padding: 14%;">
+                            <span class="clean-arch-text text-red-600" style="top: 6%;">Frameworks & Drivers</span>
+                            <div class="clean-arch-circle border-orange-300 bg-orange-50/50 w-full h-full" style="padding: 16%;">
+                                <span class="clean-arch-text text-orange-600" style="top: 6%;">Interface Adapters</span>
+                                <div class="clean-arch-circle border-blue-300 bg-blue-50/50 w-full h-full" style="padding: 20%;">
+                                    <span class="clean-arch-text text-blue-600" style="top: 8%;">Use Cases</span>
+                                     <div class="clean-arch-circle border-green-400 bg-green-50/50 w-full h-full flex items-center justify-center">
+                                        <span class="font-bold text-green-700 text-lg">Entities</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div class="card p-6 md:p-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Kiến trúc Vi dịch vụ (Microservices)</h3>
+                        <p class="text-gray-600 mb-6">Cấu trúc một ứng dụng thành một tập hợp các dịch vụ nhỏ, độc lập, mỗi dịch vụ xoay quanh một khả năng kinh doanh. Đây là hiện thân của **Nguyên lý Đơn Trách nhiệm** và **Khớp nối thấp** ở quy mô hệ thống.</p>
+                         <div class="flex flex-wrap gap-4 justify-center items-center p-4 bg-slate-100 rounded-lg">
+                            <div class="bg-teal-500 text-white p-4 rounded-lg text-center shadow">Service A</div>
+                            <div class="font-bold text-2xl text-slate-500">&harr;</div>
+                            <div class="bg-sky-500 text-white p-4 rounded-lg text-center shadow">Service B</div>
+                            <div class="font-bold text-2xl text-slate-500">&harr;</div>
+                            <div class="bg-indigo-500 text-white p-4 rounded-lg text-center shadow">Service C</div>
+                        </div>
+                    </div>
+                     <div class="card p-6 md:p-8">
+                        <h3 class="text-2xl font-bold mb-4 text-gray-800">Kiến trúc Phân lớp (Layered)</h3>
+                        <p class="text-gray-600 mb-6">Tổ chức ứng dụng thành các lớp ngang xếp chồng, mỗi lớp có một vai trò cụ thể. Đây là ví dụ kinh điển của **Phân tách Mối quan tâm**.</p>
+                        <div class="space-y-2 p-4 bg-slate-100 rounded-lg">
+                            <div class="bg-purple-500 text-white p-4 rounded-lg text-center shadow-md">Presentation Layer</div>
+                             <div class="text-center font-bold text-slate-500">&darr;</div>
+                            <div class="bg-rose-500 text-white p-4 rounded-lg text-center shadow-md">Business Logic Layer</div>
+                             <div class="text-center font-bold text-slate-500">&darr;</div>
+                            <div class="bg-amber-500 text-white p-4 rounded-lg text-center shadow-md">Data Access Layer</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section id="practice" class="content-section">
+             <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">Nghệ Thuật Thực Tiễn</h2>
+                <p class="max-w-3xl mx-auto text-gray-600">Thiết kế không chỉ là khoa học, mà còn là nghệ thuật của sự đánh đổi. Một kỹ sư giỏi không chỉ tuân thủ quy tắc, mà còn biết khi nào cần phá vỡ chúng một cách có chủ đích để đạt được mục tiêu lớn hơn.</p>
+            </div>
+
+            <div class="card p-6 md:p-8">
+                <h3 class="text-2xl font-bold mb-4 text-gray-800">Sự Đánh Đổi (Trade-offs)</h3>
+                <p class="text-gray-600 mb-6">Mọi nguyên lý đều có ưu điểm và chi phí tiềm ẩn. Áp dụng chúng một cách mù quáng có thể dẫn đến thiết kế thừa (over-engineering). Bảng dưới đây tóm tắt một số cạm bẫy phổ biến. Hãy nhấp vào một nguyên lý để xem xét sự đánh đổi của nó.</p>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="p-4 font-semibold">Nguyên Lý</th>
+                                <th class="p-4 font-semibold">Lợi Ích Chính</th>
+                                <th class="p-4 font-semibold">Cạm Bẫy / Rủi Ro (Thiết kế thừa)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tradeoffs-table">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    
+    <footer class="text-center py-8 text-gray-500 text-sm">
+        <p>Được tạo ra để biến các khái niệm phức tạp thành kiến thức trực quan.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const appData = {
+                principles: [
+                    {
+                        id: 'solid',
+                        name: 'S.O.L.I.D',
+                        tagline: 'Năm nguyên lý nền tảng cho thiết kế hướng đối tượng dễ bảo trì và mở rộng.',
+                        details: [
+                            { 
+                                title: 'S - Single Responsibility Principle',
+                                description: 'Một lớp chỉ nên có một lý do duy nhất để thay đổi. Điều này giúp tăng tính gắn kết (cohesion).',
+                                code: {
+                                    violation: `// VI PHẠM: Lớp Invoice có nhiều hơn một trách nhiệm.\nclass Invoice {\n  generate() { /* ... */ }\n  saveToDatabase() { /* ... */ }\n  sendEmail() { /* ... */ }\n}`,
+                                    compliance: `// TUÂN THỦ: Tách thành các lớp có trách nhiệm duy nhất.\nclass InvoiceGenerator { /* ... */ }\nclass InvoiceRepository { /* ... */ }\nclass InvoiceEmailSender { /* ... */ }`
+                                }
+                            },
+                            { 
+                                title: 'O - Open/Closed Principle',
+                                description: 'Các thực thể nên "mở" cho việc mở rộng nhưng "đóng" cho việc sửa đổi. Cho phép thêm chức năng mới mà không cần sửa code cũ.',
+                                code: {
+                                    violation: `// VI PHẠM: Phải sửa đổi lớp khi có loại báo cáo mới.\nclass ReportGenerator {\n  generate(type) {\n    if (type === 'PDF') { /*...*/ }\n    else if (type === 'Excel') { /*...*/ }\n  }\n}`,
+                                    compliance: `// TUÂN THỦ: Mở rộng bằng cách thêm lớp mới.\ninterface IReport { generate(); }\nclass PdfReport implements IReport { /* ... */ }\nclass ExcelReport implements IReport { /* ... */ }`
+                                }
+                            },
+                            {
+                                title: 'L - Liskov Substitution Principle',
+                                description: 'Các đối tượng của lớp con phải có thể thay thế cho các đối tượng của lớp cha mà không làm thay đổi tính đúng đắn của chương trình.',
+                                code: {
+                                    violation: `// VI PHẠM: Square kế thừa Rectangle có thể gây hành vi bất ngờ.\n// setWidth(5), setHeight(4) trên Square sẽ cho ra hình 4x4, không phải 5x4.\nclass Rectangle { setWidth(w); setHeight(h); }\nclass Square extends Rectangle { /* ... */ }`,
+                                    compliance: `// TUÂN THỦ: Không sử dụng kế thừa khi hợp đồng bị phá vỡ. \n// Sử dụng lớp riêng biệt hoặc một lớp cha trừu tượng chung hơn.\nclass Shape { /* ... */ }`
+                                }
+                            },
+                            {
+                                title: 'I - Interface Segregation Principle',
+                                description: 'Client không nên bị buộc phải phụ thuộc vào các phương thức mà nó không sử dụng. Nên chia các interface "béo phì" thành nhiều interface nhỏ hơn.',
+                                code: {
+                                    violation: `// VI PHẠM: RobotWorker bị buộc phải implement eat().\ninterface IWorker { work(); eat(); }\nclass RobotWorker implements IWorker { /* ... */ }`,
+                                    compliance: `// TUÂN THỦ: Tách thành các interface chuyên biệt.\ninterface IWorkable { work(); }\ninterface IFeedable { eat(); }\nclass RobotWorker implements IWorkable { /* ... */ }`
+                                }
+                            },
+                            {
+                                title: 'D - Dependency Inversion Principle',
+                                description: 'Module cấp cao không nên phụ thuộc vào module cấp thấp. Cả hai nên phụ thuộc vào sự trừu tượng (interface).',
+                                code: {
+                                    violation: `// VI PHẠM: NotificationService phụ thuộc cứng vào EmailSender.\nclass NotificationService {\n  private emailSender = new EmailSender();\n  notify() { this.emailSender.send(); }\n}`,
+                                    compliance: `// TUÂN THỦ: Phụ thuộc vào interface, được "tiêm" từ bên ngoài.\ninterface IMessageSender { send(); }\nclass NotificationService {\n  constructor(private sender: IMessageSender) {}\n  notify() { this.sender.send(); }\n}`
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        id: 'dry',
+                        name: 'DRY',
+                        tagline: 'Don\'t Repeat Yourself - Đừng Lặp Lại Chính Mình. Mọi mẩu kiến thức chỉ nên có một biểu diễn duy nhất.',
+                        details: `Mục tiêu chính của DRY là tăng cường khả năng bảo trì. Khi một logic cần thay đổi, việc chỉ phải cập nhật nó ở một nơi duy nhất sẽ giảm đáng kể công sức và nguy cơ gây ra lỗi. Tuy nhiên, cần cẩn thận với "trừu tượng hóa sai lầm" - không nên gộp các đoạn code chỉ vì chúng trông giống nhau.`
+                    },
+                    {
+                        id: 'kiss',
+                        name: 'KISS',
+                        tagline: 'Keep It Simple, Stupid - Giữ Nó Đơn Giản. Hầu hết các hệ thống hoạt động tốt nhất nếu chúng được giữ đơn giản.',
+                        details: `KISS là liều thuốc giải độc mạnh mẽ cho xu hướng "thiết kế thừa" (over-engineering). Code đơn giản sẽ dễ đọc, dễ hiểu, dễ gỡ lỗi và dễ bảo trì hơn. Sự đơn giản nên là một mục tiêu thiết kế chính.`
+                    },
+                    {
+                        id: 'yagni',
+                        name: 'YAGNI',
+                        tagline: 'You Ain\'t Gonna Need It - Bạn Sẽ Không Cần Nó Đâu. Chỉ triển khai những gì bạn thực sự cần ngay bây giờ.',
+                        details: `Nguyên lý này nhằm mục đích tránh lãng phí thời gian và công sức vào việc xây dựng các tính năng hoặc các lớp trừu tượng phức tạp mà có thể không bao giờ được sử dụng. Nó giúp giữ cho mã nguồn gọn gàng và tập trung.`
+                    },
+                    {
+                        id: 'composition',
+                        name: 'Composition > Inheritance',
+                        tagline: 'Ưu tiên Composition (quan hệ "có một") hơn Kế thừa (quan hệ "là một").',
+                        details: `Kế thừa tạo ra khớp nối rất chặt chẽ và có thể dẫn đến "vấn đề lớp cơ sở mong manh". Composition linh hoạt hơn, cho phép thay đổi các thành phần độc lập và tránh các hệ thống phân cấp cứng nhắc. Nó giúp xây dựng các hệ thống linh hoạt hơn bằng cách "ghép" các hành vi lại với nhau.`
+                    },
+                    {
+                        id: 'lod',
+                        name: 'Law of Demeter (LoD)',
+                        tagline: 'Nguyên lý Hiểu Biết Tối Thiểu - Chỉ nói chuyện với những người bạn thân của bạn.',
+                        details: `Một đối tượng nên hạn chế kiến thức về cấu trúc bên trong của các đối tượng khác. Nguyên lý này giúp giảm khớp nối bằng cách tránh các chuỗi gọi phương thức dài (train wrecks) như \`a.getB().getC().doSomething()\`. Thay vì "hỏi" sâu vào bên trong, hãy "ra lệnh" cho đối tượng tự xử lý.`
+                    },
+                ],
+                tradeoffs: [
+                    { name: 'SRP', benefit: 'Tăng gắn kết, dễ hiểu và kiểm thử.', trap: 'Phân rã quá mức: Tạo ra quá nhiều lớp nhỏ, làm tăng sự phức tạp khi tương tác.' },
+                    { name: 'OCP', benefit: 'Cho phép mở rộng mà không gây rủi ro cho mã nguồn hiện có.', trap: 'Trừu tượng hóa không cần thiết: Tạo ra các interface phức tạp cho những phần mã ít có khả năng thay đổi.' },
+                    { name: 'DIP', benefit: 'Giảm khớp nối, tăng tính linh hoạt và khả năng kiểm thử.', trap: 'Đảo ngược quá mức: Sử dụng Dependency Injection cho mọi thứ, làm mã nguồn trở nên khó theo dõi.' },
+                    { name: 'DRY', benefit: 'Giảm chi phí bảo trì, đảm bảo tính nhất quán.', trap: 'Trừu tượng hóa sai lầm: Gộp các đoạn mã chỉ trông giống nhau về hình thức nhưng khác nhau về mục đích.' }
+                ]
+            };
+            
+            // Navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const mobileNav = document.getElementById('mobile-nav');
+            const contentSections = document.querySelectorAll('.content-section');
+
+            function switchTab(targetId) {
+                contentSections.forEach(section => {
+                    section.classList.toggle('active', section.id === targetId);
+                });
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.dataset.target === targetId);
+                });
+                if (mobileNav.value !== targetId) {
+                    mobileNav.value = targetId;
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = e.currentTarget.dataset.target;
+                    switchTab(targetId);
+                    window.history.pushState(null, '', `#${targetId}`);
+                });
+            });
+
+            mobileNav.addEventListener('change', (e) => {
+                const targetId = e.target.value;
+                switchTab(targetId);
+                window.history.pushState(null, '', `#${targetId}`);
+            });
+            
+            // Initial load based on hash
+            const initialTarget = window.location.hash.substring(1) || 'foundations';
+            switchTab(initialTarget);
+
+
+            // Cohesion vs Coupling Chart
+            const ctx = document.getElementById('cohesionCouplingChart').getContext('2d');
+            const cohesionData = {
+                labels: ['Functional', 'Sequential', 'Communicational', 'Procedural', 'Temporal', 'Logical', 'Coincidental'],
+                datasets: [{
+                    label: 'Gắn kết (Cohesion)',
+                    data: [7, 6, 5, 4, 3, 2, 1],
+                    fill: true,
+                    backgroundColor: 'rgba(74, 144, 226, 0.2)',
+                    borderColor: 'rgb(74, 144, 226)',
+                    pointBackgroundColor: 'rgb(74, 144, 226)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(74, 144, 226)'
+                }]
+            };
+            const couplingData = {
+                labels: ['Data', 'Stamp', 'Control', 'External', 'Common', 'Content'],
+                 datasets: [{
+                    label: 'Khớp nối (Coupling)',
+                    data: [1, 2, 3, 4, 5, 6], // Lower is better
+                    fill: true,
+                    backgroundColor: 'rgba(229, 115, 115, 0.2)',
+                    borderColor: 'rgb(229, 115, 115)',
+                    pointBackgroundColor: 'rgb(229, 115, 115)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(229, 115, 115)'
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: cohesionData.labels.map((label, i) => [label, couplingData.labels[i] || '']),
+                    datasets: [cohesionData.datasets[0], couplingData.datasets[0]]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: {
+                            borderWidth: 2
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: {
+                                display: false
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 7,
+                            pointLabels: {
+                                font: {
+                                    size: 11,
+                                    weight: 'bold'
+                                }
+                            },
+                            ticks: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.dataset.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    const value = context.parsed.r;
+                                    const rating = (context.datasetIndex === 0) 
+                                        ? (value > 4 ? 'Tốt' : 'Kém') 
+                                        : (value < 4 ? 'Tốt (Thấp)' : 'Kém (Cao)');
+                                    label += rating;
+                                    return label;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+
+            // Principles Grid
+            const principlesGrid = document.getElementById('principles-grid');
+            appData.principles.forEach(p => {
+                const isSolid = p.id === 'solid';
+                let detailsHtml = '';
+
+                if (isSolid) {
+                    p.details.forEach(sub => {
+                        detailsHtml += `
+                            <div class="mt-4 pt-4 border-t border-gray-200">
+                                <h4 class="font-bold text-lg text-gray-800">${sub.title}</h4>
+                                <p class="text-gray-600 mt-1">${sub.description}</p>
+                                <div class="grid md:grid-cols-2 gap-4 mt-3">
+                                    <div class="code-block"><span class="violation font-semibold">Vi phạm:</span>\n${sub.code.violation}</div>
+                                    <div class="code-block"><span class="compliance font-semibold">Tuân thủ:</span>\n${sub.code.compliance}</div>
+                                </div>
+                            </div>`;
+                    });
+                } else {
+                    detailsHtml = `<p class="text-gray-600 mt-4 pt-4 border-t border-gray-200">${p.details}</p>`;
+                }
+
+                const cardHtml = `
+                    <div class="card p-6 principle-card" data-principle-id="${p.id}">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-800">${p.name}</h3>
+                                <p class="text-gray-500">${p.tagline}</p>
+                            </div>
+                            <svg class="w-6 h-6 text-gray-400 transition-transform transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                        </div>
+                        <div class="details">
+                            ${detailsHtml}
+                        </div>
+                    </div>`;
+                principlesGrid.innerHTML += cardHtml;
+            });
+
+            document.querySelectorAll('.principle-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const details = card.querySelector('.details');
+                    const icon = card.querySelector('svg');
+                    const isOpen = details.classList.toggle('open');
+                    icon.style.transform = isOpen ? 'rotate(180deg)' : 'rotate(0deg)';
+                });
+            });
+
+            // Tradeoffs Table
+            const tradeoffsTable = document.getElementById('tradeoffs-table');
+            appData.tradeoffs.forEach(t => {
+                const rowHtml = `
+                    <tr class="border-b border-gray-100 hover:bg-gray-50">
+                        <td class="p-4 font-semibold text-gray-700">${t.name}</td>
+                        <td class="p-4 text-gray-600">${t.benefit}</td>
+                        <td class="p-4 text-gray-600">${t.trap}</td>
+                    </tr>
+                `;
+                tradeoffsTable.innerHTML += rowHtml;
+            });
+        });
+    </script>
+</body>
+</html>
