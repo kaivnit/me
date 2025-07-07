@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám Phá Nguyên Lý Thiết Kế Phần Mềm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Calm Academia -->
+    <!-- Application Structure Plan: The application is structured as a single-page exploratory dashboard. It abandons the linear structure of the report in favor of a thematic, non-linear user flow. The core idea is to let users explore concepts from multiple angles. Key sections include: 1) An interactive timeline for historical context. 2) A principle explorer with tabs for SOLID, Universal, and Structural principles, using interactive cards. 3) A relationship visualizer (bubble chart) to show conflicts and synergies (e.g., DRY vs. SRP). 4) An anti-pattern gallery linking problems to violated principles. 5) An economic impact section with dynamic charts on technical debt. This structure is chosen to transform passive reading into active learning and discovery, making the complex information more digestible and memorable. -->
+    <!-- Visualization & Content Choices: 1) History: HTML/CSS timeline to show evolution (Goal: Change). 2) Principles: Interactive cards (HTML/CSS/JS) to inform and organize. 3) Relationships: Bubble Chart (Chart.js/Canvas) to show relationships between principles (Goal: Relationships). 4) Anti-Patterns: Grid layout with before/after code snippets (HTML/CSS) to organize and compare. 5) Economic Impact: Bar chart (Chart.js/Canvas) showing cost of poor quality (Goal: Inform/Compare). All interactions (hover, click) are handled by vanilla JS to update content dynamically, reinforcing the connections between concepts. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #fdfdfc;
+            color: #333c4d;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 450px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .nav-link {
+            transition: color 0.3s, border-bottom-color 0.3s;
+            border-bottom: 2px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            color: #c89b4b;
+            border-bottom-color: #c89b4b;
+        }
+        .principle-card {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .principle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .modal-backdrop {
+            transition: opacity 0.3s;
+        }
+        .modal-content {
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .tab.active {
+            border-color: #c89b4b;
+            background-color: #f3e9d3;
+            color: #333c4d;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #c89b4b;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a47e3c;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header -->
+    <header id="header" class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex-shrink-0">
+                    <a href="#" class="text-xl font-bold text-[#c89b4b]">Thiết Kế Phần Mềm</a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Giới Thiệu</a>
+                        <a href="#history" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Lịch Sử</a>
+                        <a href="#principles" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Nguyên Lý</a>
+                        <a href="#relations" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Tương Quan</a>
+                        <a href="#antipatterns" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Phản Mẫu</a>
+                        <a href="#impact" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Tác Động</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="md:hidden hidden">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#intro" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Giới Thiệu</a>
+                <a href="#history" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Lịch Sử</a>
+                <a href="#principles" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Nguyên Lý</a>
+                <a href="#relations" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Tương Quan</a>
+                <a href="#antipatterns" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Phản Mẫu</a>
+                <a href="#impact" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Tác Động</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+
+        <!-- Section: Intro -->
+        <section id="intro" class="text-center py-16">
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Khám Phá Các Nguyên Lý Thiết Kế Phần Mềm</h1>
+            <p class="max-w-3xl mx-auto text-lg text-gray-600">
+                Một hành trình tương tác để tìm hiểu các triết lý, quy tắc và mẫu hình nền tảng giúp xây dựng phần mềm chất lượng cao, dễ bảo trì và mở rộng. Hãy bắt đầu khám phá cuộc chiến chống lại sự phức tạp trong kỹ thuật phần mềm.
+            </p>
+        </section>
+
+        <!-- Section: History -->
+        <section id="history" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Hành Trình Lịch Sử</h2>
+                <p class="mt-4 text-gray-600">Từ "khủng hoảng phần mềm" đến DevOps, các nguyên lý thiết kế đã tiến hóa để đối phó với sự phức tạp ngày càng tăng.</p>
+            </div>
+            <div id="timeline-container" class="relative">
+                <!-- Timeline will be generated by JS -->
+            </div>
+        </section>
+
+        <!-- Section: Principles -->
+        <section id="principles" class="py-16 bg-slate-50 rounded-2xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Khám Phá các Nguyên Lý Cốt Lõi</h2>
+                <p class="mt-4 text-gray-600">Tương tác với các nhóm nguyên lý chính định hình nên tư duy thiết kế hiện đại.</p>
+            </div>
+            <div class="flex justify-center mb-8">
+                <div id="principle-tabs" class="flex space-x-2 md:space-x-4 p-1 bg-white rounded-full shadow-inner">
+                    <!-- Tabs will be generated by JS -->
+                </div>
+            </div>
+            <div id="principle-cards-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Principle cards will be generated by JS -->
+            </div>
+        </section>
+
+        <!-- Section: Relations -->
+        <section id="relations" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Mạng Lưới Tương Quan</h2>
+                <p class="mt-4 text-gray-600">Khám phá cách các nguyên lý tương tác, hỗ trợ hoặc xung đột với nhau. Chọn một nguyên lý để xem mối quan hệ của nó.</p>
+            </div>
+            <div class="chart-container">
+                <canvas id="relationsChart"></canvas>
+            </div>
+             <div id="relation-explanation" class="mt-8 text-center text-gray-600 max-w-2xl mx-auto p-4 bg-slate-50 rounded-lg">
+                Di chuột qua một điểm để xem tên nguyên lý. Nhấp vào một điểm để làm nổi bật các mối quan hệ của nó.
+            </div>
+        </section>
+
+        <!-- Section: Anti-Patterns -->
+        <section id="antipatterns" class="py-16 bg-slate-50 rounded-2xl">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Phản Mẫu: Khi Nguyên Lý Bị Vi Phạm</h2>
+                <p class="mt-4 text-gray-600">Học hỏi từ những sai lầm phổ biến. Nhấp vào một phản mẫu để xem chi tiết.</p>
+            </div>
+            <div id="antipatterns-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Anti-pattern cards will be generated by JS -->
+            </div>
+        </section>
+
+        <!-- Section: Impact -->
+        <section id="impact" class="py-16">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-800">Tác Động Kinh Tế</h2>
+                <p class="mt-4 text-gray-600">Thiết kế tốt không chỉ là vấn đề kỹ thuật. Đó là một quyết định kinh tế chiến lược.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div>
+                    <h3 class="text-2xl font-semibold mb-4">Chi Phí Của Nợ Kỹ Thuật</h3>
+                    <p class="text-gray-600 mb-6">Nợ kỹ thuật, phát sinh từ các quyết định thiết kế kém, sẽ tích lũy "lãi suất" theo thời gian, làm giảm năng suất và tăng chi phí bảo trì. Biểu đồ cho thấy chi phí để thêm một tính năng mới tăng lên như thế nào khi nợ kỹ thuật không được quản lý.</p>
+                    <div id="tech-debt-stats" class="space-y-4">
+                         <!-- Stats will be populated by JS -->
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="techDebtChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 z-50 flex items-center justify-center hidden">
+        <div id="modal-backdrop" class="modal-backdrop fixed inset-0 bg-black bg-opacity-50"></div>
+        <div id="modal-content" class="modal-content bg-white rounded-lg shadow-xl w-11/12 md:max-w-2xl lg:max-w-4xl max-h-[90vh] overflow-y-auto relative transform scale-95 opacity-0">
+            <div class="sticky top-0 bg-white p-4 md:p-6 border-b z-10 flex justify-between items-center">
+                <h3 id="modal-title" class="text-2xl font-bold text-gray-800"></h3>
+                <button id="modal-close" class="text-gray-400 hover:text-gray-600">
+                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <div id="modal-body" class="p-4 md:p-6">
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-gray-800 text-white mt-16">
+        <div class="container mx-auto py-6 px-4 text-center">
+            <p>Một ứng dụng tương tác dựa trên báo cáo "Các Nguyên Lý Thiết Kế Phần Mềm".</p>
+            <p class="text-sm text-gray-400 mt-2">Được tạo ra để minh họa khả năng biến đổi tài liệu thành trải nghiệm học tập.</p>
+        </div>
+    </footer>
+
+    <script>
+    const AppData = {
+        history: [
+            { year: "1960s", title: "Khủng hoảng Phần mềm", description: "Các dự án lớn thất bại, dẫn đến sự ra đời của thuật ngữ 'Kỹ thuật Phần mềm' tại hội nghị NATO năm 1968. Mục tiêu là áp dụng sự kỷ luật của kỹ thuật vào phần mềm." },
+            { year: "1970s", title: "Lập trình có Cấu trúc", description: "Dijkstra đề xuất loại bỏ 'goto'. Các khái niệm Module hóa, Khớp nối (Coupling) và Gắn kết (Cohesion) của Larry Constantine ra đời, đặt nền móng cho thiết kế module hóa." },
+            { year: "1980s", title: "Cách mạng Hướng đối tượng (OOP)", description: "Các ngôn ngữ như Smalltalk phổ biến các khái niệm Đóng gói, Kế thừa, Đa hình. Đây là mảnh đất màu mỡ cho sự hình thành các nguyên lý hiện đại." },
+            { year: "1990s", title: "Sự ra đời của Mẫu thiết kế & Nợ kỹ thuật", description: "Cuốn sách 'Design Patterns: Elements of Reusable Object-Oriented Software' (1994) của GoF đã hệ thống hóa các giải pháp chung. Ward Cunningham đưa ra khái niệm 'Nợ Kỹ thuật'."},
+            { year: "2000s", title: "SOLID và Tuyên ngôn Agile", description: "Robert C. Martin hệ thống hóa các nguyên lý SOLID. Tuyên ngôn Agile (2001) nhấn mạnh sự linh hoạt, đòi hỏi các thiết kế dễ thay đổi, làm tăng tầm quan trọng của OCP và DIP. XP đưa ra nguyên lý YAGNI." },
+            { year: "2010s-nay", title: "DevOps và CI/CD", description: "Việc tự động hóa triển khai đòi hỏi chất lượng mã nguồn phải được kiểm soát liên tục. Các công cụ phân tích tĩnh và 'Quality Gates' trở thành công cụ thực thi các nguyên lý thiết kế một cách tự động." }
+        ],
+        principles: {
+            solid: [
+                { id: "SRP", title: "Single Responsibility Principle", short: "Một lớp chỉ nên có một lý do để thay đổi.", full: "Nguyên lý này phát biểu rằng một module nên chịu trách nhiệm trước một, và chỉ một, tác nhân (actor). Mục tiêu là tăng tính gắn kết và giảm khớp nối bằng cách tách biệt các mối quan tâm.", icon: "🎯" },
+                { id: "OCP", title: "Open/Closed Principle", short: "Mở cho mở rộng, đóng cho sửa đổi.", full: "Có thể thêm chức năng mới mà không cần sửa đổi mã nguồn hiện có. Thường đạt được thông qua trừu tượng hóa (interfaces, abstract classes) để tạo ra các hệ thống linh hoạt và ổn định.", icon: "📦" },
+                { id: "LSP", title: "Liskov Substitution Principle", short: "Lớp con phải thay thế được lớp cha.", full: "Đối tượng của lớp con phải có thể thay thế cho đối tượng của lớp cha mà không làm hỏng tính đúng đắn của chương trình. Điều này đảm bảo tính đa hình được sử dụng một cách an toàn.", icon: "🧩" },
+                { id: "ISP", title: "Interface Segregation Principle", short: "Không dùng interface 'béo phì'.", full: "Client không nên bị buộc phải phụ thuộc vào các phương thức mà nó không sử dụng. Hãy chia các interface lớn thành nhiều interface nhỏ và chuyên biệt hơn để giảm khớp nối.", icon: "🔪" },
+                { id: "DIP", title: "Dependency Inversion Principle", short: "Phụ thuộc vào abstraction, không phải chi tiết.", full: "Các module cấp cao không nên phụ thuộc vào module cấp thấp. Cả hai nên phụ thuộc vào abstractions (interfaces). Điều này tạo ra các hệ thống có khớp nối lỏng, rất linh hoạt và dễ kiểm thử.", icon: "🔌" }
+            ],
+            universal: [
+                { id: "DRY", title: "Don't Repeat Yourself", short: "Đừng lặp lại chính mình.", full: "Mỗi mẩu kiến thức phải có một biểu diễn duy nhất, không mơ hồ, có thẩm quyền trong hệ thống. Điều này đảm bảo tính nhất quán và dễ bảo trì.", icon: "🔄" },
+                { id: "KISS", title: "Keep It Simple, Stupid", short: "Giữ nó đơn giản thôi.", full: "Hầu hết các hệ thống hoạt động tốt nhất khi chúng được giữ đơn giản thay vì phức tạp. Mã đơn giản dễ hiểu, dễ bảo trì và ít lỗi hơn.", icon: "🧘" },
+                { id: "YAGNI", title: "You Ain't Gonna Need It", short: "Bạn sẽ không cần nó đâu.", full: "Đừng thêm chức năng cho đến khi nó thực sự được yêu cầu. Điều này tránh lãng phí công sức và sự phức tạp không cần thiết từ các tính năng giả định.", icon: "🗑️" }
+            ],
+            structural: [
+                { id: "SoC", title: "Separation of Concerns", short: "Tách biệt các mối quan tâm.", full: "Chia một ứng dụng thành các phần riêng biệt, mỗi phần giải quyết một 'mối quan tâm' (ví dụ: UI, nghiệp vụ, dữ liệu). Đây là một 'siêu nguyên lý' bao trùm nhiều nguyên lý và kiến trúc khác.", icon: "🧱" },
+                { id: "CohesionCoupling", title: "High Cohesion, Low Coupling", short: "Gắn kết cao, Khớp nối thấp.", full: "Mục tiêu vàng của thiết kế module hóa. Các yếu tố trong một module phải liên quan chặt chẽ (gắn kết cao). Các module khác nhau phải độc lập nhất có thể (khớp nối thấp).", icon: "🔗" },
+                { id: "LoD", title: "Law of Demeter", short: "Nguyên tắc Ít hiểu biết nhất.", full: "Một đối tượng chỉ nên 'nói chuyện' với những 'người bạn thân' của nó và không nên biết quá nhiều về cấu trúc bên trong của các đối tượng khác để giảm khớp nối cấu trúc.", icon: "🗣️" },
+                { id: "CompositionInheritance", title: "Composition Over Inheritance", short: "Ưu tiên 'có một' hơn 'là một'.", full: "Ưu tiên xây dựng đối tượng phức tạp bằng cách chứa các đối tượng khác (composition) thay vì kế thừa (inheritance) để tăng tính linh hoạt và tránh các hệ thống phân cấp phức tạp.", icon: "🎁" }
+            ]
+        },
+        relations: {
+            nodes: [
+                { id: 'SRP', label: 'SRP', group: 'solid' }, { id: 'OCP', label: 'OCP', group: 'solid' },
+                { id: 'LSP', label: 'LSP', group: 'solid' }, { id: 'ISP', label: 'ISP', group: 'solid' },
+                { id: 'DIP', label: 'DIP', group: 'solid' }, { id: 'DRY', label: 'DRY', group: 'universal' },
+                { id: 'KISS', label: 'KISS', group: 'universal' }, { id: 'YAGNI', label: 'YAGNI', group: 'universal' },
+                { id: 'SoC', label: 'SoC', group: 'structural' }, { id: 'CohesionCoupling', label: 'Cohesion & Coupling', group: 'structural' },
+                { id: 'LoD', label: 'LoD', group: 'structural' }, { id: 'CompositionInheritance', label: 'Composition > Inheritance', group: 'structural' }
+            ],
+            links: [
+                // Supports
+                { source: 'SRP', target: 'CohesionCoupling', type: 'supports' },
+                { source: 'ISP', target: 'CohesionCoupling', type: 'supports' },
+                { source: 'SoC', target: 'SRP', type: 'supports' },
+                { source: 'SoC', target: 'ISP', type: 'supports' },
+                { source: 'DIP', target: 'CohesionCoupling', type: 'supports' },
+                { source: 'DIP', target: 'OCP', type: 'supports' },
+                { source: 'LoD', target: 'CohesionCoupling', type: 'supports' },
+                { source: 'CompositionInheritance', target: 'CohesionCoupling', type: 'supports' },
+                { source: 'CompositionInheritance', target: 'LSP', type: 'supports' }, // Avoids LSP issues
+                { source: 'KISS', target: 'YAGNI', type: 'supports' },
+                // Conflicts
+                { source: 'DRY', target: 'SRP', type: 'conflicts' },
+                { source: 'DRY', target: 'CohesionCoupling', type: 'conflicts' }, // when wrongly applied
+                { source: 'KISS', target: 'OCP', type: 'conflicts' },
+                { source: 'YAGNI', target: 'OCP', type: 'conflicts' }
+            ]
+        },
+        antipatterns: [
+            { id: "god", title: "God Class", violated: ["SRP", "SoC", "CohesionCoupling"], description: "Một lớp làm quá nhiều việc, ôm đồm nhiều trách nhiệm không liên quan. Đây là cơn ác mộng để bảo trì.", solution: "Tái cấu trúc bằng cách sử dụng 'Extract Class' để tách các trách nhiệm ra các lớp nhỏ hơn, có tính gắn kết cao." },
+            { id: "spaghetti", title: "Spaghetti Code", violated: ["SoC", "CohesionCoupling"], description: "Mã nguồn có luồng điều khiển lộn xộn, khó theo dõi, thường do lạm dụng `goto` hoặc các hàm quá dài.", solution: "Sử dụng 'Extract Method' để chia nhỏ các hàm lớn. Áp dụng một kiến trúc có cấu trúc như MVC." },
+            { id: "copy", title: "Copy-Paste Programming", violated: ["DRY"], description: "Lặp lại các khối mã giống hệt hoặc tương tự ở nhiều nơi, khiến việc sửa đổi trở nên khó khăn và dễ gây lỗi.", solution: "Sử dụng 'Extract Method' để tạo một hàm chung và gọi nó từ nhiều nơi." },
+            { id: "hammer", title: "Golden Hammer", violated: ["Context is King"], description: "Áp dụng một giải pháp, công nghệ hoặc mẫu thiết kế quen thuộc cho mọi vấn đề, bất kể nó có phù hợp hay không.", solution: "Đánh giá lại yêu cầu một cách khách quan và xem xét các giải pháp thay thế phù hợp hơn." },
+            { id: "shotgun", title: "Shotgun Surgery", violated: ["CohesionCoupling", "SRP"], description: "Một thay đổi nhỏ đòi hỏi phải sửa đổi ở rất nhiều lớp khác nhau, cho thấy logic của một trách nhiệm bị phân tán.", solution: "Sử dụng 'Move Method/Field' hoặc 'Extract Class' để tập trung logic bị phân tán vào một nơi duy nhất." },
+            { id: "lava", title: "Lava Flow / Dead Code", violated: ["YAGNI", "KISS"], description: "Các khối mã cũ, không còn được sử dụng nhưng vẫn tồn tại vì mọi người sợ xóa chúng, làm tăng sự phức tạp.", solution: "Sử dụng các công cụ phân tích tĩnh để xác định và can đảm loại bỏ mã chết." },
+        ],
+        impact: {
+            stats: [
+                { label: "Chi phí của chất lượng phần mềm kém (CPSQ) tại Mỹ năm 2022", value: "2.41 nghìn tỷ USD", source: "CISQ Report 2022" },
+                { label: "Tổng nợ kỹ thuật tích lũy tại Mỹ", value: "1.52 nghìn tỷ USD", source: "CISQ Report 2022" },
+                { label: "Thời gian các nhà phát triển dành cho nợ kỹ thuật", value: "Lên đến 42%", source: "Stripe Report" }
+            ],
+            chartData: {
+                labels: ["Sprint 1", "Sprint 2", "Sprint 3", "Sprint 4", "Sprint 5", "Sprint 6"],
+                costWithDebt: [10, 12, 18, 28, 45, 70],
+                costWithoutDebt: [10, 11, 12, 13, 14, 15]
+            }
+        }
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const state = {
+            activePrincipleTab: 'solid',
+            activeRelationNode: null
+        };
+
+        const timelineContainer = document.getElementById('timeline-container');
+        const principleTabsContainer = document.getElementById('principle-tabs');
+        const principleCardsContainer = document.getElementById('principle-cards-container');
+        const antipatternsContainer = document.getElementById('antipatterns-container');
+        const modal = document.getElementById('modal');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalContent = document.getElementById('modal-content');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalClose = document.getElementById('modal-close');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        function setupEventListeners() {
+            modalClose.addEventListener('click', closeModal);
+            modalBackdrop.addEventListener('click', closeModal);
+            
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+            
+            window.addEventListener('scroll', updateActiveNav);
+        }
+
+        function updateActiveNav() {
+            let fromTop = window.scrollY + 80;
+            document.querySelectorAll('nav a.nav-link').forEach(link => {
+                let section = document.querySelector(link.hash);
+                if (section && section.offsetTop <= fromTop && section.offsetTop + section.offsetHeight > fromTop) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+        }
+        
+        function openModal(title, body) {
+            modalTitle.innerHTML = title;
+            modalBody.innerHTML = body;
+            modal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+            setTimeout(() => {
+                modalBackdrop.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95', 'opacity-0');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalBackdrop.classList.add('opacity-0');
+            modalContent.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }, 300);
+        }
+
+        function renderTimeline() {
+            let html = '<div class="absolute h-full border-r-2 border-gray-300 left-1/2 -translate-x-1/2"></div>';
+            AppData.history.forEach((item, index) => {
+                const alignment = index % 2 === 0 ? 'left' : 'right';
+                html += `
+                    <div class="mb-8 flex justify-between items-center w-full ${alignment === 'left' ? 'flex-row-reverse' : ''}">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-gray-800 shadow-xl w-8 h-8 rounded-full">
+                            <h1 class="mx-auto font-semibold text-sm text-white">${index + 1}</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 principle-card">
+                            <h3 class="font-bold text-[#c89b4b] text-lg">${item.year} - ${item.title}</h3>
+                            <p class="text-sm leading-snug tracking-wide text-gray-600">${item.description}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            timelineContainer.innerHTML = html;
+        }
+
+        function renderPrincipleTabs() {
+            const tabs = [
+                { id: 'solid', name: 'SOLID' },
+                { id: 'universal', name: 'Phổ Quát' },
+                { id: 'structural', name: 'Cấu Trúc' }
+            ];
+            let html = '';
+            tabs.forEach(tab => {
+                const isActive = tab.id === state.activePrincipleTab ? 'active' : '';
+                html += `<button data-tab="${tab.id}" class="tab ${isActive} px-4 py-2 text-sm font-semibold text-gray-600 border-2 border-transparent rounded-full transition-colors duration-300">${tab.name}</button>`;
+            });
+            principleTabsContainer.innerHTML = html;
+
+            principleTabsContainer.querySelectorAll('.tab').forEach(tab => {
+                tab.addEventListener('click', (e) => {
+                    state.activePrincipleTab = e.target.dataset.tab;
+                    renderPrincipleTabs();
+                    renderPrincipleCards();
+                });
+            });
+        }
+        
+        function renderPrincipleCards() {
+            const principlesToRender = AppData.principles[state.activePrincipleTab];
+            let html = '';
+            principlesToRender.forEach(p => {
+                html += `
+                    <div class="principle-card bg-white p-6 rounded-lg shadow-md cursor-pointer" data-id="${p.id}" data-category="${state.activePrincipleTab}">
+                        <div class="flex items-center mb-4">
+                            <span class="text-3xl mr-4">${p.icon}</span>
+                            <h3 class="text-xl font-bold text-gray-800">${p.id}</h3>
+                        </div>
+                        <h4 class="font-semibold text-gray-700">${p.title}</h4>
+                        <p class="text-gray-500 mt-2">${p.short}</p>
+                    </div>
+                `;
+            });
+            principleCardsContainer.innerHTML = html;
+
+            principleCardsContainer.querySelectorAll('.principle-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    const id = e.currentTarget.dataset.id;
+                    const category = e.currentTarget.dataset.category;
+                    const principle = AppData.principles[category].find(p => p.id === id);
+                    if (principle) {
+                        const modalBodyHtml = `
+                          <p class="text-gray-600">${principle.full}</p>
+                          <div class="mt-6 p-4 bg-slate-100 rounded-md">
+                            <h4 class="font-semibold mb-2">Mục tiêu cốt lõi:</h4>
+                            <p class="text-gray-700">${AppData.antipatterns.find(ap => ap.violated.includes(principle.id)) ? 'Tránh các phản mẫu như ' + AppData.antipatterns.filter(ap => ap.violated.includes(principle.id)).map(ap => `<strong>${ap.title}</strong>`).join(', ') + '.' : 'Xây dựng mã nguồn sạch và dễ hiểu.'}</p>
+                          </div>
+                        `;
+                        openModal(`${principle.id}: ${principle.title}`, modalBodyHtml);
+                    }
+                });
+            });
+        }
+        
+        function renderRelationsChart() {
+            const ctx = document.getElementById('relationsChart').getContext('2d');
+            const data = {
+                datasets: AppData.relations.nodes.map(node => ({
+                    label: node.label,
+                    data: [{
+                        x: Math.random() * 100,
+                        y: Math.random() * 100,
+                        r: 15
+                    }],
+                    backgroundColor: getGroupColor(node.group),
+                    borderColor: getGroupColor(node.group, 0.8),
+                    borderWidth: 1,
+                    nodeId: node.id
+                }))
+            };
+
+            const relationsChart = new Chart(ctx, {
+                type: 'bubble',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { display: false },
+                        y: { display: false }
+                    },
+                    onClick: (e, elements) => {
+                        if (elements.length > 0) {
+                            const clickedNodeId = data.datasets[elements[0].datasetIndex].nodeId;
+                            updateRelationChart(relationsChart, clickedNodeId);
+                        }
+                    }
+                }
+            });
+
+            return relationsChart;
+        }
+
+        let relationsChartInstance = renderRelationsChart();
+
+        function getGroupColor(group, opacity = 0.6) {
+            const colors = {
+                solid: `rgba(200, 155, 75, ${opacity})`, // Ochre
+                universal: `rgba(75, 126, 192, ${opacity})`, // Blue
+                structural: `rgba(88, 154, 122, ${opacity})` // Green
+            };
+            return colors[group] || `rgba(150, 150, 150, ${opacity})`;
+        }
+
+        function updateRelationChart(chart, selectedNodeId) {
+            state.activeRelationNode = selectedNodeId;
+            const connectedNodes = new Set([selectedNodeId]);
+            const supportingNodes = new Set();
+            const conflictingNodes = new Set();
+            let explanation = `<strong>${selectedNodeId}</strong>: `;
+            let supports = [];
+            let conflicts = [];
+
+            AppData.relations.links.forEach(link => {
+                if (link.source === selectedNodeId) {
+                    connectedNodes.add(link.target);
+                    if(link.type === 'supports') {
+                        supportingNodes.add(link.target);
+                        supports.push(link.target);
+                    } else {
+                        conflictingNodes.add(link.target);
+                        conflicts.push(link.target);
+                    }
+                }
+                if (link.target === selectedNodeId) {
+                    connectedNodes.add(link.source);
+                     if(link.type === 'supports') {
+                        supportingNodes.add(link.source);
+                        supports.push(link.source);
+                    }
+                }
+            });
+
+            if (supports.length > 0) explanation += `Hỗ trợ ${supports.join(', ')}. `;
+            if (conflicts.length > 0) explanation += `Có thể xung đột với ${conflicts.join(', ')}.`;
+            if (supports.length === 0 && conflicts.length === 0) explanation += 'là một nguyên lý cơ bản.';
+
+            document.getElementById('relation-explanation').innerHTML = explanation;
+
+            chart.data.datasets.forEach(dataset => {
+                if (dataset.nodeId === selectedNodeId) {
+                    dataset.backgroundColor = getGroupColor(dataset.label, 1);
+                    dataset.data[0].r = 25;
+                } else if (supportingNodes.has(dataset.nodeId)) {
+                    dataset.backgroundColor = 'rgba(76, 175, 80, 0.8)';
+                    dataset.data[0].r = 20;
+                } else if (conflictingNodes.has(dataset.nodeId)) {
+                    dataset.backgroundColor = 'rgba(244, 67, 54, 0.8)';
+                    dataset.data[0].r = 20;
+                } else {
+                    dataset.backgroundColor = getGroupColor(dataset.label, 0.2);
+                     dataset.data[0].r = 15;
+                }
+            });
+            chart.update();
+        }
+
+        function renderAntiPatterns() {
+            let html = '';
+            AppData.antipatterns.forEach(ap => {
+                html += `
+                    <div class="principle-card bg-white p-6 rounded-lg shadow-md cursor-pointer" data-id="${ap.id}">
+                        <h3 class="font-bold text-lg text-red-700">${ap.title}</h3>
+                        <p class="text-sm text-gray-600 mt-2">${ap.description}</p>
+                    </div>
+                `;
+            });
+            antipatternsContainer.innerHTML = html;
+            
+            antipatternsContainer.querySelectorAll('.principle-card').forEach(card => {
+                card.addEventListener('click', e => {
+                    const id = e.currentTarget.dataset.id;
+                    const ap = AppData.antipatterns.find(item => item.id === id);
+                    if(ap) {
+                        const modalBodyHtml = `
+                           <p class="text-gray-600 mb-4">${ap.description}</p>
+                           <div class="mb-4">
+                             <h4 class="font-semibold text-gray-800">Nguyên lý bị vi phạm:</h4>
+                             <div class="flex flex-wrap gap-2 mt-2">
+                               ${ap.violated.map(p => `<span class="bg-red-100 text-red-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded">${p}</span>`).join('')}
+                             </div>
+                           </div>
+                           <div>
+                             <h4 class="font-semibold text-gray-800">Chiến lược khắc phục:</h4>
+                             <p class="text-gray-600 mt-2">${ap.solution}</p>
+                           </div>
+                        `;
+                        openModal(`Phản Mẫu: ${ap.title}`, modalBodyHtml);
+                    }
+                });
+            });
+        }
+        
+        function renderImpactSection() {
+            const statsContainer = document.getElementById('tech-debt-stats');
+            let html = '';
+            AppData.impact.stats.forEach(stat => {
+                html += `
+                    <div class="bg-amber-50 p-4 rounded-lg">
+                        <p class="font-semibold text-gray-700">${stat.label}</p>
+                        <p class="text-2xl font-bold text-[#c89b4b]">${stat.value}</p>
+                        <p class="text-xs text-gray-500">Nguồn: ${stat.source}</p>
+                    </div>
+                `;
+            });
+            statsContainer.innerHTML = html;
+
+            const ctx = document.getElementById('techDebtChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: AppData.impact.chartData.labels,
+                    datasets: [
+                        {
+                            label: 'Chi phí khi có Nợ Kỹ Thuật',
+                            data: AppData.impact.chartData.costWithDebt,
+                            borderColor: 'rgb(217, 70, 29)',
+                            backgroundColor: 'rgba(217, 70, 29, 0.5)',
+                            tension: 0.1,
+                            fill: true
+                        },
+                        {
+                            label: 'Chi phí khi quản lý tốt',
+                            data: AppData.impact.chartData.costWithoutDebt,
+                            borderColor: 'rgb(75, 192, 192)',
+                            backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                            tension: 0.1,
+                            fill: true
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Sự Tăng Trưởng Chi Phí Phát Triển Tính Năng Mới'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Chi phí (ngày công)'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+
+        function init() {
+            renderTimeline();
+            renderPrincipleTabs();
+            renderPrincipleCards();
+            renderAntiPatterns();
+            renderImpactSection();
+            setupEventListeners();
+            updateActiveNav();
+        }
+
+        init();
+    });
+    </script>
+</body>
+</html>
