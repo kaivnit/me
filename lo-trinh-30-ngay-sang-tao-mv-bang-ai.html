@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ Trình 30 Ngày Sáng Tạo MV Bằng AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Warm Neutrals & Subtle Accents -->
+    <!-- Application Structure Plan: The application is designed as an interactive dashboard. A persistent left sidebar contains navigation (phase filters) and a summary visualization (phase duration chart), while the main content area features a clickable 30-day timeline grid. This structure transforms the linear report into a non-linear, user-driven learning tool. It reduces cognitive load by showing only one day's details at a time, and the visual timeline provides a clear sense of progress and structure, enhancing usability and motivation. -->
+    <!-- Visualization & Content Choices: 
+        - Interactive 30-Day Grid (HTML/CSS Grid + JS): Goal: Organize/Navigate. This is the primary interface, allowing users to jump to any day. Justification: Far more engaging and less overwhelming than a long scrolling document.
+        - Phase Duration Bar Chart (Chart.js/Canvas): Goal: Compare/Inform. Shows the length of each of the 4 phases. Justification: Provides a quick visual summary of the course structure and time commitment per phase.
+        - Dynamic Content Display (JS DOM manipulation): Goal: Inform/Explore. Presents detailed daily lessons in a dedicated area upon user click. Justification: Keeps the interface clean and focused.
+        - Thematic Card Layouts (HTML/Tailwind): Goal: Organize. Used within daily content to structure information like tool comparisons or framework steps. Justification: Improves readability of complex information. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #FDFBF8;
+            color: #402A2A;
+        }
+        .active-day {
+            background-color: #14B8A6;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 14px 0 rgba(20, 184, 166, 0.39);
+        }
+        .active-phase-btn {
+            background-color: #14B8A6;
+            color: white;
+        }
+        .phase-1 { border-left-color: #3B82F6; }
+        .phase-2 { border-left-color: #EC4899; }
+        .phase-3 { border-left-color: #F97316; }
+        .phase-4 { border-left-color: #8B5CF6; }
+        .content-card h3 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .content-card p, .content-card ul {
+            margin-bottom: 1rem;
+        }
+        .content-card ul {
+            list-style-position: inside;
+            padding-left: 0.5rem;
+        }
+        .content-card li {
+            margin-bottom: 0.5rem;
+        }
+         .content-card strong {
+            color: #0F766E;
+         }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 250px;
+            max-height: 300px;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="min-h-screen flex flex-col">
+        <header class="bg-white shadow-sm w-full p-4">
+            <div class="max-w-7xl mx-auto text-center">
+                <h1 class="text-2xl md:text-3xl font-bold text-teal-700">Lộ Trình 30 Ngày Sáng Tạo Video Ca Nhạc Bằng AI</h1>
+                <p class="text-sm md:text-base text-gray-600 mt-1">Hành trình tương tác từ cơ bản đến nâng cao</p>
+            </div>
+        </header>
+
+        <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row gap-8">
+
+            <aside class="lg:w-1/3 xl:w-1/4 flex-shrink-0">
+                <div class="sticky top-8 bg-white p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-xl font-bold mb-4 text-teal-800">Bảng điều khiển</h2>
+                    <p class="text-sm text-gray-600 mb-6">Chào mừng bạn đến với tương lai của nghệ thuật làm phim. Hãy chọn một giai đoạn hoặc một ngày cụ thể để bắt đầu hành trình sáng tạo của bạn.</p>
+
+                    <div id="phase-filters" class="mb-6">
+                        <h3 class="font-semibold mb-3 text-gray-700">Chọn Giai Đoạn</h3>
+                        <div class="grid grid-cols-2 gap-2">
+                             <button data-phase="all" class="phase-btn text-sm py-2 px-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-teal-500 hover:text-white transition-all duration-300 active-phase-btn">Tất cả</button>
+                            <button data-phase="1" class="phase-btn text-sm py-2 px-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-teal-500 hover:text-white transition-all duration-300">Giai đoạn 1</button>
+                            <button data-phase="2" class="phase-btn text-sm py-2 px-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-teal-500 hover:text-white transition-all duration-300">Giai đoạn 2</button>
+                            <button data-phase="3" class="phase-btn text-sm py-2 px-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-teal-500 hover:text-white transition-all duration-300">Giai đoạn 3</button>
+                            <button data-phase="4" class="phase-btn text-sm py-2 px-3 rounded-lg bg-gray-200 text-gray-800 hover:bg-teal-500 hover:text-white transition-all duration-300">Giai đoạn 4</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="font-semibold mb-3 text-gray-700">Phân bổ thời gian</h3>
+                        <div class="chart-container">
+                            <canvas id="phaseChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <section class="lg:w-2/3 xl:w-3/4">
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg mb-8">
+                     <h2 class="text-xl font-bold mb-4 text-teal-800">Lịch trình 30 ngày</h2>
+                    <div id="timeline-grid" class="grid grid-cols-5 md:grid-cols-7 gap-2">
+                    </div>
+                </div>
+
+                <div id="content-display" class="bg-white p-6 sm:p-8 rounded-2xl shadow-lg min-h-[400px] transition-all duration-500">
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        const courseData = [
+            { day: 1, phase: 1, title: 'Phân Tích Video Ca Nhạc', content: `<h3>Cấu Trúc & Kể Chuyện Bằng Hình Ảnh</h3><p>Để đặt nền tảng vững chắc, việc hiểu rõ các yếu tố cấu trúc cơ bản của video ca nhạc và cách kể chuyện bằng hình ảnh khuếch đại thông điệp của bài hát là điều cần thiết. Các video ca nhạc, về cốt lõi, là những bộ phim ngắn và cấu trúc của chúng gắn liền với bố cục của bài hát. Chính âm nhạc sẽ quyết định nhịp độ và dòng chảy hình ảnh – phần giới thiệu, các đoạn, điệp khúc và các đoạn ngắt phải được phản ánh trực quan.</p><p><strong>Mục tiêu:</strong></p><ul><li>🔍 Phân tích các hình thức MV phổ biến: trình diễn, kể chuyện, trừu tượng.</li><li>🎨 Hiểu vai trò của màu sắc, biểu tượng, và phong cách trong việc truyền tải cảm xúc.</li><li>💃 Nhận biết tầm quan trọng của vũ đạo và ngôn ngữ cơ thể trong kể chuyện.</li></ul>` },
+            { day: 2, phase: 1, title: 'Giới Thiệu Về Tạo Video AI', content: `<h3>Khả Năng & Hạn Chế</h3><p>Để có được sự hiểu biết thực tế về khả năng của các công cụ tạo video AI hiện tại, cũng như những hạn chế đáng kể của chúng, là điều cần thiết để đặt ra những kỳ vọng phù hợp. Lĩnh vực này phát triển rất nhanh, từ các clip mờ 2-3 giây năm 2022 đến các video phức tạp dài một phút của Sora năm 2024.</p><p><strong>Khả năng chính:</strong></p><ul><li>🎬 Tạo clip ngắn từ văn bản.</li><li>✍️ Phụ đề tự động, chỉnh sửa video được hỗ trợ bởi AI.</li><li>🖼️ Chuyển hình ảnh tĩnh thành video động.</li></ul><p><strong>Hạn chế cần lưu ý:</strong></p><ul><li>👽 Vấn đề "Thung lũng kỳ lạ" (Uncanny Valley) với nhân vật.</li><li>⏱️ Giới hạn thời lượng clip ngắn (thường 5-10 giây).</li><li>🔄 Vấn đề nhất quán về nhân vật và bối cảnh.</li><li>🎛️ Khả năng kiểm soát và tùy chỉnh hạn chế.</li></ul>` },
+            { day: 3, phase: 1, title: 'Các Prompt Đầu Tiên', content: `<h3>Cơ Bản Về Chuyển Văn Bản Thành Video</h3><p>Prompt là ngôn ngữ mà qua đó bạn truyền đạt tầm nhìn sáng tạo của mình đến AI. Kỹ thuật tạo prompt là nghệ thuật và khoa học của việc tinh chỉnh các prompt để đạt được kết quả tốt nhất. Điều này đòi hỏi sự cụ thể và rõ ràng.</p><p><strong>Các yếu tố chính của một prompt video cơ bản:</strong></p><ul><li>👤 <strong>Chủ thể:</strong> Mô tả rõ ràng chủ thể chính (ví dụ: "một tòa nhà chung cư bê tông trắng").</li><li>🏃‍♂️ <strong>Hành động:</strong> Mô tả hành động của chủ thể (ví dụ: "một người phụ nữ đi dọc bãi biển").</li><li>🏞️ <strong>Bối cảnh/Môi trường:</strong> Cung cấp thông tin nền (ví dụ: "một quán cà phê ấm cúng ở Paris vào buổi tối mưa").</li><li>🎨 <strong>Phong cách/Tâm trạng:</strong> Sử dụng từ khóa để định hướng thẩm mỹ (ví dụ: "điện ảnh, phong cách phim noir, đen trắng").</li></ul><p><strong>Công thức đơn giản:</strong> [Chủ thể] + [Hành động] + [Môi trường] + [Phong cách].</p>` },
+            { day: 4, phase: 1, title: 'Hiểu Các Cài Đặt Cơ Bản', content: `<h3>Tinh Chỉnh Đầu Ra Video AI</h3><p>Để tinh chỉnh đầu ra ngoài các prompt văn bản, việc hiểu và điều chỉnh các cài đặt và thông số là rất quan trọng. Mức độ kiểm soát này cần thiết để đạt được tầm nhìn nghệ thuật mong muốn.</p><p><strong>Các thông số chính cần điều chỉnh:</strong></p><ul><li>📏 <strong>Độ dài video:</strong> Tùy chỉnh theo nền tảng (TikTok, YouTube).</li><li>🗣️ <strong>Kịch bản & Giọng nói (TTS):</strong> Chọn tông giọng, giọng nói, tốc độ phù hợp.</li><li>🎨 <strong>Phong cách hình ảnh:</strong> Hoạt hình, live-action, bảng màu, kiểu chữ.</li><li>✨ <strong>Chuyển cảnh & Hoạt hình:</strong> Chọn hiệu ứng chuyển tiếp, kiểm soát tốc độ hoạt ảnh.</li><li>🔊 <strong>Âm thanh:</strong> Nhạc nền, hiệu ứng âm thanh, cân bằng âm lượng.</li><li>📈 <strong>Chất lượng đầu ra:</strong> Độ phân giải (720p - 4K), tốc độ khung hình (30-60fps).</li></ul>` },
+            { day: 5, phase: 1, title: 'Khám Phá Nền Tảng Video AI', content: `<h3>Tổng Quan So Sánh</h3><p>Hệ sinh thái công cụ video AI rất phong phú và đang mở rộng nhanh chóng. Việc hiểu các tính năng độc đáo và thế mạnh của chúng là rất quan trọng để chọn công cụ phù hợp cho việc sản xuất MV.</p><p><strong>Một số nền tảng nổi bật:</strong></p><ul><li><strong>Runway:</strong> Nâng cao, kiểm soát camera và cọ chuyển động chính xác.</li><li><strong>LTX Studio:</strong> Mạnh về lập bảng phân cảnh, tạo video từ kịch bản.</li><li><strong>Kling:</strong> Tạo video điện ảnh, duy trì tính nhất quán nhân vật qua hình ảnh tham chiếu.</li><li><strong>Kaiber AI:</strong> Rất phù hợp cho MV với tính năng phản ứng âm thanh, đồng bộ hình ảnh với nhạc.</li><li><strong>Neural Frames:</strong> Phản ứng âm thanh độc đáo, hình ảnh phản ứng với từng nhạc cụ.</li><li><strong>InVideo AI / VEED.IO:</strong> Thân thiện với người mới bắt đầu, đơn giản hóa quy trình.</li></ul><p><strong>Quy trình nâng cao:</strong> Tạo ảnh (Midjourney) → Tạo video (Runway) → Âm nhạc (Suno) → Nâng cấp (Topaz) → Chỉnh sửa (Capcut).</p>` },
+            { day: 6, phase: 1, title: 'Lên Ý Tưởng MV Với AI', content: `<h3>AI là Đối Tác Sáng Tạo</h3><p>Tận dụng sức mạnh của AI làm đối tác sáng tạo để động não, phát triển và tinh chỉnh các ý tưởng đổi mới cho video ca nhạc. Các công cụ AI loại bỏ rào cản sáng tạo, cho phép tạo ra hàng loạt ý tưởng ngay lập tức.</p><p><strong>Cách tận dụng AI để lên ý tưởng:</strong></p><ul><li>📝 Cung cấp lời bài hát, thể loại, tâm trạng và đối tượng mục tiêu của bài hát.</li><li>🤖 Prompt AI để đề xuất các ẩn dụ hình ảnh và biểu tượng.</li><li>🎭 Yêu cầu AI đề xuất các phong cách kể chuyện khác nhau (ví dụ: "phim kinh dị", "khoa học viễn tưởng").</li><li>💡 Nhờ AI tạo ý tưởng về nhân vật, bối cảnh và các điểm cốt truyện.</li></ul><p><strong>Công cụ hữu ích:</strong> ChatGPT, Claude cho động não rộng rãi; Ideanote.io để tổ chức ý tưởng.</p>` },
+            { day: 7, phase: 1, title: 'Lập Bảng Phân Cảnh & Danh Sách Cảnh Quay Với AI', content: `<h3>Chuyển Ý Tưởng Thành Kế Hoạch Hình Ảnh</h3><p>Lập bảng phân cảnh phác thảo trực quan câu chuyện sẽ diễn ra trên màn hình, từng khung hình một. AI tăng tốc và đơn giản hóa đáng kể quy trình này.</p><p><strong>Lợi ích của AI trong lập bảng phân cảnh:</strong></p><ul><li>⚡ Tạo phân cảnh ngay lập tức từ kịch bản hoặc ý tưởng.</li><li>🖼️ Tự động tạo hình ảnh cần thiết mà không cần kỹ năng tạo prompt.</li><li>🔄 Thực hiện điều chỉnh theo thời gian thực về bố cục, phong cách, góc camera.</li></ul><p><strong>Vòng lặp sáng tạo AI-Con người:</strong> Con người cung cấp hướng đi → AI tạo ra các tùy chọn → Con người đánh giá và tinh chỉnh → AI tạo lại. Đây là quy trình làm việc linh hoạt, cho phép tạo mẫu nhanh chóng.</p><p><strong>Công cụ đề xuất:</strong> Storyboarder.ai, Voxxio, Shai Creative, LTX Studio.</p>` },
+            { day: 8, phase: 2, title: 'Kỹ Thuật Tạo Prompt Nâng Cao', content: `<h3>Khung 5 Bước cho Video AI</h3><p>Để vượt ra khỏi việc tạo prompt cơ bản, hãy áp dụng một khung cấu trúc hiệu quả cao để tạo ra các prompt chính xác và có sắc thái, mang lại đầu ra video AI vượt trội.</p><p><strong>Khung 5 Bước:</strong></p><ol class="list-decimal list-inside"><li><strong>TASK (Nhiệm vụ):</strong> Xác định rõ hành động, vai trò (persona) và định dạng đầu ra.</li><li><strong>CONTEXT (Bối cảnh):</strong> Cung cấp càng nhiều thông tin nền càng tốt về dự án.</li><li><strong>REFERENCES (Tham chiếu):</strong> Cung cấp ví dụ về phong cách hoặc nội dung mong muốn.</li><li><strong>EVALUATE (Đánh giá):</strong> Kiểm tra kỹ đầu ra, xác định những gì cần thay đổi.</li><li><strong>ITERATE (Lặp lại):</strong> Liên tục tinh chỉnh và thêm chi tiết vào prompt cho đến khi đạt kết quả hoàn hảo.</li></ol>` },
+            { day: 9, phase: 2, title: 'Điều Khiển Camera AI', content: `<h3>Góc Quay & Chuyển Động</h3><p>Điều khiển các chuyển động và góc quay camera ảo một cách chính xác bằng cách sử dụng các prompt là một kỹ năng quan trọng để tạo ra các cảnh quay điện ảnh hấp dẫn.</p><p><strong>Các loại chuyển động và từ khóa prompt:</strong></p><ul><li><strong>Cảnh tĩnh:</strong> "fixed lens", "no camera movement".</li><li><strong>Zoom:</strong> "zoom in/out", "fast/slowly".</li><li><strong>Xoay:</strong> "rotate around".</li><li><strong>Lia & Nghiêng (Pan & Tilt):</strong> "camera pans [hướng]", "tilt up/down".</li><li><strong>Góc nhìn thứ nhất (FPV):</strong> Mô tả camera theo dõi một nhân vật.</li></ul><p><strong>Mẹo:</strong> Cấu trúc prompt bằng cách bắt đầu với chủ thể, mô tả chuyển động camera, và bao gồm các chi tiết môi trường. Sử dụng thuật ngữ chính xác và tránh chồng chéo quá nhiều chuyển động trong một lệnh.</p>` },
+            { day: 10, phase: 2, title: 'Bố Cục Cảnh Quay', content: `<h3>Khung Hình & Tiêu Điểm Với Prompt AI</h3><p>Làm chủ các kỹ thuật prompt cho bố cục cảnh quay, khung hình và tiêu điểm cho phép bạn kiểm soát chính xác cách các yếu tố được trình bày trong video AI.</p><p><strong>Các loại cần nắm vững:</strong></p><ul><li><strong>Kích thước cảnh quay:</strong> Từ Cảnh quay cực xa (ELS) để thiết lập bối cảnh đến Cảnh quay cực cận (ECU) để thể hiện cảm xúc.</li><li><strong>Khung hình:</strong> Cảnh quay đơn (Single Shot), Cảnh quay hai người (Two Shot), Cảnh quay qua vai (OTS) để thể hiện mối quan-hệ.</li><li><strong>Kỹ thuật lấy nét:</strong> Lấy nét nông (Shallow Focus) để làm nổi bật chủ thể, Lấy nét sâu (Deep Focus) để giữ mọi thứ sắc nét.</li><li><strong>Góc quay:</strong> Góc thấp (Low Angle) để tạo cảm giác quyền lực, Góc cao (High Angle) để tạo cảm giác yếu đuối.</li></ul>` },
+            { day: 11, phase: 2, title: 'Tạo Nhân Vật & Môi Trường Nhất Quán', content: `<h3>Duy Trì Tính Nhất Quán</h3><p>Đây là một thách thức lớn trong việc tạo video AI. Các mô hình hiện tại thường gặp khó khăn với chuyển động và biểu cảm thực tế của con người, dẫn đến các nhân vật trông không tự nhiên hoặc bị biến dạng.</p><p><strong>Các kỹ thuật để duy trì tính nhất quán:</strong></p><ul><li>🖼️ <strong>Sử dụng hình ảnh tham chiếu:</strong> Các công cụ như Kling, Hailuo cho phép tải lên hình ảnh tham chiếu để duy trì tính nhất quán của nhân vật hoặc vật thể.</li><li>👤 <strong>Tạo nhân vật trong công cụ chuyên dụng:</strong> Sử dụng OpenArt để tạo hình ảnh nhân vật, sau đó dùng tính năng "image to video" để thêm chuyển động.</li><li>✍️ <strong>Tạo prompt cụ thể:</strong> Mô tả chi tiết chuyển động camera và hiệu ứng môi trường (ví dụ: "camera quay chậm quanh nhân vật khi gió nhẹ nhàng làm tóc họ bay").</li><li>🔬 <strong>Nghiên cứu mới:</strong> Các mô hình như StableAnimator và TalkingMachines của Character.AI đang giải quyết vấn đề này từ gốc rễ.</li></ul>` },
+            { day: 12, phase: 2, title: 'AI cho Viết Kịch Bản & Tạo Đối Thoại', content: `<h3>Hỗ Trợ Luồng Câu Chuyện</h3><p>Tận dụng AI để hỗ trợ viết kịch bản và luồng câu chuyện, hợp lý hóa giai đoạn tiền sản xuất quan trọng này. Các công cụ AI trong viết kịch bản mang lại lợi thế như tiếp cận ý tưởng đa dạng, tạo kịch bản nhanh hơn và tăng năng suất.</p><p><strong>Công cụ AI hỗ trợ:</strong></p><ul><li><strong>Synthesia.io AI Script Generator:</strong> Giúp tinh chỉnh ý tưởng và nâng cao kịch bản.</li><li><strong>Writesonic AI Script Generator:</strong> Đơn giản hóa quy trình viết kịch bản.</li><li><strong>Squibler AI Screenwriting Software:</strong> Cung cấp môi trường trực quan để viết kịch bản.</li></ul><p><strong>Mẹo tạo đối thoại:</strong> Prompt AI để tạo các ví dụ đối thoại cho các nhân vật có xuất thân khác nhau để phát triển giọng nói riêng biệt, phản ánh trình độ học vấn, địa vị xã hội hoặc tính cách của họ.</p>` },
+            { day: 13, phase: 2, title: 'Tinh Chỉnh Bảng Phân Cảnh AI & Tạo Animatic', content: `<h3>Từ Tĩnh Đến Động</h3><p>Nâng cao bảng phân cảnh do AI tạo và tạo animatic, cung cấp một cái nhìn tổng quan động về video ca nhạc trước khi bắt đầu sản xuất đầy đủ. Animatic là một phiên bản thô của video, sử dụng các hình ảnh bảng phân cảnh được chỉnh sửa theo thời gian của âm thanh, giúp hình dung nhịp độ và dòng chảy.</p><p><strong>Các công cụ tạo bảng phân cảnh AI như Shai Creative có các tính năng chính:</strong></p><ul><li>⚡ <strong>Nhanh chóng:</strong> Từ ý tưởng đến bảng phân cảnh trong vài giây.</li><li>🤖 <strong>Tự động:</strong> Không yêu cầu kỹ năng tạo prompt, AI tự phân tích ý tưởng.</li><li>🔄 <strong>Điều chỉnh thời gian thực:</strong> Chỉnh sửa chi tiết và AI sẽ cập nhật hình ảnh ngay lập tức.</li></ul><p>Các công cụ như <strong>Storyboarder.ai</strong> và <strong>Voxxio</strong> cũng cung cấp khả năng tạo animatic, chuyển đổi hình ảnh tĩnh thành video động.</p>` },
+            { day: 14, phase: 2, title: 'Tìm Địa Điểm & Thiết Kế Bối Cảnh Với AI', content: `<h3>Hình Dung Địa Điểm Ảo</h3><p>Sử dụng AI để hình dung và "tìm kiếm" các địa điểm ảo cũng như thiết kế bối cảnh, mở rộng khả năng sáng tạo trong tiền sản xuất mà không cần phải di chuyển thực tế.</p><p><strong>Cách sử dụng AI:</strong></p><ul><li>✍️ <strong>Tạo prompt chi tiết:</strong> Mô tả địa điểm mong muốn, bao gồm thời gian trong ngày, thời tiết, ánh sáng, và các yếu tố môi trường cụ thể.</li><li>🎨 <strong>Ví dụ prompt:</strong> "một khu chợ nhộn nhịp vào lúc bình minh, người bán hàng sắp xếp trái cây đầy màu sắc, ánh sáng vàng ấm áp chiếu qua những con phố lát đá cuội."</li><li>💡 <strong>Thử nghiệm ý tưởng:</strong> Nhanh chóng tạo ra nhiều phiên bản địa điểm và bối cảnh khác nhau để chọn ra phương án tốt nhất.</li></ul><p><strong>Công cụ đề xuất:</strong> Midjourney, DALL-E 3 (trong ChatGPT 4o), hoặc các tính năng tạo hình ảnh của các nền tảng video AI.</p>` },
+            { day: 15, phase: 2, title: 'Đánh Giá Giữa Chặng', content: `<h3>Củng Cố & Tinh Chỉnh Dự Án</h3><p>Đây là một điểm dừng quan trọng để củng cố kiến thức đã học, đánh giá tiến độ và tinh chỉnh kế hoạch dự án. Quá trình này là một phần của vòng lặp "EVALUATE" và "ITERATE" trong kỹ thuật tạo prompt.</p><p><strong>Các hoạt động trong ngày này:</strong></p><ul><li>📚 <strong>Xem xét lại kiến thức:</strong> Đảm bảo hiểu rõ các khái niệm nền tảng từ Giai đoạn 1 và 2.</li><li>🎬 <strong>Đánh giá các clip thử nghiệm:</strong> Xem lại tất cả các clip AI đã tạo, đánh giá chất lượng và tính nhất quán.</li><li>💡 <strong>Tinh chỉnh ý tưởng MV:</strong> Điều chỉnh ý tưởng tổng thể dựa trên khả năng thực tế của AI.</li><li>📋 <strong>Cập nhật kế hoạch:</strong> Sửa đổi bảng phân cảnh và danh sách cảnh quay để phản ánh các thay đổi.</li><li>🚀 <strong>Lập kế hoạch cho các giai đoạn tiếp theo:</strong> Chuẩn bị cho sản xuất, hậu kỳ và các kỹ thuật nâng cao.</li></ul>` },
+            { day: 16, phase: 3, title: 'Tạo Hình Ảnh Động & Hiệu Ứng Đặc Biệt', content: `<h3>Nâng Cao Sự Hấp Dẫn Thị Giác</h3><p>Tạo ra các cảnh quay hấp dẫn về mặt thị giác và tích hợp các hiệu ứng AI để nâng cao sự hấp dẫn tổng thể của video ca nhạc. Các nghệ sĩ hiện có thể thiết kế các cảnh quan siêu thực, thế giới khác hoặc tái tạo các kịch bản bất khả thi.</p><p><strong>Các dịch vụ AI có thể cung cấp:</strong></p><ul><li>✨ <strong>Hình ảnh động:</strong> Tạo hình ảnh độc đáo, động và tùy chỉnh phù hợp với nhịp điệu và cảm xúc của bài hát.</li><li>👤 <strong>Hình đại diện AI tùy chỉnh:</strong> Tạo hình đại diện kỹ thuật số của nghệ sĩ để biểu diễn trong MV.</li><li>🔊 <strong>Cải tiến âm thanh AI:</strong> Tinh chỉnh âm nhạc, thêm hiệu ứng âm thanh và đảm bảo đồng bộ hóa hoàn hảo.</li></ul><p>Các công cụ như <strong>LTX Studio</strong> cho phép tạo video tuyệt đẹp được đồng bộ hóa với nhịp điệu trong vài phút và lặp lại cho đến khi câu chuyện hình ảnh hoàn hảo.</p>` },
+            { day: 17, phase: 3, title: 'Đồng Bộ Hóa Âm Thanh AI & Phát Hiện Nhịp Điệu', content: `<h3>Kết Hợp Hình Ảnh và Âm Nhạc</h3><p>Hiểu cách AI đồng bộ hóa hình ảnh với âm nhạc và phát hiện nhịp điệu là một yếu tố quan trọng để tạo ra một MV có tác động mạnh mẽ.</p><p><strong>Các công nghệ chính:</strong></p><ul><li>🎹 <strong>Phát hiện nhịp điệu:</strong> Các công cụ như DaVinci Resolve sử dụng AI để tự động xác định các nhịp điệu trong âm thanh và đánh dấu chúng, giúp việc chỉnh sửa đồng bộ hóa nhịp điệu trở nên dễ dàng.</li><li>🎶 <strong>Video phản ứng âm thanh:</strong> Các nền tảng như Kaiber AI và Neural Frames có thể tạo ra hình ảnh thay đổi và biến đổi theo thời gian thực để phản ứng với âm nhạc, tạo ra các hiệu ứng hình ảnh độc đáo.</li><li>🔄 <strong>Đồng bộ hóa khung hình theo khung hình:</strong> Các dịch vụ như Aimi Sync phân tích từng khung hình của video, sau đó tạo và ánh xạ một kế hoạch âm nhạc chính xác vào video.</li></ul>` },
+            { day: 18, phase: 3, title: 'Thực Hiện Đồng Bộ Hóa Khẩu Hình AI', content: `<h3>Tạo Lời Thoại Thực Tế</h3><p>Tạo đồng bộ khẩu hình thực tế cho nhân vật và tích hợp lời thoại, thêm một lớp chân thực và biểu cảm vào video ca nhạc. Công nghệ này cho phép các nhân vật hoặc hình đại diện AI "hát" hoặc "nói" một cách thuyết phục.</p><p><strong>Cách hoạt động:</strong></p><ul><li>📤 <strong>Tải lên video và âm thanh:</strong> Người dùng tải lên video của nhân vật và tệp âm thanh (lời bài hát, đối thoại).</li><li>🤖 <strong>AI phân tích và điều chỉnh:</strong> AI phân tích âm thanh và điều chỉnh chuyển động miệng của nhân vật trong video để khớp với âm thanh.</li><li>🌍 <strong>Hỗ trợ đa ngôn ngữ:</strong> Nhiều công cụ như Rask AI hỗ trợ đồng bộ khẩu hình cho nhiều ngôn ngữ khác nhau.</li></ul><p><strong>Công cụ đề xuất:</strong> Rask AI, Sync.so.</p>` },
+            { day: 19, phase: 3, title: 'Nguyên Tắc Dựng Phim Theo Nhịp Điệu', content: `<h3>Tạo Dòng Chảy Mạch Lạc</h3><p>Áp dụng các nguyên tắc dựng phim theo nhịp điệu vào các clip do AI tạo ra để đảm bảo một MV mạch lạc và hấp dẫn. Kỹ thuật này sử dụng thời lượng và nhịp độ của các cảnh quay để tạo ra nhịp điệu hình ảnh, thường được căn chỉnh với âm nhạc.</p><p><strong>Vai trò của âm nhạc:</strong></p><ul><li>🎵 Âm nhạc cung cấp khuôn mẫu cơ bản cho nhịp điệu dựng phim.</li><li>✂️ Cắt cảnh để phù hợp với nhịp điệu hoặc các điểm nhấn của nhạc nền.</li><li>템 Giai điệu chậm có thể đi với cảnh quay dài, trong khi nhạc nhanh có thể yêu cầu các cắt cảnh nhanh.</li></ul><p>Khi làm việc với các clip AI ngắn, việc áp dụng nguyên tắc này là rất quan trọng để tạo ra một sản phẩm cuối cùng chuyên nghiệp và hấp dẫn.</p>` },
+            { day: 20, phase: 3, title: 'Chỉnh Màu & Nâng Cao Hình Ảnh Với AI', content: `<h3>Tạo Cái Nhìn Chuyên Nghiệp</h3><p>Sử dụng các công cụ AI để nâng cao chất lượng hình ảnh và tâm trạng của video ca nhạc. Màu sắc có thể gợi lên cảm xúc cụ thể: tông màu tối cho nỗi buồn/căng thẳng, màu sắc tươi sáng cho niềm vui/tự do.</p><p><strong>Các công cụ AI có thể hỗ trợ:</strong></p><ul><li>🎨 <strong>Chỉnh màu:</strong> Một số trình tạo video AI cung cấp tùy chọn tùy chỉnh bảng màu.</li><li>✨ <strong>Hậu kỳ phức tạp:</strong> AI có thể hỗ trợ rotoscoping, loại bỏ dây, tạo mặt nạ.</li><li>⬆️ <strong>Nâng cấp video (Upscaling):</strong> Các công cụ như Topaz hay Magnific.ai có thể nâng cao độ phân giải và chất lượng của clip do AI tạo, làm cho chúng trông sắc nét và chuyên nghiệp hơn.</li><li>⚙️ <strong>Điều chỉnh cài đặt:</strong> Đảm bảo độ phân giải (1080p, 4K) và tốc độ khung hình (30-60fps) phù hợp.</li></ul>` },
+            { day: 21, phase: 3, title: 'Tích Hợp Cảnh Quay Thực Tế & AI', content: `<h3>Kết Hợp Hai Thế Giới</h3><p>Kết hợp các cảnh quay được quay theo cách truyền thống với các yếu tố do AI tạo ra để tạo ra một MV độc đáo và sáng tạo. Cách tiếp cận kết hợp này thường là hiệu quả nhất do các hạn chế hiện tại của AI.</p><p><strong>Các kỹ thuật tích hợp:</strong></p><ul><li>🟩 <strong>Màn hình xanh (Green Screen):</strong> Quay chủ thể trước màn hình xanh, sau đó sử dụng AI để thay thế nền bằng cảnh quan do AI tạo.</li><li>👤 <strong>Tạo hình đại diện AI:</strong> Kết hợp hình đại diện kỹ thuật số của nghệ sĩ với cảnh quay thực tế của vũ công hoặc ban nhạc.</li><li>💥 <strong>Hiệu ứng hình ảnh AI:</strong> Thêm các hiệu ứng động như vụ nổ, hoạt ảnh siêu thực vào cảnh quay thực tế.</li><li>🏞️ <strong>Mở rộng bối cảnh:</strong> Sử dụng AI để mở rộng hoặc thay đổi bối cảnh của cảnh quay thực tế mà không cần xây dựng phức tạp.</li></ul>` },
+            { day: 22, phase: 3, title: 'Khắc Phục Thách Thức Phổ Biến', content: `<h3>Giải Quyết Các Vấn Đề Của Video AI</h3><p>Phát triển chiến lược hiệu quả để giải quyết các vấn đề phổ biến gặp phải khi tạo video bằng AI, đảm bảo quy trình làm việc mượt mà hơn.</p><p><strong>Các thách thức chính và cách giải quyết:</strong></p><ul><li><strong>Chất lượng hình đại diện AI thấp:</strong> Chấp nhận phong cách nghệ thuật hoặc tập trung vào các nhân vật trừu tượng thay vì con người siêu thực.</li><li><strong>Tính không nhất quán:</strong> Sử dụng hình ảnh tham chiếu, prompt chi tiết, và chấp nhận sự biến đổi như một phần của phong cách.</li><li><strong>Thời lượng clip ngắn:</strong> Lập kế hoạch dựng phim theo nhịp điệu để xâu chuỗi nhiều clip ngắn một cách liền mạch.</li><li><strong>Thiếu kiểm soát:</strong> Làm chủ kỹ thuật tạo prompt và sử dụng các công cụ chuyên biệt để có nhiều quyền kiểm soát hơn.</li><li><strong>Vấn đề bản quyền:</strong> Sử dụng các công cụ AI được đào tạo trên dữ liệu được cấp phép hoặc tạo ra nội dung hoàn toàn mới.</li></ul>` },
+            { day: 23, phase: 3, title: 'Chuẩn Bị Tài Sản Cho Lắp Ráp Cuối Cùng', content: `<h3>Tổ Chức Cho Hậu Kỳ</h3><p>Tổ chức và chuẩn bị tất cả các clip do AI tạo ra và âm thanh cho việc chỉnh sửa, đảm bảo quy trình hậu kỳ hiệu quả.</p><p><strong>Các bước chuẩn bị:</strong></p><ul><li>📁 <strong>Tổ chức tệp:</strong> Đặt tên clip rõ ràng và sắp xếp vào các thư mục theo cảnh hoặc loại cảnh quay.</li><li>🎞️ <strong>Kiểm tra thông số kỹ thuật:</strong> Đảm bảo tất cả các clip có cùng độ phân giải và tốc độ khung hình, sử dụng công cụ nâng cấp nếu cần.</li><li>🔊 <strong>Đồng bộ hóa âm thanh:</strong> Kiểm tra xem âm thanh có được đồng bộ hóa chính xác với hình ảnh không.</li><li>🎵 <strong>Chuẩn bị nhạc:</strong> Có tệp âm thanh cuối cùng của bài hát đã được hòa âm và master.</li><li>📋 <strong>Tạo danh sách tài sản:</strong> Lập danh sách tất cả các tài sản video và âm thanh đã chuẩn bị.</li></ul>` },
+            { day: 24, phase: 4, title: 'Tính Nhất Quán Nhân Vật Nâng Cao', content: `<h3>Tạo Cảnh Phức Tạp</h3><p>Nâng cao khả năng tạo nhân vật nhất quán và các cảnh phức tạp, giải quyết một trong những thách thức lớn nhất trong việc tạo video AI.</p><p><strong>Kỹ thuật nâng cao để đạt được tính nhất quán:</strong></p><ul><li>🔧 <strong>Sử dụng công cụ chuyên biệt:</strong> Các nền tảng như OpenArt rất tốt cho việc tạo nhân vật nhất quán.</li><li>🖼️ <strong>Sử dụng hình ảnh tham chiếu:</strong> Các công cụ như Kling cho phép tải lên hình ảnh tham chiếu để định hình nhân vật.</li><li>⚖️ <strong>Điều chỉnh trọng số và điểm dừng:</strong> Tinh chỉnh các tham số trong mô hình khuếch tán để cải thiện tính nhất quán.</li></ul><p><strong>Để tạo cảnh phức tạp:</strong></p><ul><li>겹 <strong>Sử dụng prompt nhiều lớp:</strong> Bắt đầu với một prompt cơ bản, sau đó thêm các lớp chi tiết để xây dựng cảnh quay phong phú hơn.</li><li>🌍 <strong>Kết hợp các yếu tố môi trường và hành động:</strong> Mô tả chi tiết môi trường cùng với hành động của nhân vật.</li></ul>` },
+            { day: 25, phase: 4, title: 'Tối Ưu Hóa Đầu Ra Video AI', content: `<h3>Chất Lượng & Hiệu Quả</h3><p>Tối đa hóa chất lượng và hiệu quả của quy trình tạo video AI, đảm bảo sản phẩm cuối cùng đáp ứng các tiêu chuẩn chuyên nghiệp.</p><p><strong>Các yếu tố cần tối ưu hóa:</strong></p><ul><li>📈 <strong>Chất lượng:</strong> Độ phân giải cao (1080p, 4K), tốc độ khung hình phù hợp (30-60fps).</li><li>🎨 <strong>Phong cách:</strong> Đảm bảo phong cách hình ảnh, bảng màu, kiểu chữ nhất quán.</li><li>✨ <strong>Chuyển cảnh & Hoạt hình:</strong> Tạo dòng chảy mượt mà, duy trì sự tương tác.</li><li>🔊 <strong>Âm thanh:</strong> Đảm bảo âm thanh rõ ràng, cân bằng và chất lượng cao.</li></ul><p><strong>Để tối ưu hóa hiệu quả:</strong></p><ul><li>✍️ <strong>Sử dụng khung tạo prompt 5 bước.</strong></li><li>🔄 <strong>Liên tục tinh chỉnh prompt dựa trên đầu ra.</strong></li><li>🧩 <strong>Kết hợp các công cụ AI khác nhau trong quy trình làm việc.</strong></li></ul>` },
+            { day: 26, phase: 4, title: 'Xây Dựng Cốt Truyện', content: `<h3>Lắp Ráp Các Cảnh Quay Do AI Tạo</h3><p>Lắp ráp các clip do AI tạo ra thành một câu chuyện hình ảnh mạch lạc cho bài hát, biến các phân đoạn riêng lẻ thành một MV hoàn chỉnh. Vai trò của bạn là đạo diễn và người kể chuyện chính.</p><p><strong>Các bước xây dựng cốt truyện:</strong></p><ul><li>🎵 <strong>Phân tích cấu trúc bài hát:</strong> Hiểu các phần của bài hát (giới thiệu, điệp khúc, v.v.).</li><li>🖼️ <strong>Ánh xạ hình ảnh với âm nhạc:</strong> Sắp xếp các clip AI để phù hợp với nhịp độ, tâm trạng của từng phần.</li><li>🔗 <strong>Đảm bảo dòng chảy liền mạch:</strong> Sử dụng các chuyển tiếp tinh tế hoặc động để kết nối các clip.</li><li>🎨 <strong>Duy trì tính nhất quán hình ảnh:</strong> Cố gắng duy trì một phong cách và bảng màu nhất quán.</li><li>❤️ <strong>Tập trung vào tác động cảm xúc:</strong> Mục tiêu cuối cùng là khuếch đại thông điệp của bài hát.</li></ul>` },
+            { day: 27, phase: 4, title: 'Hoàn Thiện Hòa Âm & Master Âm Thanh', content: `<h3>Âm Thanh Chuyên Nghiệp</h3><p>Đảm bảo âm thanh của MV được trau chuốt và tích hợp chuyên nghiệp. Chất lượng âm thanh là rất quan trọng cho trải nghiệm nghe nhìn chất lượng cao.</p><p><strong>Các bước hoàn thiện âm thanh:</strong></p><ul><li>🎚️ <strong>Cân bằng âm lượng:</strong> Đảm bảo giọng hát/lời thoại rõ ràng, nhạc nền không lấn át.</li><li>🔊 <strong>Thêm hiệu ứng âm thanh:</strong> Tích hợp SFX vào những khoảnh khắc quan trọng để tăng cường tác động.</li><li>📊 <strong>Mastering:</strong> Tối ưu hóa mức âm thanh tổng thể cho việc phát lại trên các nền tảng khác nhau.</li><li>🔄 <strong>Kiểm tra đồng bộ hóa:</strong> Kiểm tra kỹ xem âm thanh có được đồng bộ hóa hoàn hảo với hình ảnh không.</li></ul><p>Các công cụ AI như Aimi Sync có thể hỗ trợ đáng kể trong quá trình này bằng cách tự động hòa trộn và đồng bộ hóa âm thanh.</p>` },
+            { day: 28, phase: 4, title: 'Lắp Ráp Video Ca Nhạc – Quy Trình AI', content: `<h3>Hoàn Thành Tác Phẩm</h3><p>Hoàn thành việc lắp ráp cuối cùng của video ca nhạc, tích hợp tất cả các thành phần hình ảnh và âm thanh đã tạo ra. Đây là ngày mà tầm nhìn bắt đầu thành hình một cách rõ ràng.</p><p><strong>Quy trình lắp ráp:</strong></p><ul><li>📥 <strong>Nhập tài sản:</strong> Đưa tất cả clip video, nhạc, lời thoại, SFX vào phần mềm chỉnh sửa (Capcut, DaVinci Resolve, LTX Studio).</li><li>🗺️ <strong>Sắp xếp theo bảng phân cảnh:</strong> Sắp xếp các clip theo thứ tự đã lên kế hoạch, căn chỉnh với cấu trúc bài hát.</li><li>⏱️ <strong>Tinh chỉnh thời gian:</strong> Điều chỉnh thời lượng của từng clip để phù hợp hoàn hảo với nhịp điệu.</li><li>✨ <strong>Thêm chuyển tiếp và hiệu ứng.</strong></li><li>🔊 <strong>Tích hợp và cân bằng âm thanh.</strong></li><li>👀 <strong>Xem trước và điều chỉnh:</strong> Xem lại toàn bộ MV nhiều lần để tìm lỗi và cải thiện.</li></ul>` },
+            { day: 29, phase: 4, title: 'Đánh Giá, Phản Hồi và Lặp Lại', content: `<h3>Tinh Chỉnh Sản Phẩm Cuối Cùng</h3><p>Đánh giá phê bình video ca nhạc đã hoàn thành và kết hợp phản hồi. Quá trình lặp lại là cốt lõi của sản xuất video AI và là một ví dụ trực tiếp của khung "EVALUATE" và "ITERATE".</p><p><strong>Các bước trong giai đoạn này:</strong></p><ul><li>🧐 <strong>Tự đánh giá:</strong> Xem lại MV với con mắt phê bình. MV có truyền tải đúng thông điệp không? Hình ảnh có hấp dẫn không?</li><li>🗣️ <strong>Tìm kiếm phản hồi:</strong> Chia sẻ MV với một nhóm nhỏ những người đáng tin cậy để nhận phản hồi xây dựng.</li><li>📊 <strong>Phân tích phản hồi:</strong> Tập hợp và phân tích các ý kiến, tìm kiếm các chủ đề lặp lại.</li><li>✍️ <strong>Thực hiện các lần lặp lại:</strong> Dựa trên phản hồi, thực hiện các điều chỉnh cần thiết. Điều này có thể bao gồm việc tạo lại một số clip AI hoặc điều chỉnh trong phần mềm chỉnh sửa.</li></ul>` },
+            { day: 30, phase: 4, title: 'Ra Mắt Video Ca Nhạc AI Của Bạn!', content: `<h3>Chia Sẻ Tác Phẩm Sáng Tạo</h3><p>Chuẩn bị và xuất bản video ca nhạc do AI tạo ra, hoàn thành hành trình 30 ngày. Đây là đỉnh cao của tất cả công việc và là cơ hội để chia sẻ tác phẩm với thế giới.</p><p><strong>Các bước cuối cùng:</strong></p><ul><li>🚀 <strong>Xuất bản cuối cùng:</strong> Xuất video ở định dạng và độ phân giải phù hợp cho nền tảng mục tiêu (YouTube, TikTok, v.v.).</li><li>📈 <strong>Tối ưu hóa cho nền tảng:</strong> Tối ưu hóa tiêu đề, mô tả, thẻ, và tạo hình thu nhỏ hấp dẫn.</li><li>📢 <strong>Quảng bá:</strong> Chia sẻ video trên các kênh truyền thông xã hội và các cộng đồng liên quan.</li><li>📊 <strong>Phân tích hiệu suất:</strong> Theo dõi lượt xem, tương tác để học hỏi cho các dự án trong tương lai.</li></ul><p>Việc ra mắt MV do AI tạo ra không chỉ là một thành tựu cá nhân mà còn là một đóng góp cho bối cảnh sáng tạo đang phát triển.</p>` },
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const timelineGrid = document.getElementById('timeline-grid');
+            const contentDisplay = document.getElementById('content-display');
+            const phaseFilters = document.getElementById('phase-filters');
+            let currentDay = 1;
+
+            function renderTimeline() {
+                timelineGrid.innerHTML = '';
+                courseData.forEach(item => {
+                    const dayElement = document.createElement('div');
+                    dayElement.dataset.day = item.day;
+                    dayElement.dataset.phase = item.phase;
+                    dayElement.classList.add('day-selector', 'p-2', 'md:p-3', 'rounded-lg', 'cursor-pointer', 'text-center', 'font-semibold', 'transition-all', 'duration-300', 'border-l-4', 'bg-stone-100', `phase-${item.phase}`);
+                    dayElement.innerHTML = `<span class="block text-xs text-gray-500">Ngày</span><span class="text-xl">${item.day}</span>`;
+                    dayElement.addEventListener('click', () => {
+                        displayDayContent(item.day);
+                    });
+                    timelineGrid.appendChild(dayElement);
+                });
+            }
+
+            function displayDayContent(day) {
+                currentDay = day;
+                const dayData = courseData.find(item => item.day === day);
+                if (!dayData) return;
+                
+                contentDisplay.innerHTML = `
+                    <div class="content-card">
+                         <h2 class="text-xl md:text-2xl font-bold mb-2 text-teal-800">${dayData.title} (Ngày ${dayData.day})</h2>
+                         <p class="mb-6 text-gray-600">${dayData.content}</p>
+                    </div>`;
+
+                document.querySelectorAll('.day-selector').forEach(el => {
+                    el.classList.remove('active-day');
+                    if (parseInt(el.dataset.day) === day) {
+                        el.classList.add('active-day');
+                    }
+                });
+                
+                contentDisplay.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            phaseFilters.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    const phase = e.target.dataset.phase;
+
+                    document.querySelectorAll('.phase-btn').forEach(btn => btn.classList.remove('active-phase-btn'));
+                    e.target.classList.add('active-phase-btn');
+
+                    document.querySelectorAll('.day-selector').forEach(dayEl => {
+                        if (phase === 'all' || dayEl.dataset.phase === phase) {
+                            dayEl.style.display = 'block';
+                        } else {
+                            dayEl.style.display = 'none';
+                        }
+                    });
+                }
+            });
+
+            function renderChart() {
+                const ctx = document.getElementById('phaseChart').getContext('2d');
+                const phaseDurations = courseData.reduce((acc, curr) => {
+                    acc[curr.phase - 1] = (acc[curr.phase - 1] || 0) + 1;
+                    return acc;
+                }, []);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['GĐ 1: Nền tảng', 'GĐ 2: Tiền Sản xuất', 'GĐ 3: Sản xuất', 'GĐ 4: Nâng cao'],
+                        datasets: [{
+                            label: 'Số ngày',
+                            data: phaseDurations,
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.6)',
+                                'rgba(236, 72, 153, 0.6)',
+                                'rgba(249, 115, 22, 0.6)',
+                                'rgba(139, 92, 246, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(236, 72, 153, 1)',
+                                'rgba(249, 115, 22, 1)',
+                                'rgba(139, 92, 246, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    color: '#4B5563'
+                                }
+                            },
+                            x: {
+                                ticks: {
+                                    color: '#4B5563'
+                                }
+                            }
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${context.dataset.label}: ${context.raw} ngày`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            renderTimeline();
+            renderChart();
+            displayDayContent(1); 
+        });
+    </script>
+</body>
+</html>
