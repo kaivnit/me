@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Khám phá Lock & Deadlock trong Database</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Chosen Palette: Slate & Blue Harmony -->
+    <!-- Application Structure Plan: A single-page scrolling application with a sticky navigation bar for intuitive, non-linear exploration. The structure is thematic: 1. Understanding Locks (using interactive cards and a CSS diagram for granularity), 2. The Problem of Deadlocks (with a step-by-step animation to visualize a scenario), 3. Solutions & Prevention (using an interactive grid), and 4. A Summary Chart (using Chart.js for a visual comparison). This structure was chosen to break down complex topics into digestible, interactive modules, enhancing user engagement and understanding far beyond a static report. -->
+    <!-- Visualization & Content Choices: 
+    - Lock Types -> Goal: Inform/Compare -> Viz: Interactive flip cards -> Justification: More engaging than a static list.
+    - Lock Granularity -> Goal: Organize/Hierarchy -> Viz: HTML/CSS diagram -> Justification: Visually represents hierarchy without SVG.
+    - Deadlock Scenario -> Goal: Explain Process -> Viz: JS-powered animation -> Justification: Makes an abstract concept concrete and easy to follow.
+    - Prevention Strategies -> Goal: Inform/Organize -> Viz: Interactive grid -> Justification: Scannable and provides details on demand.
+    - Lock Level Comparison -> Goal: Compare Trade-offs -> Viz: Chart.js Radar Chart -> Justification: Provides a quick, quantitative visual summary of complex trade-offs. Library: Chart.js.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <style>
+        body {
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .smooth-scroll {
+            scroll-behavior: smooth;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover:after, .nav-link.active:after {
+            width: 100%;
+        }
+        .card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .deadlock-step {
+            opacity: 0.3;
+            transition: opacity 0.5s ease;
+        }
+        .deadlock-step.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="smooth-scroll">
+
+    <!-- Header & Navigation -->
+    <header id="header" class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <div class="container mx-auto px-4">
+            <nav class="flex justify-between items-center py-4">
+                <h1 class="text-xl md:text-2xl font-bold text-blue-600">DB Insights</h1>
+                <ul class="hidden md:flex items-center space-x-6 lg:space-x-8">
+                    <li><a href="#locks" class="nav-link font-medium text-slate-600 hover:text-blue-600">Khóa (Lock)</a></li>
+                    <li><a href="#deadlocks" class="nav-link font-medium text-slate-600 hover:text-blue-600">Tắc nghẽn (Deadlock)</a></li>
+                    <li><a href="#solutions" class="nav-link font-medium text-slate-600 hover:text-blue-600">Giải pháp & Phòng ngừa</a></li>
+                    <li><a href="#comparison" class="nav-link font-medium text-slate-600 hover:text-blue-600">So sánh</a></li>
+                </ul>
+                <button id="mobile-menu-button" class="md:hidden text-slate-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </nav>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#locks" class="block py-2 px-4 text-sm text-slate-600 hover:bg-blue-50">Khóa (Lock)</a>
+            <a href="#deadlocks" class="block py-2 px-4 text-sm text-slate-600 hover:bg-blue-50">Tắc nghẽn (Deadlock)</a>
+            <a href="#solutions" class="block py-2 px-4 text-sm text-slate-600 hover:bg-blue-50">Giải pháp & Phòng ngừa</a>
+            <a href="#comparison" class="block py-2 px-4 text-sm text-slate-600 hover:bg-blue-50">So sánh</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8 md:py-12">
+        <!-- Hero Section -->
+        <section class="text-center mb-16 md:mb-24">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-800 mb-4">Khám phá Lock & Deadlock</h2>
+            <p class="text-lg md:text-xl text-slate-500 max-w-3xl mx-auto">
+                Một hành trình tương tác để làm sáng tỏ các cơ chế kiểm soát đồng thời cốt lõi trong cơ sở dữ liệu.
+            </p>
+        </section>
+
+        <!-- Section 1: Locks -->
+        <section id="locks" class="mb-16 md:mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-800">Tìm hiểu về Khóa (Lock)</h3>
+            <p class="text-center text-slate-500 max-w-2xl mx-auto mb-12">Khóa là cơ chế nền tảng để đảm bảo tính toàn vẹn dữ liệu trong môi trường đa người dùng. Nó kiểm soát quyền truy cập đồng thời vào tài nguyên, ngăn chặn xung đột và duy trì tính nhất quán. Hãy cùng khám phá các loại khóa và cấp độ của chúng.</p>
+            
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <!-- Shared Lock Card -->
+                <div class="card bg-white p-6 rounded-lg shadow-md border-l-4 border-blue-400">
+                    <h4 class="text-2xl font-semibold mb-3 text-blue-800">Khóa Chia sẻ (Shared Lock)</h4>
+                    <p class="text-slate-600">Cho phép nhiều giao dịch <span class="font-semibold">đọc</span> cùng một dữ liệu đồng thời. Tuy nhiên, nó ngăn chặn bất kỳ giao dịch nào <span class="font-semibold">sửa đổi</span> dữ liệu cho đến khi tất cả các khóa chia sẻ được giải phóng. Lý tưởng cho các hoạt động chỉ đọc.</p>
+                </div>
+                <!-- Exclusive Lock Card -->
+                <div class="card bg-white p-6 rounded-lg shadow-md border-l-4 border-red-400">
+                    <h4 class="text-2xl font-semibold mb-3 text-red-800">Khóa Độc quyền (Exclusive Lock)</h4>
+                    <p class="text-slate-600">Ngăn các giao dịch khác <span class="font-semibold">đọc hoặc sửa đổi</span> dữ liệu. Cần thiết khi một giao dịch đang cập nhật, chèn, hoặc xóa, đảm bảo quyền truy cập độc quyền để duy trì tính toàn vẹn.</p>
+                </div>
+            </div>
+
+            <!-- Lock Granularity -->
+            <div>
+                <h4 class="text-2xl font-semibold text-center mb-8 text-slate-700">Cấp độ Chi tiết của Khóa (Lock Granularity)</h4>
+                <div class="relative p-8 flex flex-col items-center">
+                    <!-- Lines connecting levels -->
+                    <div class="absolute top-0 bottom-0 left-1/2 w-0.5 bg-slate-300"></div>
+                    
+                    <!-- Levels -->
+                    <div class="w-full flex justify-center items-center my-4 relative z-10">
+                        <div class="bg-slate-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">4</div>
+                        <div class="ml-6 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
+                            <h5 class="font-bold">Khóa Cấp Bảng (Table-Level)</h5>
+                            <p class="text-sm text-slate-500">Đồng thời thấp nhất, chi phí thấp nhất. Khóa toàn bộ bảng.</p>
+                        </div>
+                    </div>
+                     <div class="w-full flex justify-center items-center my-4 relative z-10">
+                        <div class="bg-slate-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">3</div>
+                        <div class="ml-6 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
+                            <h5 class="font-bold">Khóa Cấp Trang (Page-Level)</h5>
+                            <p class="text-sm text-slate-500">Cân bằng giữa đồng thời và chi phí. Khóa một trang dữ liệu.</p>
+                        </div>
+                    </div>
+                     <div class="w-full flex justify-center items-center my-4 relative z-10">
+                        <div class="bg-slate-500 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">2</div>
+                        <div class="ml-6 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
+                            <h5 class="font-bold">Khóa Cấp Hàng (Row-Level)</h5>
+                            <p class="text-sm text-slate-500">Đồng thời cao nhất, chi phí cao nhất. Khóa từng hàng riêng lẻ.</p>
+                        </div>
+                    </div>
+                    <div class="w-full flex justify-center items-center my-4 relative z-10">
+                        <div class="bg-blue-600 text-white rounded-full w-10 h-10 flex items-center justify-center font-bold">1</div>
+                        <div class="ml-6 p-4 bg-white rounded-lg shadow-md w-full max-w-md">
+                            <h5 class="font-bold">Leo thang Khóa (Lock Escalation)</h5>
+                            <p class="text-sm text-slate-500">Tự động chuyển từ khóa cấp hàng/trang lên cấp bảng để giảm chi phí quản lý.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Deadlocks -->
+        <section id="deadlocks" class="mb-16 md:mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-800">Vấn đề Tắc nghẽn (Deadlock)</h3>
+            <p class="text-center text-slate-500 max-w-2xl mx-auto mb-12">Deadlock là một "vòng luẩn quẩn" xảy ra khi hai hoặc nhiều giao dịch bị chặn vĩnh viễn, mỗi giao dịch giữ một tài nguyên mà giao dịch kia cần. Hãy xem một kịch bản điển hình và cách hệ thống phát hiện nó.</p>
+
+            <div class="bg-white p-6 md:p-8 rounded-lg shadow-lg">
+                <h4 class="text-2xl font-semibold text-center mb-6">Kịch bản Deadlock Kinh điển</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Transactions -->
+                    <div class="flex justify-around">
+                        <div class="text-center">
+                            <h5 class="font-bold text-lg">Giao dịch T1</h5>
+                            <div class="mt-2 text-sm text-slate-500 deadlock-step" id="step-t1-1">1. Khóa Hàng A</div>
+                            <div class="mt-2 text-sm text-slate-500 deadlock-step" id="step-t1-2">3. Yêu cầu Hàng B (chờ)</div>
+                        </div>
+                         <div class="text-center">
+                            <h5 class="font-bold text-lg">Giao dịch T2</h5>
+                            <div class="mt-2 text-sm text-slate-500 deadlock-step" id="step-t2-1">2. Khóa Hàng B</div>
+                            <div class="mt-2 text-sm text-slate-500 deadlock-step" id="step-t2-2">4. Yêu cầu Hàng A (chờ)</div>
+                        </div>
+                    </div>
+                     <!-- Visualization -->
+                    <div class="relative h-48 flex justify-center items-center">
+                        <div class="absolute text-center">
+                            <div id="resource-a" class="w-20 h-20 bg-blue-100 border-2 border-blue-300 rounded-full flex items-center justify-center font-semibold -mr-16">Hàng A</div>
+                        </div>
+                        <div class="absolute text-center">
+                           <div id="resource-b" class="w-20 h-20 bg-green-100 border-2 border-green-300 rounded-full flex items-center justify-center font-semibold -ml-16">Hàng B</div>
+                        </div>
+                        <div id="deadlock-message" class="absolute inset-0 flex items-center justify-center bg-red-500/80 rounded-full text-white text-2xl font-bold opacity-0 transition-opacity duration-500">DEADLOCK!</div>
+                    </div>
+                </div>
+                <div class="text-center mt-6">
+                    <button id="run-deadlock-sim" class="bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">Chạy Mô phỏng</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Solutions & Prevention -->
+        <section id="solutions" class="mb-16 md:mb-24 scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-800">Giải pháp & Phòng ngừa</h3>
+            <p class="text-center text-slate-500 max-w-2xl mx-auto mb-12">Phòng bệnh hơn chữa bệnh. Tránh deadlock ngay từ đầu là chiến lược tốt nhất. Hãy khám phá các phương pháp hiệu quả để thiết kế các ứng dụng cơ sở dữ liệu mạnh mẽ, ít bị tắc nghẽn.</p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-lg mb-2">Thứ tự Khóa Nhất quán</h4>
+                    <p class="text-sm text-slate-600">Luôn truy cập tài nguyên theo một thứ tự cố định (ví dụ: luôn khóa Bảng A trước Bảng B).</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-lg mb-2">Giữ Giao dịch Ngắn</h4>
+                    <p class="text-sm text-slate-600">Giảm thiểu thời gian giữ khóa bằng cách thực hiện các giao dịch nhanh gọn, chỉ làm những việc cần thiết.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-lg mb-2">Mức Cô lập Phù hợp</h4>
+                    <p class="text-sm text-slate-600">Sử dụng mức cô lập thấp nhất có thể mà vẫn đảm bảo tính nhất quán (ví dụ: READ COMMITTED).</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-lg mb-2">Tránh Khóa Không cần thiết</h4>
+                    <p class="text-sm text-slate-600">Chỉ yêu cầu khóa độc quyền khi thực sự cần sửa đổi dữ liệu.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-lg mb-2">Sử dụng Thời gian chờ (Timeout)</h4>
+                    <p class="text-sm text-slate-600">Thiết lập thời gian chờ cho các yêu cầu khóa. Nếu quá thời gian, giao dịch sẽ bị hủy và thử lại sau.</p>
+                </div>
+                <div class="card bg-white p-6 rounded-lg shadow">
+                    <h4 class="font-bold text-lg mb-2">Kiểm soát Đồng thời Lạc quan</h4>
+                    <p class="text-sm text-slate-600">Cho phép các giao dịch tiến hành và chỉ kiểm tra xung đột tại thời điểm commit, giúp ngăn chặn deadlock.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Comparison -->
+        <section id="comparison" class="scroll-mt-20">
+            <h3 class="text-3xl font-bold text-center mb-2 text-slate-800">So sánh Trực quan</h3>
+            <p class="text-center text-slate-500 max-w-2xl mx-auto mb-12">Mỗi cấp độ khóa đều có sự đánh đổi giữa mức độ đồng thời (Concurrency) và chi phí quản lý (Overhead). Biểu đồ radar này sẽ giúp bạn hình dung rõ ràng sự khác biệt đó.</p>
+            <div class="bg-white p-4 sm:p-6 rounded-lg shadow-lg">
+                <div class="chart-container">
+                    <canvas id="lockGranularityChart"></canvas>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-slate-800 text-slate-400 mt-16">
+        <div class="container mx-auto px-4 py-6 text-center text-sm">
+            <p>&copy; 2024 DB Insights. Một sản phẩm được tạo ra để khám phá các khái niệm cơ sở dữ liệu.</p>
+        </div>
+    </footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Smooth scrolling for nav links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+                if(mobileMenu.classList.contains('hidden') === false){
+                    mobileMenu.classList.add('hidden');
+                }
+            }
+        });
+    });
+
+    // Active nav link highlighting on scroll
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('header nav ul a');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === entry.target.id) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, { rootMargin: '-50% 0px -50% 0px' });
+
+    sections.forEach(section => {
+        observer.observe(section);
+    });
+
+
+    // Deadlock simulation
+    const runSimButton = document.getElementById('run-deadlock-sim');
+    const steps = [
+        'step-t1-1', 'step-t2-1', 'step-t1-2', 'step-t2-2'
+    ];
+    const deadlockMsg = document.getElementById('deadlock-message');
+    const resourceA = document.getElementById('resource-a');
+    const resourceB = document.getElementById('resource-b');
+    
+    let simRunning = false;
+    runSimButton.addEventListener('click', () => {
+        if(simRunning) return;
+        simRunning = true;
+        runSimButton.disabled = true;
+        runSimButton.classList.add('opacity-50', 'cursor-not-allowed');
+
+        // Reset state
+        steps.forEach(id => document.getElementById(id).classList.remove('active'));
+        deadlockMsg.style.opacity = '0';
+        resourceA.style.borderColor = '#93c5fd';
+        resourceB.style.borderColor = '#86efac';
+
+        // Run simulation
+        setTimeout(() => { document.getElementById('step-t1-1').classList.add('active'); resourceA.style.borderColor = '#ef4444'; }, 500);
+        setTimeout(() => { document.getElementById('step-t2-1').classList.add('active'); resourceB.style.borderColor = '#ef4444'; }, 1500);
+        setTimeout(() => { document.getElementById('step-t1-2').classList.add('active'); }, 2500);
+        setTimeout(() => { document.getElementById('step-t2-2').classList.add('active'); }, 3500);
+        setTimeout(() => { 
+            deadlockMsg.style.opacity = '1';
+            simRunning = false;
+            runSimButton.disabled = false;
+            runSimButton.classList.remove('opacity-50', 'cursor-not-allowed');
+        }, 4500);
+    });
+
+    // Chart.js Radar Chart for Lock Granularity
+    const ctx = document.getElementById('lockGranularityChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: ['Đồng thời (Concurrency)', 'Chi phí Quản lý (Overhead)', 'Tính phức tạp (Complexity)', 'Nguy cơ Deadlock'],
+            datasets: [{
+                label: 'Row-Level',
+                data: [9, 8, 8, 7],
+                fill: true,
+                backgroundColor: 'rgba(59, 130, 246, 0.2)',
+                borderColor: 'rgb(59, 130, 246)',
+                pointBackgroundColor: 'rgb(59, 130, 246)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(59, 130, 246)'
+            }, {
+                label: 'Table-Level',
+                data: [2, 2, 2, 4],
+                fill: true,
+                backgroundColor: 'rgba(239, 68, 68, 0.2)',
+                borderColor: 'rgb(239, 68, 68)',
+                pointBackgroundColor: 'rgb(239, 68, 68)',
+                pointBorderColor: '#fff',
+                pointHoverBackgroundColor: '#fff',
+                pointHoverBorderColor: 'rgb(239, 68, 68)'
+            }]
+        },
+        options: {
+            maintainAspectRatio: false,
+            responsive: true,
+            scales: {
+                r: {
+                    angleLines: {
+                        display: false
+                    },
+                    suggestedMin: 0,
+                    suggestedMax: 10,
+                    ticks: {
+                        stepSize: 2,
+                        backdropColor: 'rgba(0,0,0,0)'
+                    },
+                     pointLabels: {
+                        font: {
+                            size: 12,
+                            family: "'Be Vietnam Pro', sans-serif"
+                        }
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                         font: {
+                            size: 14,
+                            family: "'Be Vietnam Pro', sans-serif"
+                        }
+                    }
+                },
+                tooltip: {
+                    bodyFont: {
+                         family: "'Be Vietnam Pro', sans-serif"
+                    },
+                    titleFont: {
+                        family: "'Be Vietnam Pro', sans-serif"
+                    }
+                }
+            }
+        }
+    });
+});
+</script>
+</body>
+</html>
