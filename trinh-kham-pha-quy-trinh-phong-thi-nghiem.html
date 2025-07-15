@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng Quan Quy Trình Tương Tác</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chosen Palette: Warm Neutrals -->
+    <!-- Application Structure Plan: Cấu trúc ứng dụng là một lưu đồ tương tác theo chiều ngang. Đây là lựa chọn lý tưởng vì tài liệu nguồn mô tả một quy trình tuần tự, tuyến tính. Thiết kế này cho phép người dùng trước tiên xem tổng quan cấp cao (5 giai đoạn chính), sau đó tương tác "đi sâu" vào các chi tiết cụ thể của bất kỳ giai đoạn nào mà không bị choáng ngợp bởi tất cả thông tin cùng một lúc. Điều này nâng cao khả năng sử dụng bằng cách mô phỏng một lộ trình học tập tự nhiên: từ tổng quan đến chi tiết. Việc điều hướng đơn giản và trực quan (nhấp vào một giai đoạn), giúp quy trình dễ dàng khám phá. -->
+    <!-- Visualization & Content Choices: Thông tin quy trình -> Mục tiêu: Sắp xếp/Thông báo -> Phương pháp trình bày: Lưu đồ HTML/CSS tương tác -> Tương tác: Nhấp để xem chi tiết -> Lý do: Trình bày trực quan bản chất tuyến tính của quy trình và cho phép tiết lộ thông tin dần dần, rất phùESOME cho các quy trình công việc phức tạp -> Thư viện/Phương pháp: HTML/CSS với Tailwind. | Thông tin chi tiết các bước -> Mục tiêu: Thông báo -> Phương pháp trình bày: Văn bản có cấu trúc (danh sách HTML lồng nhau) -> Tương tác: Hiển thị/ẩn động dựa trên lựa chọn lưu đồ -> Lý do: Trình bày thông tin chi tiết ở định dạng phân cấp, rõ ràng, dễ quét và đọc -> Thư viện/Phương pháp: JS cập nhật DOM động. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .process-step {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .process-step.active {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            border-color: #4f46e5;
+            background-color: #eef2ff;
+        }
+        .process-arrow {
+            font-size: 2rem;
+            color: #d1d5db;
+        }
+        .details-content ul {
+            list-style-position: inside;
+        }
+        .details-content ul ul {
+            margin-left: 20px;
+        }
+        .details-content li {
+            margin-bottom: 0.5rem;
+        }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-12">
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900">Trình Khám Phá Quy Trình Phòng Thí Nghiệm</h1>
+            <p class="mt-4 text-lg text-gray-600">Đây là một bản trình bày tương tác về quy trình làm việc trong phòng thí nghiệm. Nhấp vào một giai đoạn bất kỳ để xem các nhiệm vụ chi tiết.</p>
+        </header>
+
+        <main>
+            <div id="process-flow" class="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-4 mb-12">
+            </div>
+
+            <section id="details-section" class="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-200 min-h-[300px]">
+                <h2 id="details-title" class="text-2xl font-bold mb-4 text-indigo-700"></h2>
+                <div id="details-content" class="text-gray-700 leading-relaxed"></div>
+            </section>
+        </main>
+
+        <footer class="text-center mt-12">
+            <p class="text-sm text-gray-500">Ứng dụng được tạo để trực quan hóa quy trình.</p>
+        </footer>
+    </div>
+
+    <script>
+        const processData = {
+            'handover': {
+                title: 'I. Bàn giao mẫu (Hand over)',
+                content: `
+                    <ul class="list-disc">
+                        <li><strong>Danh sách đợt bàn giao:</strong>
+                            <ul class="list-circle">
+                                <li>Tìm kiếm đợt bàn giao theo trạng thái, gói XN.</li>
+                                <li>Hiển thị tất cả đợt bàn giao (tạo mới, đang bàn giao, đã xác nhận).</li>
+                                <li>Liên kết chi tiết đợt bàn giao và kiểm tra/quét mẫu.</li>
+                                <li>Hiển thị danh sách mẫu XN trạng thái Inputted.</li>
+                                <li>Xác nhận tạo đợt bàn giao (trạng thái tạo mới).</li>
+                                <li>Từ chối: Chọn mẫu XN khỏi danh sách cần đưa vào đợt bàn giao.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Chi tiết đợt bàn giao:</strong>
+                            <ul class="list-circle">
+                                <li>Trong 1 đợt bàn giao: Tìm kiếm, danh sách mẫu XN, thông tin đợt, xuất excel.</li>
+                                <li>Liên kết xem chi tiết CSF.</li>
+                                <li>Nút "Kiểm tra & quét barcode mẫu".</li>
+                            </ul>
+                        </li>
+                        <li><strong>Kiểm tra & Xác nhận bàn giao (quét barcode mẫu):</strong>
+                            <ul class="list-circle">
+                                <li>Field đọc, xử lý barcode trên ống mẫu (2D-Data matrix barcode).</li>
+                                <li>Ghi nhận/kiểm tra đủ số lần quét barcode của 1 mẫu xét nghiệm.</li>
+                                <li>Xóa mẫu xét nghiệm khỏi đợt bàn giao hiện tại (vào lại ds labcode chờ bàn giao).</li>
+                                <li>Xác nhận đợt bàn giao & cập nhật trạng thái bàn giao, trạng thái mẫu XN, trạng thái CSF (2 user).</li>
+                                <li>Chuyển mẫu đến kho xử lý mẫu.</li>
+                                <li>Thêm mẫu vào đợt bàn giao.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            },
+            'preparation': {
+                title: 'II. Chuẩn bị mẫu (Preparation)',
+                content: `
+                    <ul class="list-disc">
+                        <li><strong>Tạo đợt quét mẫu:</strong>
+                             <ul class="list-circle">
+                                <li>Tạo đợt quét: gói XN, loại mẫu (số lần quét (step), số lần scan (times)/lần quét).</li>
+                            </ul>
+                        </li>
+                        <li><strong>Chi tiết từng step quét:</strong>
+                            <ul class="list-circle">
+                                <li>Quét barcode + lưu ghi chú các labcode trong danh sách.</li>
+                                <li>In mã barcode.</li>
+                                <li>Gửi mẫu về CS.</li>
+                                <li>Xác nhận Labcode sau khi quét xong tất cả các step & cập nhật trạng thái.</li>
+                                <li>Tạo labcode.H chuẩn bị tách chiết.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            },
+            'extraction': {
+                title: 'III. Tách chiết (Extraction)',
+                content: `
+                    <ul class="list-disc">
+                        <li><strong>Danh sách đợt tách chiết:</strong>
+                            <ul class="list-circle">
+                                <li>Tìm kiếm đợt tách chiết (mã đợt, gói XN, ngày dự kiến chạy, trạng thái).</li>
+                                <li>Liên kết xem chi tiết đợt tách chiết.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Tạo đợt tách chiết:</strong>
+                             <ul class="list-circle">
+                                <li>Tạo số bước, lần scan của 1 đợt tách chiết.</li>
+                             </ul>
+                        </li>
+                        <li><strong>Chi tiết đợt tách chiết:</strong>
+                            <ul class="list-circle">
+                                <li>Cập nhật thông tin đợt tách chiết (mã đợt, tên đợt).</li>
+                                <li>Lịch sử chỉnh sửa mẫu trong từng đợt tách chiết.</li>
+                                <li>Gửi mẫu về GS.</li>
+                                <li>Quét barcode và xác nhận mẫu mỗi bước tách chiết.</li>
+                                <li>Thêm mẫu vào đợt tách chiết.</li>
+                                <li>Xóa mẫu khỏi đợt tách chiết.</li>
+                                <li>Thay đổi thứ tự quét mẫu.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            },
+            'library': {
+                title: 'IV. Thư viện (Library)',
+                content: `
+                    <ul class="list-disc">
+                        <li><strong>Danh sách đợt thư viện:</strong>
+                            <ul class="list-circle">
+                                <li>Tìm kiếm đợt thư viện (mã đợt, gói XN, ngày dự kiến chạy, trạng thái).</li>
+                                <li>Liên kết xem chi tiết đợt thư viện.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Tạo đợt thư viện:</strong>
+                            <ul class="list-circle">
+                                <li>Tạo số bước, lần scan của 1 đợt thư viện.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Chi tiết đợt thư viện:</strong>
+                             <ul class="list-circle">
+                                <li>Cập nhật thông tin đợt thư viện (mã đợt, tên đợt).</li>
+                                <li>Lịch sử chỉnh sửa mẫu trong từng đợt thư viện.</li>
+                                <li>Gửi mẫu về GS.</li>
+                                <li>Quét barcode và xác nhận mẫu mỗi bước thư viện.</li>
+                                <li>Thay đổi thứ tự quét mẫu.</li>
+                                <li>Xuất báo cáo.</li>
+                                <li>Thêm mẫu vào đợt thư viện.</li>
+                                <li>Xóa mẫu khỏi đợt thư viện.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            },
+            'sequencing': {
+                title: 'V. Sequencing',
+                content: `
+                    <ul class="list-disc">
+                        <li><strong>Danh sách đợt Sequencing:</strong>
+                            <ul class="list-circle">
+                                <li>Tìm kiếm đợt Sequencing (mã đợt, gói XN, ngày dự kiến chạy, trạng thái).</li>
+                                <li>Liên kết xem chi tiết đợt sequencing.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Tạo đợt Sequencing:</strong>
+                            <ul class="list-circle">
+                                <li>Chọn Labcode/thư viện đưa vào đợt.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Chi tiết đợt sequencing:</strong>
+                            <ul class="list-circle">
+                                <li>Cập nhật thông tin đợt sequencing (mã đợt, tên đợt).</li>
+                                <li>Lịch sử chỉnh sửa mẫu trong từng đợt sequencing.</li>
+                                <li>Gửi mẫu về GS.</li>
+                                <li>Danh sách mẫu.</li>
+                                <li>Xuất báo cáo.</li>
+                                <li>Thêm labcode/thư viện vào đợt sequencing.</li>
+                                <li>Xóa mẫu khỏi đợt sequencing.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            }
+        };
+
+        const flowContainer = document.getElementById('process-flow');
+        const detailsTitle = document.getElementById('details-title');
+        const detailsContent = document.getElementById('details-content');
+
+        const stages = [
+            { id: 'handover', name: 'Bàn giao mẫu' },
+            { id: 'preparation', name: 'Chuẩn bị mẫu' },
+            { id: 'extraction', name: 'Tách chiết' },
+            { id: 'library', name: 'Thư viện' },
+            { id: 'sequencing', name: 'Sequencing' },
+        ];
+        
+        stages.forEach((stage, index) => {
+            const stepEl = document.createElement('div');
+            stepEl.className = 'process-step bg-white p-4 rounded-lg border-2 border-gray-200 w-full md:w-auto text-center shadow-sm hover:shadow-md';
+            stepEl.textContent = stage.name;
+            stepEl.dataset.stage = stage.id;
+            stepEl.setAttribute('role', 'button');
+            stepEl.setAttribute('tabindex', '0');
+
+            flowContainer.appendChild(stepEl);
+
+            if (index < stages.length - 1) {
+                const arrowEl = document.createElement('div');
+                arrowEl.className = 'process-arrow hidden md:block';
+                arrowEl.innerHTML = '&rarr;';
+                flowContainer.appendChild(arrowEl);
+            }
+        });
+
+        function updateDetails(stageId) {
+            const stageData = processData[stageId];
+            
+            if (stageData) {
+                detailsTitle.textContent = stageData.title;
+                detailsContent.innerHTML = stageData.content;
+            }
+
+            document.querySelectorAll('.process-step').forEach(step => {
+                step.classList.toggle('active', step.dataset.stage === stageId);
+            });
+        }
+
+        flowContainer.addEventListener('click', (e) => {
+            const targetStep = e.target.closest('.process-step');
+            if (targetStep) {
+                const stageId = targetStep.dataset.stage;
+                updateDetails(stageId);
+            }
+        });
+        
+        flowContainer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const targetStep = e.target.closest('.process-step');
+                 if (targetStep) {
+                    e.preventDefault();
+                    const stageId = targetStep.dataset.stage;
+                    updateDetails(stageId);
+                }
+            }
+        });
+
+        window.addEventListener('DOMContentLoaded', () => {
+            updateDetails('handover');
+        });
+
+    </script>
+</body>
+</html>
