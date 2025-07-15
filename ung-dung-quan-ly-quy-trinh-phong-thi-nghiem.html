@@ -55,31 +55,15 @@
     <div class="min-h-screen flex flex-col md:flex-row">
         <nav class="md:w-64 bg-white p-4 md:p-6 shadow-md shrink-0">
             <h1 class="text-2xl font-bold text-blue-600 mb-8">LabFlow</h1>
-            <ul class="space-y-2">
-                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="dashboard">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                    Bảng điều khiển
-                </a></li>
-                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="handover">
-                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
-                    Bàn giao mẫu
-                </a></li>
-                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="preparation">
-                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
-                    Chuẩn bị mẫu
-                </a></li>
-                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="extraction">
-                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
-                    Tách chiết
-                </a></li>
-                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="library">
-                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
-                    Thư viện
-                </a></li>
-                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="sequencing">
-                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                    Sequencing
-                </a></li>
+            <div class="mb-6">
+                <label for="process-select" class="block text-sm font-medium text-slate-700 mb-2">Chọn quy trình:</label>
+                <select id="process-select" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-slate-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm rounded-md">
+                    <option value="panel">Quy trình Panel</option>
+                    <option value="nipt">Quy trình NIPT</option>
+                </select>
+            </div>
+            <ul id="main-nav-list" class="space-y-2">
+                <!-- Navigation links will be dynamically loaded here -->
             </ul>
         </nav>
 
@@ -89,10 +73,10 @@
                 <h2 class="text-3xl font-bold mb-2">Bảng điều khiển</h2>
                 <p class="text-slate-500 mb-6">Tổng quan về tình trạng và hiệu suất của quy trình.</p>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Tổng số mẫu</h3><p class="text-3xl font-bold">152</p></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Đang xử lý</h3><p class="text-3xl font-bold">68</p></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Hoàn thành</h3><p class="text-3xl font-bold">75</p></div>
-                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Mẫu lỗi</h3><p class="text-3xl font-bold">9</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Tổng số mẫu</h3><p class="text-3xl font-bold" id="total-samples">0</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Đang xử lý</h3><p class="text-3xl font-bold" id="in-progress-samples">0</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Hoàn thành</h3><p class="text-3xl font-bold" id="completed-samples">0</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Mẫu lỗi</h3><p class="text-3xl font-bold" id="error-samples">0</p></div>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Phân bổ trạng thái mẫu</h3>
@@ -102,9 +86,9 @@
                 </div>
             </div>
 
-            <div id="handover" class="view">
-                <h2 class="text-3xl font-bold mb-2">Bàn giao mẫu</h2>
-                <p class="text-slate-500 mb-6">Quản lý việc tiếp nhận và đăng ký ban đầu của các mẫu. Tại đây bạn có thể tạo các đợt bàn giao mới, xem các đợt hiện có và xác minh các mẫu bằng cách quét mã vạch của chúng.</p>
+            <div id="panel-handover" class="view">
+                <h2 class="text-3xl font-bold mb-2">Bàn giao mẫu (Panel)</h2>
+                <p class="text-slate-500 mb-6">Quản lý việc tiếp nhận và đăng ký ban đầu của các mẫu cho quy trình Panel. Tại đây bạn có thể tạo các đợt bàn giao mới, xem các đợt hiện có và xác minh các mẫu bằng cách quét mã vạch của chúng.</p>
                 <div class="bg-white p-6 rounded-xl shadow-sm">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Danh sách đợt bàn giao</h3>
@@ -128,36 +112,80 @@
                 </div>
             </div>
             
-            <div id="preparation" class="view">
-                <h2 class="text-3xl font-bold mb-2">Chuẩn bị mẫu</h2>
-                <p class="text-slate-500 mb-6">Tập trung vào việc chuẩn bị các mẫu đã được bàn giao để xử lý tiếp theo. Bạn có thể tạo các đợt quét mẫu và theo dõi chi tiết từng bước chuẩn bị.</p>
+            <div id="panel-preparation" class="view">
+                <h2 class="text-3xl font-bold mb-2">Chuẩn bị mẫu (Panel)</h2>
+                <p class="text-slate-500 mb-6">Tập trung vào việc chuẩn bị các mẫu đã được bàn giao để xử lý tiếp theo cho quy trình Panel. Bạn có thể tạo các đợt quét mẫu và theo dõi chi tiết từng bước chuẩn bị.</p>
                  <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
                  </div>
             </div>
 
-            <div id="extraction" class="view">
-                <h2 class="text-3xl font-bold mb-2">Tách chiết</h2>
-                 <p class="text-slate-500 mb-6">Quản lý quá trình tách chiết từ các mẫu đã chuẩn bị. Bao gồm việc tạo đợt, theo dõi chi tiết và xuất báo cáo.</p>
+            <div id="panel-extraction" class="view">
+                <h2 class="text-3xl font-bold mb-2">Tách chiết (Panel)</h2>
+                 <p class="text-slate-500 mb-6">Quản lý quá trình tách chiết từ các mẫu đã chuẩn bị cho quy trình Panel. Bao gồm việc tạo đợt, theo dõi chi tiết và xuất báo cáo.</p>
                  <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
                  </div>
             </div>
             
-            <div id="library" class="view">
-                <h2 class="text-3xl font-bold mb-2">Thư viện</h2>
-                <p class="text-slate-500 mb-6">Quản lý các mẫu đã được tách chiết và chuẩn bị cho giai đoạn Sequencing cuối cùng.</p>
+            <div id="panel-library" class="view">
+                <h2 class="text-3xl font-bold mb-2">Thư viện (Panel)</h2>
+                <p class="text-slate-500 mb-6">Quản lý các mẫu đã được tách chiết và chuẩn bị cho giai đoạn Sequencing cuối cùng của quy trình Panel.</p>
                  <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
                  </div>
             </div>
 
-            <div id="sequencing" class="view">
-                <h2 class="text-3xl font-bold mb-2">Sequencing</h2>
-                <p class="text-slate-500 mb-6">Giai đoạn cuối cùng của quy trình, thực hiện giải trình tự gen trên các mẫu thư viện đã chuẩn bị.</p>
+            <div id="panel-sequencing" class="view">
+                <h2 class="text-3xl font-bold mb-2">Sequencing (Panel)</h2>
+                <p class="text-slate-500 mb-6">Giai đoạn cuối cùng của quy trình Panel, thực hiện giải trình tự gen trên các mẫu thư viện đã chuẩn bị.</p>
                  <div class="bg-white p-6 rounded-xl shadow-sm">
                     <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
                  </div>
+            </div>
+
+            <!-- NIPT Process Views - Placeholders -->
+            <div id="nipt-dashboard" class="view">
+                <h2 class="text-3xl font-bold mb-2">Bảng điều khiển (NIPT)</h2>
+                <p class="text-slate-500 mb-6">Tổng quan về tình trạng và hiệu suất của quy trình NIPT.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Dữ liệu NIPT đang được tải...</h3>
+                </div>
+            </div>
+            <div id="nipt-handover" class="view">
+                <h2 class="text-3xl font-bold mb-2">Bàn giao mẫu (NIPT)</h2>
+                <p class="text-slate-500 mb-6">Quản lý việc tiếp nhận và đăng ký ban đầu của các mẫu cho quy trình NIPT.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển cho NIPT...</h3>
+                </div>
+            </div>
+            <div id="nipt-preparation" class="view">
+                <h2 class="text-3xl font-bold mb-2">Chuẩn bị mẫu (NIPT)</h2>
+                <p class="text-slate-500 mb-6">Tập trung vào việc chuẩn bị các mẫu đã được bàn giao để xử lý tiếp theo cho quy trình NIPT.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển cho NIPT...</h3>
+                </div>
+            </div>
+            <div id="nipt-extraction" class="view">
+                <h2 class="text-3xl font-bold mb-2">Tách chiết (NIPT)</h2>
+                <p class="text-slate-500 mb-6">Quản lý quá trình tách chiết từ các mẫu đã chuẩn bị cho quy trình NIPT.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển cho NIPT...</h3>
+                </div>
+            </div>
+            <div id="nipt-library" class="view">
+                <h2 class="text-3xl font-bold mb-2">Thư viện (NIPT)</h2>
+                <p class="text-slate-500 mb-6">Quản lý các mẫu đã được tách chiết và chuẩn bị cho giai đoạn Sequencing cuối cùng của quy trình NIPT.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển cho NIPT...</h3>
+                </div>
+            </div>
+            <div id="nipt-sequencing" class="view">
+                <h2 class="text-3xl font-bold mb-2">Sequencing (NIPT)</h2>
+                <p class="text-slate-500 mb-6">Giai đoạn cuối cùng của quy trình NIPT, thực hiện giải trình tự gen trên các mẫu thư viện đã chuẩn bị.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển cho NIPT...</h3>
+                </div>
             </div>
 
         </main>
@@ -166,19 +194,66 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const views = document.querySelectorAll('.view');
-            const navLinks = document.querySelectorAll('.nav-link');
+            const mainNavList = document.getElementById('main-nav-list');
+            const processSelect = document.getElementById('process-select');
 
-            const mockData = {
-                handover: [
-                    { id: 'XN240715-001', date: '15/07/2024', count: 15, status: 'Đã xác nhận' },
-                    { id: 'XN240715-002', date: '15/07/2024', count: 24, status: 'Đang bàn giao' },
-                    { id: 'XN240714-035', date: '14/07/2024', count: 8, status: 'Đã xác nhận' },
-                    { id: 'XN240714-034', date: '14/07/2024', count: 32, status: 'Đã tạo' },
-                    { id: 'XN240713-012', date: '13/07/2024', count: 18, status: 'XN Lỗi' },
+            let currentProcess = 'panel'; // Default process
+
+            const processDefinitions = {
+                panel: [
+                    { id: 'dashboard', name: 'Bảng điều khiển', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>' },
+                    { id: 'handover', name: 'Bàn giao mẫu', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>' },
+                    { id: 'preparation', name: 'Chuẩn bị mẫu', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>' },
+                    { id: 'extraction', name: 'Tách chiết', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>' },
+                    { id: 'library', name: 'Thư viện', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>' },
+                    { id: 'sequencing', name: 'Sequencing', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>' },
                 ],
-                statusDistribution: {
-                    labels: ['Đã tạo', 'Đang xử lý', 'Hoàn thành', 'Lỗi'],
-                    data: [25, 68, 75, 9]
+                nipt: [
+                    { id: 'dashboard', name: 'Bảng điều khiển', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>' },
+                    { id: 'handover', name: 'Bàn giao mẫu', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>' },
+                    { id: 'preparation', name: 'Chuẩn bị mẫu', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>' },
+                    { id: 'extraction', name: 'Tách chiết', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>' },
+                    { id: 'library', name: 'Thư viện', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>' },
+                    { id: 'sequencing', name: 'Sequencing', icon: '<svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>' },
+                ]
+            };
+
+            const allMockData = {
+                panel: {
+                    handover: [
+                        { id: 'XN240715-001', date: '15/07/2024', count: 15, status: 'Đã xác nhận' },
+                        { id: 'XN240715-002', date: '15/07/2024', count: 24, status: 'Đang bàn giao' },
+                        { id: 'XN240714-035', date: '14/07/2024', count: 8, status: 'Đã xác nhận' },
+                        { id: 'XN240714-034', date: '14/07/2024', count: 32, status: 'Đã tạo' },
+                        { id: 'XN240713-012', date: '13/07/2024', count: 18, status: 'XN Lỗi' },
+                    ],
+                    statusDistribution: {
+                        labels: ['Đã tạo', 'Đang xử lý', 'Hoàn thành', 'Lỗi'],
+                        data: [25, 68, 75, 9]
+                    },
+                    dashboardSummary: {
+                        total: 152,
+                        inProgress: 68,
+                        completed: 75,
+                        error: 9
+                    }
+                },
+                nipt: {
+                    handover: [
+                        { id: 'NIPT240715-001', date: '15/07/2024', count: 10, status: 'Đã xác nhận' },
+                        { id: 'NIPT240715-002', date: '15/07/2024', count: 18, status: 'Đang bàn giao' },
+                        { id: 'NIPT240714-020', date: '14/07/2024', count: 5, status: 'Đã tạo' },
+                    ],
+                    statusDistribution: {
+                        labels: ['Đã tạo', 'Đang xử lý', 'Hoàn thành', 'Lỗi'],
+                        data: [15, 30, 40, 5]
+                    },
+                    dashboardSummary: {
+                        total: 90,
+                        inProgress: 30,
+                        completed: 40,
+                        error: 5
+                    }
                 }
             };
 
@@ -192,9 +267,10 @@
                 }
             }
 
-            function renderHandoverTable(data) {
+            function renderHandoverTable(processId) {
                 const tableBody = document.getElementById('handoverTable');
                 tableBody.innerHTML = '';
+                const data = allMockData[processId].handover;
                 data.forEach(item => {
                     const row = `
                         <tr class="hover:bg-slate-50 border-b border-slate-200">
@@ -211,25 +287,34 @@
             const handoverSearch = document.getElementById('handoverSearch');
             handoverSearch.addEventListener('keyup', (e) => {
                 const searchTerm = e.target.value.toLowerCase();
-                const filteredData = mockData.handover.filter(item => 
+                const filteredData = allMockData[currentProcess].handover.filter(item => 
                     item.id.toLowerCase().includes(searchTerm) ||
                     item.status.toLowerCase().includes(searchTerm)
                 );
-                renderHandoverTable(filteredData);
+                renderHandoverTable(filteredData); // Pass filtered data directly
             });
 
-            function renderStatusChart() {
+            function updateDashboardSummary(processId) {
+                const summary = allMockData[processId].dashboardSummary;
+                document.getElementById('total-samples').textContent = summary.total;
+                document.getElementById('in-progress-samples').textContent = summary.inProgress;
+                document.getElementById('completed-samples').textContent = summary.completed;
+                document.getElementById('error-samples').textContent = summary.error;
+            }
+
+            function renderStatusChart(processId) {
                 const ctx = document.getElementById('statusChart').getContext('2d');
                 if (window.myStatusChart instanceof Chart) {
                     window.myStatusChart.destroy();
                 }
+                const chartData = allMockData[processId].statusDistribution;
                 window.myStatusChart = new Chart(ctx, {
                     type: 'doughnut',
                     data: {
-                        labels: mockData.statusDistribution.labels,
+                        labels: chartData.labels,
                         datasets: [{
                             label: 'Số lượng mẫu',
-                            data: mockData.statusDistribution.data,
+                            data: chartData.data,
                             backgroundColor: [
                                 'rgba(59, 130, 246, 0.8)',
                                 'rgba(249, 115, 22, 0.8)',
@@ -258,11 +343,24 @@
             }
 
             function switchView(viewId) {
+                // Hide all views first
                 views.forEach(view => {
                     view.classList.remove('active');
                 });
-                document.getElementById(viewId).classList.add('active');
 
+                // Activate the specific view for the current process
+                const targetViewId = `${currentProcess}-${viewId}`;
+                const targetView = document.getElementById(targetViewId);
+                if (targetView) {
+                    targetView.classList.add('active');
+                } else {
+                    // Fallback for views not yet implemented for NIPT, show a generic message
+                    document.getElementById('dashboard').classList.add('active'); // Fallback to dashboard
+                    console.warn(`View ${targetViewId} not found. Falling back to dashboard.`);
+                }
+
+                // Update active navigation link
+                const navLinks = document.querySelectorAll('.nav-link'); // Re-select nav links after dynamic update
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     if(link.dataset.view === viewId) {
@@ -270,21 +368,41 @@
                     }
                 });
                 
+                // Render content specific to the selected view and process
                 if (viewId === 'dashboard') {
-                    renderStatusChart();
+                    updateDashboardSummary(currentProcess);
+                    renderStatusChart(currentProcess);
                 }
                 if (viewId === 'handover') {
-                    renderHandoverTable(mockData.handover);
+                    renderHandoverTable(currentProcess);
                 }
             }
 
-            navLinks.forEach(link => {
-                link.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    switchView(this.dataset.view);
+            function renderNavigation(processId) {
+                mainNavList.innerHTML = '';
+                processDefinitions[processId].forEach(step => {
+                    const listItem = document.createElement('li');
+                    listItem.innerHTML = `<a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="${step.id}">${step.icon} ${step.name}</a>`;
+                    mainNavList.appendChild(listItem);
                 });
+
+                // Re-attach event listeners to new nav links
+                document.querySelectorAll('.nav-link').forEach(link => {
+                    link.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        switchView(this.dataset.view);
+                    });
+                });
+            }
+
+            processSelect.addEventListener('change', function() {
+                currentProcess = this.value;
+                renderNavigation(currentProcess);
+                switchView('dashboard'); // Switch to dashboard of the new process
             });
 
+            // Initial render
+            renderNavigation(currentProcess);
             switchView('dashboard');
         });
     </script>
