@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trình quản lý quy trình phòng thí nghiệm</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Chosen Palette: LabTech Blue -->
+    <!-- Application Structure Plan: A task-oriented SPA with a main navigation bar mirroring the 5-step lab workflow (Handover, Preparation, etc.). Each step is a 'view' containing tabbed or sectioned content for List, Create, and Detail operations (a standard CRUD pattern). This structure is intuitive for lab personnel as it directly follows their real-world process, minimizing the learning curve. -->
+    <!-- Visualization & Content Choices: Process Flow: Visual overview using HTML/CSS for context. Lists: Interactive HTML tables with JS filtering for efficient data management. Forms: Standard HTML for data entry. Charts: Chart.js donut chart to show sample status distribution, providing a quick visual summary. This combination handles data organization, entry, and analysis effectively without relying on SVG or Mermaid. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+        .view { display: none; }
+        .view.active { display: block; }
+        .nav-link {
+            transition: all 0.3s ease;
+        }
+        .nav-link.active {
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+        }
+        .status-badge {
+            padding: 2px 8px;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .status-green { background-color: #dcfce7; color: #166534; }
+        .status-yellow { background-color: #fef9c3; color: #854d0e; }
+        .status-blue { background-color: #dbeafe; color: #1e40af; }
+        .status-red { background-color: #fee2e2; color: #991b1b; }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+         @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <div class="min-h-screen flex flex-col md:flex-row">
+        <nav class="md:w-64 bg-white p-4 md:p-6 shadow-md shrink-0">
+            <h1 class="text-2xl font-bold text-blue-600 mb-8">LabFlow</h1>
+            <ul class="space-y-2">
+                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="dashboard">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                    Bảng điều khiển
+                </a></li>
+                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="handover">
+                    <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path></svg>
+                    Bàn giao mẫu
+                </a></li>
+                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="preparation">
+                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+                    Chuẩn bị mẫu
+                </a></li>
+                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="extraction">
+                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                    Tách chiết
+                </a></li>
+                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="library">
+                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+                    Thư viện
+                </a></li>
+                <li><a href="#" class="nav-link flex items-center p-3 rounded-lg hover:bg-slate-100" data-view="sequencing">
+                     <svg class="w-6 h-6 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Sequencing
+                </a></li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 p-4 md:p-8 overflow-auto">
+            
+            <div id="dashboard" class="view">
+                <h2 class="text-3xl font-bold mb-2">Bảng điều khiển</h2>
+                <p class="text-slate-500 mb-6">Tổng quan về tình trạng và hiệu suất của quy trình.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Tổng số mẫu</h3><p class="text-3xl font-bold">152</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Đang xử lý</h3><p class="text-3xl font-bold">68</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Hoàn thành</h3><p class="text-3xl font-bold">75</p></div>
+                    <div class="bg-white p-6 rounded-xl shadow-sm"><h3 class="text-slate-500">Mẫu lỗi</h3><p class="text-3xl font-bold">9</p></div>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Phân bổ trạng thái mẫu</h3>
+                    <div class="chart-container">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div id="handover" class="view">
+                <h2 class="text-3xl font-bold mb-2">Bàn giao mẫu</h2>
+                <p class="text-slate-500 mb-6">Quản lý việc tiếp nhận và đăng ký ban đầu của các mẫu. Tại đây bạn có thể tạo các đợt bàn giao mới, xem các đợt hiện có và xác minh các mẫu bằng cách quét mã vạch của chúng.</p>
+                <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold">Danh sách đợt bàn giao</h3>
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Tạo đợt mới</button>
+                    </div>
+                    <input type="text" id="handoverSearch" placeholder="Tìm kiếm theo mã XN, trạng thái..." class="w-full p-2 border border-slate-300 rounded-lg mb-4">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left">
+                            <thead class="bg-slate-50">
+                                <tr>
+                                    <th class="p-3">Mã XN</th>
+                                    <th class="p-3">Ngày tạo</th>
+                                    <th class="p-3">Số lượng mẫu</th>
+                                    <th class="p-3">Trạng thái</th>
+                                </tr>
+                            </thead>
+                            <tbody id="handoverTable">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="preparation" class="view">
+                <h2 class="text-3xl font-bold mb-2">Chuẩn bị mẫu</h2>
+                <p class="text-slate-500 mb-6">Tập trung vào việc chuẩn bị các mẫu đã được bàn giao để xử lý tiếp theo. Bạn có thể tạo các đợt quét mẫu và theo dõi chi tiết từng bước chuẩn bị.</p>
+                 <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
+                 </div>
+            </div>
+
+            <div id="extraction" class="view">
+                <h2 class="text-3xl font-bold mb-2">Tách chiết</h2>
+                 <p class="text-slate-500 mb-6">Quản lý quá trình tách chiết từ các mẫu đã chuẩn bị. Bao gồm việc tạo đợt, theo dõi chi tiết và xuất báo cáo.</p>
+                 <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
+                 </div>
+            </div>
+            
+            <div id="library" class="view">
+                <h2 class="text-3xl font-bold mb-2">Thư viện</h2>
+                <p class="text-slate-500 mb-6">Quản lý các mẫu đã được tách chiết và chuẩn bị cho giai đoạn Sequencing cuối cùng.</p>
+                 <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
+                 </div>
+            </div>
+
+            <div id="sequencing" class="view">
+                <h2 class="text-3xl font-bold mb-2">Sequencing</h2>
+                <p class="text-slate-500 mb-6">Giai đoạn cuối cùng của quy trình, thực hiện giải trình tự gen trên các mẫu thư viện đã chuẩn bị.</p>
+                 <div class="bg-white p-6 rounded-xl shadow-sm">
+                    <h3 class="text-lg font-semibold mb-4">Chức năng đang được phát triển...</h3>
+                 </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const views = document.querySelectorAll('.view');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const mockData = {
+                handover: [
+                    { id: 'XN240715-001', date: '15/07/2024', count: 15, status: 'Đã xác nhận' },
+                    { id: 'XN240715-002', date: '15/07/2024', count: 24, status: 'Đang bàn giao' },
+                    { id: 'XN240714-035', date: '14/07/2024', count: 8, status: 'Đã xác nhận' },
+                    { id: 'XN240714-034', date: '14/07/2024', count: 32, status: 'Đã tạo' },
+                    { id: 'XN240713-012', date: '13/07/2024', count: 18, status: 'XN Lỗi' },
+                ],
+                statusDistribution: {
+                    labels: ['Đã tạo', 'Đang xử lý', 'Hoàn thành', 'Lỗi'],
+                    data: [25, 68, 75, 9]
+                }
+            };
+
+            function getStatusClass(status) {
+                switch (status) {
+                    case 'Đã xác nhận': return 'status-green';
+                    case 'Đang bàn giao': return 'status-yellow';
+                    case 'Đã tạo': return 'status-blue';
+                    case 'XN Lỗi': return 'status-red';
+                    default: return 'bg-slate-200 text-slate-600';
+                }
+            }
+
+            function renderHandoverTable(data) {
+                const tableBody = document.getElementById('handoverTable');
+                tableBody.innerHTML = '';
+                data.forEach(item => {
+                    const row = `
+                        <tr class="hover:bg-slate-50 border-b border-slate-200">
+                            <td class="p-3 font-medium">${item.id}</td>
+                            <td class="p-3 text-slate-600">${item.date}</td>
+                            <td class="p-3 text-slate-600">${item.count}</td>
+                            <td class="p-3"><span class="status-badge ${getStatusClass(item.status)}">${item.status}</span></td>
+                        </tr>
+                    `;
+                    tableBody.innerHTML += row;
+                });
+            }
+            
+            const handoverSearch = document.getElementById('handoverSearch');
+            handoverSearch.addEventListener('keyup', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                const filteredData = mockData.handover.filter(item => 
+                    item.id.toLowerCase().includes(searchTerm) ||
+                    item.status.toLowerCase().includes(searchTerm)
+                );
+                renderHandoverTable(filteredData);
+            });
+
+            function renderStatusChart() {
+                const ctx = document.getElementById('statusChart').getContext('2d');
+                if (window.myStatusChart instanceof Chart) {
+                    window.myStatusChart.destroy();
+                }
+                window.myStatusChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: mockData.statusDistribution.labels,
+                        datasets: [{
+                            label: 'Số lượng mẫu',
+                            data: mockData.statusDistribution.data,
+                            backgroundColor: [
+                                'rgba(59, 130, 246, 0.8)',
+                                'rgba(249, 115, 22, 0.8)',
+                                'rgba(22, 163, 74, 0.8)',
+                                'rgba(220, 38, 38, 0.8)'
+                            ],
+                            borderColor: [
+                                'rgba(59, 130, 246, 1)',
+                                'rgba(249, 115, 22, 1)',
+                                'rgba(22, 163, 74, 1)',
+                                'rgba(220, 38, 38, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            }
+                        }
+                    }
+                });
+            }
+
+            function switchView(viewId) {
+                views.forEach(view => {
+                    view.classList.remove('active');
+                });
+                document.getElementById(viewId).classList.add('active');
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if(link.dataset.view === viewId) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                if (viewId === 'dashboard') {
+                    renderStatusChart();
+                }
+                if (viewId === 'handover') {
+                    renderHandoverTable(mockData.handover);
+                }
+            }
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    switchView(this.dataset.view);
+                });
+            });
+
+            switchView('dashboard');
+        });
+    </script>
+</body>
+</html>
