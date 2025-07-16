@@ -56,15 +56,20 @@
 
         <!-- Section 2: Results & Client-side Filter -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-             <div class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b pb-2">
-                <h2 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">
+             <div class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b pb-2 gap-4">
+                <h2 class="text-lg font-semibold text-gray-800">
                     <i class="fas fa-table mr-2 text-green-500"></i>
                     Kết quả tìm kiếm (<span id="resultCount">0</span>)
                 </h2>
-                 <div class="relative w-full sm:w-auto">
-                     <i class="fas fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                     <input id="clientFilterInput" type="text" placeholder="Lọc nhanh trong danh sách..." class="w-full sm:w-64 pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                 </div>
+                <div class="flex items-center gap-3 w-full sm:w-auto">
+                    <div class="relative flex-grow">
+                        <i class="fas fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input id="clientFilterInput" type="text" placeholder="Lọc nhanh..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                    </div>
+                    <button id="createBatchButton" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 flex-shrink-0">
+                        <i class="fas fa-plus mr-2"></i> Tạo đợt
+                    </button>
+                </div>
             </div>
             
             <div id="loadingIndicator" class="text-center py-10 hidden">
@@ -132,6 +137,7 @@
         const noResultsDiv = document.getElementById('noResults');
         const loadingIndicator = document.getElementById('loadingIndicator');
         const resultCountSpan = document.getElementById('resultCount');
+        const createBatchButton = document.getElementById('createBatchButton');
 
         // --- FUNCTIONS ---
 
@@ -247,6 +253,10 @@
         dbSearchButton.addEventListener('click', handleDatabaseSearch);
         dbResetButton.addEventListener('click', resetDbFilters);
         clientFilterInput.addEventListener('input', handleClientFilter);
+        createBatchButton.addEventListener('click', () => {
+            // In a real app, this would open a modal or navigate to a new page
+            alert('Chức năng "Tạo đợt giao mẫu" sẽ được thực hiện tại đây!');
+        });
 
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
