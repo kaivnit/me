@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thiết kế bộ lọc kết hợp</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .table-container {
+            max-height: 65vh;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8">
+        <h1 class="text-2xl font-bold text-gray-900 mb-2">Tìm kiếm phiếu CS/Plasma</h1>
+        
+        <!-- Section 1: Database Search (Server-side) -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+                <i class="fas fa-database mr-2 text-blue-500"></i>
+                Bộ lọc chính (Truy vấn Database)
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <input id="dbSearchInput" type="text" placeholder="Tên, mã phiếu..." class="lg:col-span-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <select id="dbTrangThaiFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Tất cả trạng thái</option>
+                    <option value="Đã xác nhận">Đã xác nhận</option>
+                    <option value="Đang bàn giao">Đang bàn giao</option>
+                    <option value="Tạo mới">Tạo mới</option>
+                </select>
+                <select id="dbSanPhamFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Tất cả sản phẩm</option>
+                    <option value="NIPT 9.5">NIPT 9.5</option>
+                    <option value="K-Detek">K-Detek</option>
+                    <option value="PGT">PGT</option>
+                    <option value="BabySure 3">BabySure 3</option>
+                </select>
+            </div>
+            <div class="mt-4 flex items-center justify-end gap-3">
+                <button id="dbResetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium">
+                    <i class="fas fa-eraser mr-1"></i> Thiết lập lại
+                </button>
+                <button id="dbSearchButton" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    <i class="fas fa-search mr-2"></i> Tìm kiếm
+                </button>
+            </div>
+        </div>
+
+        <!-- Section 2: Results & Client-side Filter -->
+        <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
+             <div class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b pb-2">
+                <h2 class="text-lg font-semibold text-gray-800 mb-2 sm:mb-0">
+                    <i class="fas fa-table mr-2 text-green-500"></i>
+                    Kết quả tìm kiếm (<span id="resultCount">0</span>)
+                </h2>
+                 <div class="relative w-full sm:w-auto">
+                     <i class="fas fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                     <input id="clientFilterInput" type="text" placeholder="Lọc nhanh trong danh sách..." class="w-full sm:w-64 pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+                 </div>
+            </div>
+            
+            <div id="loadingIndicator" class="text-center py-10 hidden">
+                <i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i>
+                <p class="mt-2 text-gray-600">Đang tải dữ liệu...</p>
+            </div>
+
+            <div class="table-container">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50 sticky top-0">
+                        <tr>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase">Tên</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase">Nhóm XN</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase">Sản phẩm</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase">Trạng thái</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase">Thời gian tạo</th>
+                            <th class="px-6 py-3 text-left text-xs font-bold text-gray-600 uppercase">SL Mẫu</th>
+                        </tr>
+                    </thead>
+                    <tbody id="dataTable" class="bg-white divide-y divide-gray-200">
+                        <!-- Data rows appear here -->
+                    </tbody>
+                </table>
+            </div>
+             <div id="noResults" class="text-center py-16 hidden">
+                <i class="fas fa-box-open text-4xl text-gray-400"></i>
+                <p class="text-gray-500 text-lg mt-4">Không tìm thấy kết quả phù hợp.</p>
+                <p class="text-gray-400 text-sm">Vui lòng thử lại với điều kiện lọc khác.</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- MOCK DATABASE ---
+        const masterData = [
+            { id: '10574', nhom: 'PGT', sanPham: 'PGT', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:32:13', slMau: 1 },
+            { id: '10573', nhom: 'BabySure', sanPham: 'BabySure 3', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:31:24', slMau: 1 },
+            { id: '10572', nhom: 'Trizsure Procare', sanPham: 'Trizsure Procare', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:30:12', slMau: 2 },
+            { id: '10571', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:28:30', slMau: 2 },
+            { id: '10570', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:26:54', slMau: 2 },
+            { id: '10569', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:40:07', slMau: 1 },
+            { id: '10568', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:15:29', slMau: 1 },
+            { id: '10567', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:04:18', slMau: 1 },
+            { id: '10566', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:02:39', slMau: 1 },
+            { id: '10565', nhom: 'NIPT', sanPham: 'V-Detek', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-15 10:02:05', slMau: 2 },
+            { id: '10564', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 09:03:06', slMau: 1 },
+            { id: '10563', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Tạo mới', thoiGianTao: '2025-07-15 08:06:17', slMau: 50 },
+            { id: '10562', nhom: 'Panel', sanPham: 'HN-Sanger-G', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-14 17:07:42', slMau: 1 },
+            { id: 'Generate Biên giao mẫu CS/Plasma', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-08 11:19:44', slMau: 3 },
+            { id: 'Generate Biên giao mẫu CS/Plasma', nhom: 'Panel', sanPham: 'HN-K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-08 11:19:34', slMau: 1 },
+        ];
+        
+        // --- STATE ---
+        let currentDisplayData = [];
+
+        // --- DOM ELEMENTS ---
+        const dbSearchButton = document.getElementById('dbSearchButton');
+        const dbResetButton = document.getElementById('dbResetButton');
+        const dbSearchInput = document.getElementById('dbSearchInput');
+        const dbTrangThaiFilter = document.getElementById('dbTrangThaiFilter');
+        const dbSanPhamFilter = document.getElementById('dbSanPhamFilter');
+        
+        const clientFilterInput = document.getElementById('clientFilterInput');
+        const dataTableBody = document.getElementById('dataTable');
+        const noResultsDiv = document.getElementById('noResults');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+        const resultCountSpan = document.getElementById('resultCount');
+
+        // --- FUNCTIONS ---
+
+        /**
+         * Simulates fetching data from a database based on main filters.
+         * In a real app, this would be an API call.
+         */
+        function handleDatabaseSearch() {
+            loadingIndicator.classList.remove('hidden');
+            dataTableBody.classList.add('hidden');
+            noResultsDiv.classList.add('hidden');
+
+            // Simulate network delay
+            setTimeout(() => {
+                const searchText = dbSearchInput.value.toLowerCase();
+                const trangThai = dbTrangThaiFilter.value;
+                const sanPham = dbSanPhamFilter.value;
+
+                currentDisplayData = masterData.filter(item => {
+                    const searchMatch = searchText === '' ||
+                        item.id.toLowerCase().includes(searchText) ||
+                        item.nhom.toLowerCase().includes(searchText) ||
+                        item.sanPham.toLowerCase().includes(searchText);
+                    
+                    const trangThaiMatch = trangThai === '' || item.trangThai === trangThai;
+                    const sanPhamMatch = sanPham === '' || item.sanPham === sanPham;
+
+                    return searchMatch && trangThaiMatch && sanPhamMatch;
+                });
+                
+                clientFilterInput.value = ''; // Reset client filter on new search
+                renderTable(currentDisplayData);
+                loadingIndicator.classList.add('hidden');
+            }, 500); // 0.5 second delay
+        }
+        
+        /**
+         * Filters the currently displayed data (client-side).
+         */
+        function handleClientFilter() {
+            const filterText = clientFilterInput.value.toLowerCase();
+            
+            if (!filterText) {
+                renderTable(currentDisplayData);
+                return;
+            }
+
+            const filteredData = currentDisplayData.filter(item => {
+                // Check against all properties of the item
+                return Object.values(item).some(val => 
+                    String(val).toLowerCase().includes(filterText)
+                );
+            });
+
+            renderTable(filteredData, false); // Don't update the main count
+        }
+
+        /**
+         * Renders data to the table.
+         * @param {Array} data - The data to render.
+         * @param {boolean} updateCount - Whether to update the main result count.
+         */
+        function renderTable(data, updateCount = true) {
+            dataTableBody.innerHTML = '';
+
+            if (updateCount) {
+                resultCountSpan.textContent = data.length;
+            }
+
+            if (data.length === 0) {
+                noResultsDiv.classList.remove('hidden');
+                dataTableBody.classList.add('hidden');
+            } else {
+                noResultsDiv.classList.add('hidden');
+                dataTableBody.classList.remove('hidden');
+                data.forEach(item => {
+                    const row = document.createElement('tr');
+                    row.className = 'hover:bg-gray-50';
+                    row.innerHTML = `
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.nhom}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.sanPham}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(item.trangThai)}">
+                                ${item.trangThai}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.thoiGianTao}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.slMau}</td>
+                    `;
+                    dataTableBody.appendChild(row);
+                });
+            }
+        }
+
+        function getStatusClass(status) {
+            switch (status) {
+                case 'Đã xác nhận': return 'bg-green-100 text-green-800';
+                case 'Đang bàn giao': return 'bg-yellow-100 text-yellow-800';
+                case 'Tạo mới': return 'bg-blue-100 text-blue-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+        
+        function resetDbFilters() {
+            dbSearchInput.value = '';
+            dbTrangThaiFilter.value = '';
+            dbSanPhamFilter.value = '';
+            handleDatabaseSearch();
+        }
+
+        // --- EVENT LISTENERS ---
+        dbSearchButton.addEventListener('click', handleDatabaseSearch);
+        dbResetButton.addEventListener('click', resetDbFilters);
+        clientFilterInput.addEventListener('input', handleClientFilter);
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+             handleDatabaseSearch();
+        });
+    </script>
+</body>
+</html>
