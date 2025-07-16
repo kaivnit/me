@@ -12,8 +12,20 @@
             font-family: 'Inter', sans-serif;
         }
         .table-container {
-            max-height: 65vh;
+            max-height: 60vh;
             overflow-y: auto;
+        }
+        .pagination-button {
+            transition: all 0.2s ease-in-out;
+        }
+        .pagination-button.active {
+            background-color: #2563eb; /* bg-blue-600 */
+            color: white;
+            border-color: #2563eb;
+        }
+        .pagination-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
         }
     </style>
 </head>
@@ -22,29 +34,36 @@
     <div class="container mx-auto p-4 sm:p-6 lg:p-8">
         <h1 class="text-2xl font-bold text-gray-900 mb-2">Tìm kiếm phiếu CS/Plasma</h1>
         
-        <!-- Section 1: Database Search (Server-side) -->
+        <!-- Section 1: Server-side Search & Filter -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200 mb-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
-                <i class="fas fa-database mr-2 text-blue-500"></i>
-                Bộ lọc chính (Truy vấn Database)
-            </h2>
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b pb-2 gap-4">
+                 <h2 class="text-lg font-semibold text-gray-800">
+                    <i class="fas fa-database mr-2 text-blue-500"></i>
+                    Bộ lọc tìm kiếm
+                </h2>
+                <button id="createBatchButton" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 flex-shrink-0 w-full sm:w-auto">
+                    <i class="fas fa-plus mr-2"></i> Tạo đợt
+                </button>
+            </div>
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                <input id="dbSearchInput" type="text" placeholder="Tên, mã phiếu..." class="lg:col-span-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <input id="dbSearchInput" type="text" placeholder="Tên, mã phiếu, sản phẩm..." class="lg:col-span-2 w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                 <select id="dbTrangThaiFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <option value="">Tất cả trạng thái</option>
                     <option value="Đã xác nhận">Đã xác nhận</option>
                     <option value="Đang bàn giao">Đang bàn giao</option>
                     <option value="Tạo mới">Tạo mới</option>
                 </select>
-                <select id="dbSanPhamFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <option value="">Tất cả sản phẩm</option>
-                    <option value="NIPT 9.5">NIPT 9.5</option>
-                    <option value="K-Detek">K-Detek</option>
+                <select id="dbNhomXNFilter" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="">Tất cả nhóm XN</option>
+                    <option value="NIPT">NIPT</option>
+                    <option value="Panel">Panel</option>
                     <option value="PGT">PGT</option>
-                    <option value="BabySure 3">BabySure 3</option>
+                    <option value="BabySure">BabySure</option>
+                    <option value="Trizsure Procare">Trizsure Procare</option>
                 </select>
             </div>
-            <div class="mt-4 flex items-center justify-end gap-3">
+             <div class="mt-4 flex items-center justify-end gap-3">
                 <button id="dbResetButton" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium">
                     <i class="fas fa-eraser mr-1"></i> Thiết lập lại
                 </button>
@@ -54,23 +73,12 @@
             </div>
         </div>
 
-        <!-- Section 2: Results & Client-side Filter -->
+        <!-- Section 2: Results -->
         <div class="bg-white p-5 rounded-xl shadow-sm border border-gray-200">
-             <div class="flex flex-col sm:flex-row justify-between items-center mb-4 border-b pb-2 gap-4">
-                <h2 class="text-lg font-semibold text-gray-800">
-                    <i class="fas fa-table mr-2 text-green-500"></i>
-                    Kết quả tìm kiếm (<span id="resultCount">0</span>)
-                </h2>
-                <div class="flex items-center gap-3 w-full sm:w-auto">
-                    <div class="relative flex-grow">
-                        <i class="fas fa-filter absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
-                        <input id="clientFilterInput" type="text" placeholder="Lọc nhanh..." class="w-full pl-9 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
-                    </div>
-                    <button id="createBatchButton" class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-semibold focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 flex-shrink-0">
-                        <i class="fas fa-plus mr-2"></i> Tạo đợt
-                    </button>
-                </div>
-            </div>
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 border-b pb-2">
+                <i class="fas fa-table mr-2 text-green-500"></i>
+                Kết quả
+            </h2>
             
             <div id="loadingIndicator" class="text-center py-10 hidden">
                 <i class="fas fa-spinner fa-spin text-3xl text-blue-500"></i>
@@ -99,138 +107,203 @@
                 <p class="text-gray-500 text-lg mt-4">Không tìm thấy kết quả phù hợp.</p>
                 <p class="text-gray-400 text-sm">Vui lòng thử lại với điều kiện lọc khác.</p>
             </div>
+
+            <!-- Pagination Section -->
+            <div id="pagination-section" class="flex flex-col sm:flex-row justify-between items-center pt-4 mt-4 border-t border-gray-200">
+                <div id="pagination-info" class="text-sm text-gray-700 mb-2 sm:mb-0">
+                    <!-- Pagination info will be generated here -->
+                </div>
+                <div id="pagination-controls" class="flex items-center">
+                    <!-- Pagination buttons will be generated here -->
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        // --- MOCK DATABASE ---
-        const masterData = [
-            { id: '10574', nhom: 'PGT', sanPham: 'PGT', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:32:13', slMau: 1 },
-            { id: '10573', nhom: 'BabySure', sanPham: 'BabySure 3', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:31:24', slMau: 1 },
-            { id: '10572', nhom: 'Trizsure Procare', sanPham: 'Trizsure Procare', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:30:12', slMau: 2 },
-            { id: '10571', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:28:30', slMau: 2 },
-            { id: '10570', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-16 10:26:54', slMau: 2 },
-            { id: '10569', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:40:07', slMau: 1 },
-            { id: '10568', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:15:29', slMau: 1 },
-            { id: '10567', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:04:18', slMau: 1 },
-            { id: '10566', nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 16:02:39', slMau: 1 },
-            { id: '10565', nhom: 'NIPT', sanPham: 'V-Detek', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-15 10:02:05', slMau: 2 },
-            { id: '10564', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-15 09:03:06', slMau: 1 },
-            { id: '10563', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Tạo mới', thoiGianTao: '2025-07-15 08:06:17', slMau: 50 },
-            { id: '10562', nhom: 'Panel', sanPham: 'HN-Sanger-G', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-14 17:07:42', slMau: 1 },
-            { id: 'Generate Biên giao mẫu CS/Plasma', nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đã xác nhận', thoiGianTao: '2025-07-08 11:19:44', slMau: 3 },
-            { id: 'Generate Biên giao mẫu CS/Plasma', nhom: 'Panel', sanPham: 'HN-K-Detek', trangThai: 'Đang bàn giao', thoiGianTao: '2025-07-08 11:19:34', slMau: 1 },
+        // --- MOCK DATABASE (Expanded for pagination) ---
+        const masterData = [];
+        const sampleItems = [
+            { nhom: 'PGT', sanPham: 'PGT', trangThai: 'Đã xác nhận' },
+            { nhom: 'BabySure', sanPham: 'BabySure 3', trangThai: 'Đã xác nhận' },
+            { nhom: 'Trizsure Procare', sanPham: 'Trizsure Procare', trangThai: 'Đã xác nhận' },
+            { nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đã xác nhận' },
+            { nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đã xác nhận' },
+            { nhom: 'NIPT', sanPham: 'NIPT 9.5', trangThai: 'Đang bàn giao' },
+            { nhom: 'Panel', sanPham: 'K-Detek', trangThai: 'Đang bàn giao' },
+            { nhom: 'NIPT', sanPham: 'V-Detek', trangThai: 'Tạo mới' },
+            { nhom: 'Panel', sanPham: 'HN-Sanger-G', trangThai: 'Đang bàn giao' }
         ];
+        for (let i = 1; i <= 100; i++) {
+            const sample = sampleItems[i % sampleItems.length];
+            masterData.push({
+                id: `${10500 + i}`,
+                nhom: sample.nhom,
+                sanPham: sample.sanPham,
+                trangThai: sample.trangThai,
+                thoiGianTao: `2025-07-${String(16 - (i % 10)).padStart(2, '0')} 10:32:13`,
+                slMau: (i % 5) + 1
+            });
+        }
         
         // --- STATE ---
-        let currentDisplayData = [];
+        let debounceTimer;
+        const rowsPerPage = 20;
 
         // --- DOM ELEMENTS ---
         const dbSearchButton = document.getElementById('dbSearchButton');
         const dbResetButton = document.getElementById('dbResetButton');
         const dbSearchInput = document.getElementById('dbSearchInput');
         const dbTrangThaiFilter = document.getElementById('dbTrangThaiFilter');
-        const dbSanPhamFilter = document.getElementById('dbSanPhamFilter');
+        const dbNhomXNFilter = document.getElementById('dbNhomXNFilter');
         
-        const clientFilterInput = document.getElementById('clientFilterInput');
         const dataTableBody = document.getElementById('dataTable');
         const noResultsDiv = document.getElementById('noResults');
         const loadingIndicator = document.getElementById('loadingIndicator');
-        const resultCountSpan = document.getElementById('resultCount');
+        const paginationSection = document.getElementById('pagination-section');
+        const paginationInfo = document.getElementById('pagination-info');
+        const paginationControls = document.getElementById('pagination-controls');
         const createBatchButton = document.getElementById('createBatchButton');
 
         // --- FUNCTIONS ---
 
         /**
-         * Simulates fetching data from a database based on main filters.
-         * In a real app, this would be an API call.
+         * Debounce function to delay execution of a function until after a certain time has passed without it being called.
+         * @param {function} func The function to debounce.
+         * @param {number} delay The delay in milliseconds.
          */
-        function handleDatabaseSearch() {
+        const debounce = (func, delay) => {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(func, delay);
+        };
+
+        /**
+         * This function simulates a server API call.
+         * It filters the entire dataset based on all criteria and returns a single page of results.
+         * @param {number} page The page number to fetch.
+         */
+        function handleSearch(page = 1) {
             loadingIndicator.classList.remove('hidden');
             dataTableBody.classList.add('hidden');
             noResultsDiv.classList.add('hidden');
+            paginationSection.classList.add('hidden');
 
-            // Simulate network delay
+            // Simulate network delay for the API call
             setTimeout(() => {
+                // 1. Get all filter values from the UI
                 const searchText = dbSearchInput.value.toLowerCase();
                 const trangThai = dbTrangThaiFilter.value;
-                const sanPham = dbSanPhamFilter.value;
+                const nhomXN = dbNhomXNFilter.value;
 
-                currentDisplayData = masterData.filter(item => {
+                // 2. Filter the ENTIRE masterData (This simulates a `WHERE` clause in a database query)
+                const allFilteredItems = masterData.filter(item => {
                     const searchMatch = searchText === '' ||
                         item.id.toLowerCase().includes(searchText) ||
                         item.nhom.toLowerCase().includes(searchText) ||
                         item.sanPham.toLowerCase().includes(searchText);
-                    
                     const trangThaiMatch = trangThai === '' || item.trangThai === trangThai;
-                    const sanPhamMatch = sanPham === '' || item.sanPham === sanPham;
-
-                    return searchMatch && trangThaiMatch && sanPhamMatch;
+                    const nhomXNMatch = nhomXN === '' || item.nhom === nhomXN;
+                    return searchMatch && trangThaiMatch && nhomXNMatch;
                 });
+
+                const totalItems = allFilteredItems.length;
+
+                // 3. Paginate the results (This simulates `LIMIT` and `OFFSET` in a database query)
+                const start = (page - 1) * rowsPerPage;
+                const end = start + rowsPerPage;
+                const paginatedItems = allFilteredItems.slice(start, end);
                 
-                clientFilterInput.value = ''; // Reset client filter on new search
-                renderTable(currentDisplayData);
+                // 4. Render the page content and pagination controls
+                renderTable(paginatedItems);
+                setupPagination(totalItems, page);
+                updatePaginationInfo(totalItems, start, end);
+
                 loadingIndicator.classList.add('hidden');
-            }, 500); // 0.5 second delay
+            }, 500);
         }
         
         /**
-         * Filters the currently displayed data (client-side).
+         * Renders the given items into the table body.
+         * @param {Array} items The array of items for the current page.
          */
-        function handleClientFilter() {
-            const filterText = clientFilterInput.value.toLowerCase();
+        function renderTable(items) {
+            dataTableBody.innerHTML = '';
             
-            if (!filterText) {
-                renderTable(currentDisplayData);
+            if (items.length === 0) {
+                noResultsDiv.classList.remove('hidden');
+                dataTableBody.classList.add('hidden');
                 return;
             }
+            
+            noResultsDiv.classList.add('hidden');
+            dataTableBody.classList.remove('hidden');
 
-            const filteredData = currentDisplayData.filter(item => {
-                // Check against all properties of the item
-                return Object.values(item).some(val => 
-                    String(val).toLowerCase().includes(filterText)
-                );
+            items.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = 'hover:bg-gray-50';
+                row.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.nhom}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.sanPham}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(item.trangThai)}">
+                            ${item.trangThai}
+                        </span>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.thoiGianTao}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.slMau}</td>
+                `;
+                dataTableBody.appendChild(row);
             });
-
-            renderTable(filteredData, false); // Don't update the main count
         }
 
         /**
-         * Renders data to the table.
-         * @param {Array} data - The data to render.
-         * @param {boolean} updateCount - Whether to update the main result count.
+         * Sets up the pagination controls based on total items and current page.
+         * @param {number} totalItems The total number of items after filtering.
+         * @param {number} currentPage The current active page.
          */
-        function renderTable(data, updateCount = true) {
-            dataTableBody.innerHTML = '';
+        function setupPagination(totalItems, currentPage) {
+            paginationControls.innerHTML = '';
+            const pageCount = Math.ceil(totalItems / rowsPerPage);
 
-            if (updateCount) {
-                resultCountSpan.textContent = data.length;
+            if (pageCount <= 1) {
+                paginationSection.classList.add('hidden');
+                return;
+            }
+            paginationSection.classList.remove('hidden');
+
+            // Previous Button
+            const prevButton = createPaginationButton('<i class="fas fa-chevron-left"></i>', () => handleSearch(currentPage - 1));
+            if (currentPage === 1) prevButton.disabled = true;
+            paginationControls.appendChild(prevButton);
+
+            // Page Number Buttons (simplified for brevity, can be expanded with '...')
+            for (let i = 1; i <= pageCount; i++) {
+                const pageButton = createPaginationButton(i, () => handleSearch(i));
+                if (i === currentPage) {
+                    pageButton.classList.add('active');
+                }
+                paginationControls.appendChild(pageButton);
             }
 
-            if (data.length === 0) {
-                noResultsDiv.classList.remove('hidden');
-                dataTableBody.classList.add('hidden');
-            } else {
-                noResultsDiv.classList.add('hidden');
-                dataTableBody.classList.remove('hidden');
-                data.forEach(item => {
-                    const row = document.createElement('tr');
-                    row.className = 'hover:bg-gray-50';
-                    row.innerHTML = `
-                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${item.id}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.nhom}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.sanPham}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusClass(item.trangThai)}">
-                                ${item.trangThai}
-                            </span>
-                        </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.thoiGianTao}</td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">${item.slMau}</td>
-                    `;
-                    dataTableBody.appendChild(row);
-                });
-            }
+            // Next Button
+            const nextButton = createPaginationButton('<i class="fas fa-chevron-right"></i>', () => handleSearch(currentPage + 1));
+            if (currentPage === pageCount) nextButton.disabled = true;
+            paginationControls.appendChild(nextButton);
+        }
+
+        function createPaginationButton(content, clickHandler) {
+            const button = document.createElement('button');
+            button.innerHTML = content;
+            button.className = 'pagination-button w-10 h-10 mx-1 border border-gray-300 rounded-md hover:bg-gray-100';
+            button.addEventListener('click', clickHandler);
+            return button;
+        }
+
+        function updatePaginationInfo(totalItems, start, end) {
+            const displayStart = totalItems === 0 ? 0 : start + 1;
+            const displayEnd = Math.min(end, totalItems);
+            paginationInfo.textContent = `Hiển thị ${displayStart}-${displayEnd} của ${totalItems} mục`;
         }
 
         function getStatusClass(status) {
@@ -245,22 +318,26 @@
         function resetDbFilters() {
             dbSearchInput.value = '';
             dbTrangThaiFilter.value = '';
-            dbSanPhamFilter.value = '';
-            handleDatabaseSearch();
+            dbNhomXNFilter.value = '';
+            handleSearch(1);
         }
 
         // --- EVENT LISTENERS ---
-        dbSearchButton.addEventListener('click', handleDatabaseSearch);
+        dbSearchButton.addEventListener('click', () => handleSearch(1));
         dbResetButton.addEventListener('click', resetDbFilters);
-        clientFilterInput.addEventListener('input', handleClientFilter);
+        dbTrangThaiFilter.addEventListener('change', () => handleSearch(1));
+        dbNhomXNFilter.addEventListener('change', () => handleSearch(1));
+        dbSearchInput.addEventListener('input', () => {
+            debounce(() => handleSearch(1), 300);
+        });
+
         createBatchButton.addEventListener('click', () => {
-            // In a real app, this would open a modal or navigate to a new page
             alert('Chức năng "Tạo đợt giao mẫu" sẽ được thực hiện tại đây!');
         });
 
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
-             handleDatabaseSearch();
+             handleSearch(1);
         });
     </script>
 </body>
