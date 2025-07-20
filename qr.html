@@ -31,9 +31,9 @@
       try {
         const devices = await Html5Qrcode.getCameras();
         if (devices && devices.length) {
-          const deviceId = devices[0].id;
+          // Ưu tiên dùng facingMode: environment thay vì deviceId
           await scanner.start(
-            { deviceId },
+            { facingMode: { exact: "environment" } },
             { fps: 10, qrbox: 250 },
             async (decodedText, decodedResult) => {
               document.getElementById("result").innerText = `Đã quét: ${decodedText}`;
@@ -42,6 +42,12 @@
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ qrContent: decodedText })
               });
+              await scanner.stop();
+            },
+            (errorMessage) => {
+              // Có thể log nếu muốn
+            }
+          );
               await scanner.stop();
             },
             (errorMessage) => {
