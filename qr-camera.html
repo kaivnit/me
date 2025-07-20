@@ -5,55 +5,105 @@
   <title>Máy quét QR mini</title>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
-    body { font-family: sans-serif; text-align: center; padding: 20px; }
-    #reader { width: 300px; margin: auto; }
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      padding: 20px;
+      background: #f9f9f9;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    #reader {
+      width: 320px;
+      margin: auto;
+      border: 2px solid #3498db;
+      border-radius: 10px;
+    }
+
     #resultBox {
       margin-top: 20px;
       padding: 10px;
       border: 2px solid #2ecc71;
+      border-radius: 6px;
       display: none;
+      background: #ecfff1;
+    }
+
+    #scan-again {
+      margin-top: 10px;
+      padding: 6px 12px;
+      background: #3498db;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #scan-again:hover {
+      background: #2980b9;
     }
   </style>
 </head>
 <body>
   <h2>📷 Máy quét QR mini</h2>
   <div id="reader"></div>
-  <div id="resultBox"><strong>Kết quả quét:</strong> <span id="result"></span></div>
+
+  <div id="resultBox">
+    <strong>Kết quả quét:</strong>
+    <div id="result" style="font-size: 18px; margin-top: 5px;"></div>
+    <button id="scan-again">Quét lại</button>
+  </div>
 
   <script>
-    function onScanSuccess(decodedText, decodedResult) {
-      document.getElementById('resultBox').style.display = 'block';
-      document.getElementById('result').textContent = decodedText;
+    let scanner;
 
-      // Tắt quét sau khi quét thành công
-      html5QrcodeScanner.clear();
-    }
-
-    // Cấu hình camera sau (nếu có)
     const config = {
       fps: 10,
-      qrbox: 150,
+      qrbox: { width: 140, height: 140 }, // khung nhỏ ở giữa để giống như zoom
       aspectRatio: 1.0,
       experimentalFeatures: {
         useBarCodeDetectorIfSupported: true
       }
     };
 
-    const html5QrcodeScanner = new Html5Qrcode("reader");
+    const resultBox = document.getElementById("resultBox");
+    const resultText = document.getElementById("result");
+    const scanAgainBtn = document.getElementById("scan-again");
+
+    function startScanner(cameraId) {
+      scanner = new Html5Qrcode("reader");
+      scanner.start(cameraId, config, (decodedText) => {
+        resultText.textContent = decodedText;
+        resultBox.style.display = "block";
+        scanner.stop(); // dừng quét sau khi thành công
+      });
+    }
 
     Html5Qrcode.getCameras().then(devices => {
       if (devices && devices.length) {
         // Ưu tiên camera sau nếu có
         const backCam = devices.find(d => d.label.toLowerCase().includes('back')) || devices[0];
-        html5QrcodeScanner.start(
-          backCam.id,
-          config,
-          onScanSuccess
-        );
+        startScanner(backCam.id);
+      } else {
+        alert("Không tìm thấy camera!");
       }
     }).catch(err => {
-      console.error("Không tìm thấy camera:", err);
+      console.error("Lỗi truy cập camera:", err);
+      alert("Không thể truy cập camera: " + err);
     });
+
+    scanAgainBtn.onclick = () => {
+      resultBox.style.display = "none";
+      scanner.clear().then(() => {
+        Html5Qrcode.getCameras().then(devices => {
+          const backCam = devices.find(d => d.label.toLowerCase().includes('back')) || devices[0];
+          startScanner(backCam.id);
+        });
+      });
+    };
   </script>
 </body>
 </html>
