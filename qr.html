@@ -22,7 +22,7 @@
 
   <script>
     const scanner = new Html5Qrcode("preview");
-    const apiUrl = "/api/scan"; // Đổi nếu backend khác đường dẫn
+    const apiUrl = "/api/scan";
 
     async function startScan() {
       document.getElementById("error").innerText = "";
@@ -31,7 +31,6 @@
       try {
         const devices = await Html5Qrcode.getCameras();
         if (devices && devices.length) {
-          // Ưu tiên dùng facingMode: environment thay vì deviceId
           await scanner.start(
             { facingMode: { exact: "environment" } },
             { fps: 10, qrbox: 250 },
@@ -45,13 +44,7 @@
               await scanner.stop();
             },
             (errorMessage) => {
-              // Có thể log nếu muốn
-            }
-          );
-              await scanner.stop();
-            },
-            (errorMessage) => {
-              // Có thể log nếu muốn
+              console.warn("Scan error:", errorMessage);
             }
           );
         } else {
