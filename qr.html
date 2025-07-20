@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QR Scanner</title>
+  <script src="https://unpkg.com/html5-qrcode"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 2rem; }
+    #preview { width: 300px; margin: auto; }
+    #result { margin-top: 1rem; font-weight: bold; color: green; }
+    #error { margin-top: 1rem; color: red; font-weight: bold; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; font-size: 1rem; }
+  </style>
+</head>
+<body>
+  <h2>Quét mã QR</h2>
+  <div id="preview"></div>
+  <div id="result"></div>
+  <div id="error"></div>
+  <button onclick="startScan()">Bắt đầu quét lại</button>
+
+  <script>
+    const scanner = new Html5Qrcode("preview");
+    const apiUrl = "/api/scan"; // Đổi nếu backend khác đường dẫn
+
+    async function startScan() {
+      document.getElementById("error").innerText = "";
+      document.getElementById("result").innerText = "Đang khởi động camera...";
+
+      try {
+        const devices = await Html5Qrcode.getCameras();
+        if (devices && devices.length) {
+          const deviceId = devices[0].id;
+          await scanner.start(
+            { deviceId },
+            { fps: 10, qrbox: 250 },
+            async (decodedText, decodedResult) => {
+              document.getElementById("result").innerText = `Đã quét: ${decodedText}`;
+              await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ qrContent: decodedText })
+              });
+              await scanner.stop();
+            },
+            (errorMessage) => {
+              // Có thể log nếu muốn
+            }
+          );
+        } else {
+          document.getElementById("error").innerText = "Không tìm thấy camera nào trên thiết bị.";
+        }
+      } catch (err) {
+        console.error("Lỗi camera:", err);
+        document.getElementById("error").innerText = "Không thể truy cập camera. Hãy kiểm tra quyền truy cập và thử lại.";
+        document.getElementById("result").innerText = "";
+      }
+    }
+  </script>
+</body>
+</html>
