@@ -2,108 +2,83 @@
 <html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <title>Máy quét QR mini</title>
+  <title>Máy Quét QR Mini</title>
   <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
   <style>
     body {
       font-family: sans-serif;
       text-align: center;
+      background: #f7f7f7;
       padding: 20px;
-      background: #f9f9f9;
     }
-
-    h2 {
-      margin-bottom: 10px;
-    }
-
     #reader {
       width: 320px;
-      margin: auto;
-      border: 2px solid #3498db;
-      border-radius: 10px;
+      margin: 0 auto;
     }
-
     #resultBox {
       margin-top: 20px;
       padding: 10px;
+      background: #e0ffe0;
       border: 2px solid #2ecc71;
-      border-radius: 6px;
       display: none;
-      background: #ecfff1;
     }
-
-    #scan-again {
+    #retry {
       margin-top: 10px;
       padding: 6px 12px;
-      background: #3498db;
-      color: white;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #scan-again:hover {
-      background: #2980b9;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h2>📷 Máy quét QR mini</h2>
+  <h2>📷 Quét mã QR nhỏ</h2>
   <div id="reader"></div>
 
   <div id="resultBox">
-    <strong>Kết quả quét:</strong>
-    <div id="result" style="font-size: 18px; margin-top: 5px;"></div>
-    <button id="scan-again">Quét lại</button>
+    <p><strong>Kết quả quét:</strong> <span id="result"></span></p>
+    <button id="retry">Quét lại</button>
   </div>
 
   <script>
     let scanner;
 
-    const config = {
-      fps: 10,
-      qrbox: { width: 140, height: 140 }, // khung nhỏ ở giữa để giống như zoom
-      aspectRatio: 1.0,
-      experimentalFeatures: {
-        useBarCodeDetectorIfSupported: true
-      }
-    };
-
-    const resultBox = document.getElementById("resultBox");
-    const resultText = document.getElementById("result");
-    const scanAgainBtn = document.getElementById("scan-again");
-
-    function startScanner(cameraId) {
+    function startScanner() {
       scanner = new Html5Qrcode("reader");
-      scanner.start(cameraId, config, (decodedText) => {
-        resultText.textContent = decodedText;
-        resultBox.style.display = "block";
-        scanner.stop(); // dừng quét sau khi thành công
+
+      Html5Qrcode.getCameras().then(devices => {
+        if (devices.length === 0) {
+          alert("Không tìm thấy camera.");
+          return;
+        }
+
+        const backCam = devices.find(d => d.label.toLowerCase().includes("back")) || devices[0];
+
+        scanner.start(
+          backCam.id,
+          {
+            fps: 10,
+            qrbox: { width: 180, height: 180 },
+            aspectRatio: 1.0
+          },
+          (decodedText, decodedResult) => {
+            document.getElementById("result").textContent = decodedText;
+            document.getElementById("resultBox").style.display = "block";
+            scanner.stop(); // Tắt sau khi quét thành công
+          },
+          (errorMessage) => {
+            // Có thể log ra nếu cần debug
+          }
+        );
       });
     }
 
-    Html5Qrcode.getCameras().then(devices => {
-      if (devices && devices.length) {
-        // Ưu tiên camera sau nếu có
-        const backCam = devices.find(d => d.label.toLowerCase().includes('back')) || devices[0];
-        startScanner(backCam.id);
-      } else {
-        alert("Không tìm thấy camera!");
-      }
-    }).catch(err => {
-      console.error("Lỗi truy cập camera:", err);
-      alert("Không thể truy cập camera: " + err);
-    });
+    // Start on load
+    window.onload = startScanner;
 
-    scanAgainBtn.onclick = () => {
-      resultBox.style.display = "none";
-      scanner.clear().then(() => {
-        Html5Qrcode.getCameras().then(devices => {
-          const backCam = devices.find(d => d.label.toLowerCase().includes('back')) || devices[0];
-          startScanner(backCam.id);
-        });
-      });
-    };
+    // Quét lại khi nhấn nút
+    document.getElementById("retry").addEventListener("click", () => {
+      document.getElementById("resultBox").style.display = "none";
+      startScanner();
+    });
   </script>
 </body>
 </html>
