@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Máy quét QR mini</title>
+  <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 20px; }
+    #reader { width: 300px; margin: auto; }
+    #resultBox {
+      margin-top: 20px;
+      padding: 10px;
+      border: 2px solid #2ecc71;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>📷 Máy quét QR mini</h2>
+  <div id="reader"></div>
+  <div id="resultBox"><strong>Kết quả quét:</strong> <span id="result"></span></div>
+
+  <script>
+    function onScanSuccess(decodedText, decodedResult) {
+      document.getElementById('resultBox').style.display = 'block';
+      document.getElementById('result').textContent = decodedText;
+
+      // Tắt quét sau khi quét thành công
+      html5QrcodeScanner.clear();
+    }
+
+    // Cấu hình camera sau (nếu có)
+    const config = {
+      fps: 10,
+      qrbox: 150,
+      aspectRatio: 1.0,
+      experimentalFeatures: {
+        useBarCodeDetectorIfSupported: true
+      }
+    };
+
+    const html5QrcodeScanner = new Html5Qrcode("reader");
+
+    Html5Qrcode.getCameras().then(devices => {
+      if (devices && devices.length) {
+        // Ưu tiên camera sau nếu có
+        const backCam = devices.find(d => d.label.toLowerCase().includes('back')) || devices[0];
+        html5QrcodeScanner.start(
+          backCam.id,
+          config,
+          onScanSuccess
+        );
+      }
+    }).catch(err => {
+      console.error("Không tìm thấy camera:", err);
+    });
+  </script>
+</body>
+</html>
