@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Điều Hành Prompt: Từ Kiến Trúc đến Sáng Tạo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Calm Neutral Tones -->
+    <!-- Application Structure Plan: A thematic single-page application with sections for Philosophy, Anatomy, Toolkit, a Masterclass (interactive Veo 3 prompt builder), and Applications. This structure guides the user from high-level concepts to practical, hands-on application, which is more intuitive for learning than a linear report. The interactive builder is the core engagement piece. -->
+    <!-- Visualization & Content Choices: Report Info: Prompt Anatomy -> Goal: Organize -> Viz: Interactive HTML cards -> Interaction: Click/Hover -> Justification: Engaging and clear. Report Info: DB Schema/Gitflow -> Goal: Inform -> Viz: HTML/CSS diagrams -> Justification: Visualizes complex systems simply. Report Info: Veo 3 attributes -> Goal: Apply -> Viz: Interactive Prompt Builder -> Interaction: User selection populates code block -> Justification: Turns theory into a practical, memorable tool. Library/Method: Vanilla JS, Tailwind CSS. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #212529;
+        }
+        .nav-link {
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+        .nav-link.active, .nav-link:hover {
+            border-bottom-color: #3b82f6;
+            color: #3b82f6;
+        }
+        .section-title {
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+        .prompt-builder-input {
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+        .prompt-builder-input:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+        }
+        .flow-line {
+            position: absolute;
+            background-color: #9ca3af;
+            z-index: 0;
+        }
+        .flow-node {
+            position: relative;
+            z-index: 1;
+        }
+        .fade-in {
+            animation: fadeIn 0.7s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 bg-white/80 backdrop-blur-lg z-50 shadow-sm">
+        <div class="container mx-auto px-4">
+            <nav class="flex justify-between items-center py-4">
+                <h1 class="text-2xl font-bold text-gray-800">Hệ Điều Hành Prompt</h1>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#philosophy" class="nav-link font-semibold text-gray-600">Triết lý</a>
+                    <a href="#anatomy" class="nav-link font-semibold text-gray-600">Giải phẫu</a>
+                    <a href="#toolkit" class="nav-link font-semibold text-gray-600">Bộ công cụ</a>
+                    <a href="#masterclass" class="nav-link font-semibold text-gray-600">Phòng Dựng Phim</a>
+                    <a href="#applications" class="nav-link font-semibold text-gray-600">Ứng dụng</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+
+        <!-- Section 1: Philosophy -->
+        <section id="philosophy" class="mb-20 fade-in">
+            <h2 class="text-4xl font-bold text-center mb-4 section-title">Triết lý: Prompt như Mã nguồn</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Chào mừng bạn đến với kỷ nguyên mới của kỹ thuật prompt. Ở đây, chúng ta không chỉ viết yêu cầu, mà là kiến tạo những tài sản kỹ thuật. Hãy coi mỗi prompt như một chương trình phần mềm: có cấu trúc, có phiên bản, có thể kiểm thử và có khả năng mở rộng.
+            </p>
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-2 text-blue-600">Thoát khỏi Hỗn loạn</h3>
+                    <p class="text-gray-600">Tạm biệt "Prompt Sprawl"—sự bành trướng của các prompt rải rác. Tập trung hóa để kiểm soát phiên bản, cộng tác và bảo trì hiệu quả.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-2 text-blue-600">Tư duy Kiến trúc</h3>
+                    <p class="text-gray-600">Phân rã các prompt phức tạp thành các thành phần mô-đun, có thể tái sử dụng, giúp đơn giản hóa việc bảo trì và cho phép lắp ráp linh hoạt.</p>
+                </div>
+                <div class="card p-6">
+                    <h3 class="font-bold text-xl mb-2 text-blue-600">Vòng đời Chuyên nghiệp</h3>
+                    <p class="text-gray-600">Áp dụng một vòng đời phát triển hoàn chỉnh: Thiết kế, Phiên bản hóa, Kiểm thử, Triển khai, Giám sát và Lặp lại để cải tiến liên tục.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 2: Anatomy -->
+        <section id="anatomy" class="mb-20 fade-in">
+            <h2 class="text-4xl font-bold text-center mb-4 section-title">Giải phẫu một System Prompt</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Một prompt chuyên nghiệp không phải là một câu văn dài. Nó là một cấu trúc được thiết kế tỉ mỉ. Hãy khám phá 7 thành phần cốt lõi tạo nên "bộ não" của một AI.
+            </p>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-2">👤</div>
+                    <h4 class="font-bold text-lg">1. Vai trò & Chân dung</h4>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-2">🎯</div>
+                    <h4 class="font-bold text-lg">2. Nhiệm vụ & Mục tiêu</h4>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-2">🌍</div>
+                    <h4 class="font-bold text-lg">3. Bối cảnh & Dữ liệu</h4>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-2">⚖️</div>
+                    <h4 class="font-bold text-lg">4. Quy tắc & Ràng buộc</h4>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-2">🎨</div>
+                    <h4 class="font-bold text-lg">5. Phong cách & Giọng điệu</h4>
+                </div>
+                <div class="card p-6 text-center">
+                    <div class="text-3xl mb-2">🎬</div>
+                    <h4 class="font-bold text-lg">6. Ví dụ Mẫu</h4>
+                </div>
+                <div class="card p-6 text-center col-span-2 md:col-span-4 lg:col-span-2">
+                    <div class="text-3xl mb-2">📦</div>
+                    <h4 class="font-bold text-lg">7. Định dạng Đầu ra</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 3: Toolkit -->
+        <section id="toolkit" class="mb-20 fade-in">
+            <h2 class="text-4xl font-bold text-center mb-4 section-title">Bộ Công cụ của Kiến trúc sư Prompt</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Để xây dựng các hệ thống prompt mạnh mẽ, chúng ta cần những công cụ chuyên dụng. Đây là bộ ba không thể thiếu: một IDE thông minh, một cơ sở dữ liệu có cấu trúc và một quy trình kiểm soát phiên bản chặt chẽ.
+            </p>
+            <div class="grid lg:grid-cols-3 gap-12">
+                <!-- IDE -->
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">IDE: Cursor</h3>
+                    <div class="card p-6">
+                        <p class="text-5xl mb-4">💻</p>
+                        <p class="text-gray-600">Quản lý prompt như mã nguồn trong một môi trường phát triển tích hợp, tận dụng các tính năng như tham chiếu tệp (`@`) và chỉnh sửa bằng AI (`Ctrl+K`).</p>
+                    </div>
+                </div>
+                <!-- Database -->
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Cơ sở dữ liệu</h3>
+                    <div class="card p-6">
+                        <p class="text-5xl mb-4">🗄️</p>
+                        <p class="text-gray-600">Lưu trữ các thành phần prompt một cách có cấu trúc, cho phép tái sử dụng, phân tích và quản lý tập trung, thay thế cho các bảng tính và tài liệu rời rạc.</p>
+                    </div>
+                </div>
+                <!-- Workflow -->
+                <div class="text-center">
+                    <h3 class="text-2xl font-bold mb-4">Quy trình: Gitflow</h3>
+                    <div class="card p-6">
+                        <p class="text-5xl mb-4">🌿</p>
+                        <p class="text-gray-600">Áp dụng mô hình Gitflow để quản lý các phiên bản prompt, cho phép thử nghiệm an toàn trên các nhánh (branch) và triển khai một cách tự tin.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 4: Masterclass -->
+        <section id="masterclass" class="mb-20 fade-in">
+            <h2 class="text-4xl font-bold text-center mb-4 section-title">Phòng Dựng Phim Ảo: Veo 3</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Lý thuyết sẽ trở nên sống động khi áp dụng vào thực tế. Hãy vào vai một đạo diễn và sử dụng "Bảng điều khiển" bên dưới để tự tay xây dựng một prompt tạo video chuyên nghiệp cho Google Veo 3.
+            </p>
+            <div class="card p-8">
+                <div class="grid lg:grid-cols-2 gap-8">
+                    <!-- Controls -->
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6">Bảng Điều Khiển của Đạo diễn</h3>
+                        <div class="space-y-5">
+                            <div>
+                                <label for="subject" class="block font-semibold mb-1 text-gray-700">Chủ thể (Subject)</label>
+                                <input type="text" id="subject" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input" value="Một con cáo đỏ đang ngủ cuộn tròn trong tuyết">
+                            </div>
+                            <div>
+                                <label for="action" class="block font-semibold mb-1 text-gray-700">Hành động (Action)</label>
+                                <input type="text" id="action" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input" value="Thở ra một làn hơi mỏng trong không khí lạnh giá">
+                            </div>
+                            <div>
+                                <label for="environment" class="block font-semibold mb-1 text-gray-700">Môi trường (Environment)</label>
+                                <input type="text" id="environment" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input" value="Một khu rừng thông yên tĩnh vào lúc bình minh">
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="camera-framing" class="block font-semibold mb-1 text-gray-700">Khung hình</label>
+                                    <select id="camera-framing" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input bg-white"></select>
+                                </div>
+                                <div>
+                                    <label for="camera-movement" class="block font-semibold mb-1 text-gray-700">Chuyển động máy quay</label>
+                                    <select id="camera-movement" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input bg-white"></select>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="lighting" class="block font-semibold mb-1 text-gray-700">Ánh sáng</label>
+                                    <select id="lighting" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input bg-white"></select>
+                                </div>
+                                <div>
+                                    <label for="visual-style" class="block font-semibold mb-1 text-gray-700">Phong cách hình ảnh</label>
+                                    <select id="visual-style" class="w-full p-2 border border-gray-300 rounded-md prompt-builder-input bg-white"></select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Output -->
+                    <div class="bg-gray-800 text-white p-6 rounded-lg shadow-inner flex flex-col h-full mt-8 lg:mt-0">
+                        <h3 class="text-xl font-bold mb-4 text-blue-400">Kịch bản Gửi đến Veo 3</h3>
+                        <div class="relative flex-grow">
+                            <pre class="h-full overflow-auto whitespace-pre-wrap text-sm bg-gray-900 p-4 rounded-md"><code id="generated-prompt-code"></code></pre>
+                            <button id="copy-button" class="absolute top-2 right-2 bg-gray-700 hover:bg-gray-600 text-white text-xs font-bold py-1 px-2 rounded">Sao chép</button>
+                        </div>
+                        <p id="copy-feedback" class="text-center text-green-400 text-sm mt-2 opacity-0 transition-opacity">Đã sao chép!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section 5: Applications -->
+        <section id="applications" class="fade-in">
+            <h2 class="text-4xl font-bold text-center mb-4 section-title">Mở rộng Ứng dụng</h2>
+            <p class="text-lg text-gray-600 text-center max-w-3xl mx-auto mb-12">
+                Kiến trúc này không chỉ dành cho video. Các nguyên tắc về tính mô-đun, phiên bản hóa và quản lý có cấu trúc có thể được áp dụng cho mọi lĩnh vực, biến AI thành một đối tác đáng tin cậy trong mọi quy trình làm việc.
+            </p>
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4">🤖 Tự động hóa với n8n</h3>
+                    <p class="text-gray-600">Xây dựng các agent AI phức tạp bằng cách lắp ráp các mô-đun trách nhiệm, công cụ và phong cách giao tiếp. Tách vòng đời của prompt khỏi quy trình n8n, cho phép lặp lại và cập nhật nhanh chóng mà không cần triển khai lại toàn bộ workflow.</p>
+                </div>
+                <div class="card p-8">
+                    <h3 class="text-2xl font-bold mb-4">📈 Tối ưu hóa SEO</h3>
+                    <p class="text-gray-600">Tạo một thư viện các prompt được tiêu chuẩn hóa cho các tác vụ SEO như phân cụm từ khóa, tạo bản tóm tắt nội dung và tối ưu hóa on-page. Đảm bảo tính nhất quán và chất lượng trên quy mô lớn, hợp lý hóa quy trình tạo nội dung của bạn.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-8 border-t border-gray-200 mt-12">
+        <p class="text-gray-500">Được kiến tạo từ các nguyên tắc kỹ thuật prompt chuyên nghiệp.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Smooth scrolling and active nav link
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.3
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                        });
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Veo 3 Prompt Builder
+            const promptData = {
+                framing: ['close-up', 'medium shot', 'wide shot', 'extreme close-up', 'low-angle shot', 'point-of-view (POV)'],
+                movement: ['static', 'slow pan right', 'dolly zoom', 'crane shot', 'handheld camera', 'aerial shot', 'orbit around subject'],
+                lighting: ['cinematic lighting', 'golden hour', 'film noir', 'soft, studio lighting', 'dramatic backlighting', 'eerie, neon glow'],
+                style: ['photorealistic, 8K, highly detailed', '3D animation, Pixar style', 'Japanese anime, Studio Ghibli style', '16mm film, grainy, vintage look', 'watercolor painting coming to life', 'cinematic, epic fantasy']
+            };
+
+            const selectors = {
+                framing: document.getElementById('camera-framing'),
+                movement: document.getElementById('camera-movement'),
+                lighting: document.getElementById('lighting'),
+                style: document.getElementById('visual-style')
+            };
+
+            for (const key in promptData) {
+                promptData[key].forEach(option => {
+                    const optElement = document.createElement('option');
+                    optElement.value = option;
+                    optElement.textContent = option.charAt(0).toUpperCase() + option.slice(1);
+                    selectors[key].appendChild(optElement);
+                });
+            }
+            
+            selectors.framing.value = 'close-up';
+            selectors.movement.value = 'static';
+            selectors.lighting.value = 'golden hour';
+            selectors.style.value = 'photorealistic, 8K, highly detailed';
+
+            const promptInputs = document.querySelectorAll('.prompt-builder-input');
+            const generatedCodeElement = document.getElementById('generated-prompt-code');
+
+            function updateGeneratedPrompt() {
+                const values = {
+                    subject: document.getElementById('subject').value,
+                    action: document.getElementById('action').value,
+                    environment: document.getElementById('environment').value,
+                    cameraFraming: selectors.framing.value,
+                    cameraMovement: selectors.movement.value,
+                    lighting: selectors.lighting.value,
+                    visualStyle: selectors.style.value
+                };
+
+                const promptXML = `
+<Scene_Construction>
+  <Subject Description="${values.subject}"/>
+  <Action Description="${values.action}"/>
+  <Environment Description="${values.environment}"/>
+  <Camera Framing="${values.cameraFraming}" Movement="${values.cameraMovement}"/>
+  <Lighting Style="${values.lighting}"/>
+  <Visual_Style Style="${values.visualStyle}"/>
+  <Negative_Keywords>AVOID: blurry, grainy, unnatural movements</Negative_Keywords>
+</Scene_Construction>
+                `.trim();
+
+                generatedCodeElement.textContent = promptXML;
+            }
+
+            promptInputs.forEach(input => {
+                input.addEventListener('input', updateGeneratedPrompt);
+                input.addEventListener('change', updateGeneratedPrompt);
+            });
+
+            // Copy button
+            const copyButton = document.getElementById('copy-button');
+            const copyFeedback = document.getElementById('copy-feedback');
+            copyButton.addEventListener('click', () => {
+                const textToCopy = generatedCodeElement.textContent;
+                const textArea = document.createElement('textarea');
+                textArea.value = textToCopy;
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    copyFeedback.style.opacity = '1';
+                    setTimeout(() => {
+                        copyFeedback.style.opacity = '0';
+                    }, 2000);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                document.body.removeChild(textArea);
+            });
+            
+            updateGeneratedPrompt();
+        });
+    </script>
+</body>
+</html>
